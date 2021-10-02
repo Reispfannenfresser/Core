@@ -20,16 +20,11 @@ public class SegmentMelter : MonoBehaviour {
 		contact_filter.layerMask = construction;
 	}
 
-	private void FixedUpdate() {
-		int size = Physics2D.OverlapCollider(own_collider, contact_filter, to_melt);
-
-		for (int i = 0; i < size; i++) {
-			ConstructionSegment segment = to_melt[i].gameObject.GetComponent<ConstructionSegment>();
-			if (segment == null || !segment.meltable) {
-				return;
-			}
-			segment.Damage(damage);
+	private void OnTriggerStay2D(Collider2D other) {
+		ConstructionSegment segment = other.gameObject.GetComponent<ConstructionSegment>();
+		if (segment == null || !segment.meltable) {
+			return;
 		}
-
+		segment.Damage(damage);
 	}
 }
