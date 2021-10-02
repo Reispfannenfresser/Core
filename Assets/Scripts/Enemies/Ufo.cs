@@ -30,6 +30,6 @@ public class Ufo : Enemy {
 			back = false;
 		}
 
-		transform.position = start_pos + new Vector3(2 * x_offset, (back ? 1 : -1) * Mathf.Sin(x_offset), 0);
+		transform.position = start_pos + new Vector3(x_offset, (back ? 1 : -1) * Mathf.Sin(x_offset), 0);
 	}
 }
