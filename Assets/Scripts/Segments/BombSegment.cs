@@ -7,7 +7,6 @@ public class BombSegment : ConstructionSegment {
 	float stop_time = 3f;
 
 	protected override void OnDestroyed() {
-		print("test");
 		foreach (Enemy enemy in GameController.instance.enemies) {
 			enemy.Delete();
 		}

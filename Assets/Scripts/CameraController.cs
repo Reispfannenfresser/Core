@@ -41,12 +41,12 @@ public class CameraController : MonoBehaviour {
 		current_zoom_level = Mathf.SmoothDamp(current_zoom_level, wanted_zoom_level, ref zoom_velocity, zoom_smooth_time);
 		own_camera.orthographicSize = original_orthographic_size / own_camera.aspect * current_zoom_level;
 
-		if (new_pos.y > 10) {
-			new_pos.y = 10;
+		if (new_pos.y > 15) {
+			new_pos.y = 15;
 		}
 
-		if (new_pos.y < 0) {
-			new_pos.y = 0;
+		if (new_pos.y < -5) {
+			new_pos.y = -5;
 		}
 
 		transform.position = new_pos;

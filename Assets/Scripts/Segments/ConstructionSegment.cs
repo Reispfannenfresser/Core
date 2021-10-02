@@ -5,6 +5,7 @@ using UnityEngine;
 public class ConstructionSegment : MonoBehaviour {
 	protected List<Joint2D> connectors = new List<Joint2D>();
 	protected SpriteRenderer sprite_renderer = null;
+	public Rigidbody2D rb2d = null;
 
 	public int max_hp = 100;
 	public int hp = 100;
@@ -14,6 +15,7 @@ public class ConstructionSegment : MonoBehaviour {
 	protected void Start() {
 		OnPlaced();
 		sprite_renderer = GetComponent<SpriteRenderer>();
+		rb2d = GetComponent<Rigidbody2D>();
 	}
 
 	public void Damage(int amount) {

@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class CoreSegment : ConstructionSegment {
 	float stopped = 0;
-	Rigidbody2D rb2d = null;
 
 	[SerializeField]
 	SpriteRenderer[] to_freeze = new SpriteRenderer[0];
-
-	protected override void OnPlaced() {
-		rb2d = GetComponent<Rigidbody2D>();
-	}
 
 	private void FixedUpdate() {
 		if (stopped < 0) {
