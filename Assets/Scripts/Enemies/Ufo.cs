@@ -11,14 +11,14 @@ public class Ufo : Enemy {
 
 	protected override void OnSpawned() {
 		start_pos = transform.position;
-		min_height = 5 + (Random.value - 0.5f) * 3;
+		min_height = 8 + (Random.value - 0.5f) * 5;
 		x_offset = (Random.value - 0.5f) * 2 * Mathf.PI;
 		back = Random.value > 0.5f;
 	}
 
 	void Update() {
 		if (start_pos.y > min_height) {
-			start_pos = start_pos + Vector3.down * Time.deltaTime;
+			start_pos = start_pos + Vector3.down * Time.deltaTime * 5;
 		}
 
 		x_offset += (back ? -1 : 1) * Time.deltaTime;

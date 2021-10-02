@@ -38,6 +38,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 2461232293
+    locked: 0
   - name: Bridge
     uniqueID: 664018755
     locked: 0
