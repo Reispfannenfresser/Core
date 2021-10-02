@@ -47,3 +47,6 @@ TagManager:
   - name: Construction
     uniqueID: 1341883733
     locked: 0
+  - name: Enemy
+    uniqueID: 1795687659
+    locked: 0

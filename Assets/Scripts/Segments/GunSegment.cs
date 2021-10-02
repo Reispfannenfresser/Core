@@ -8,9 +8,10 @@ public class GunSegment : ConstructionSegment {
 	[SerializeField]
 	LayerMask construction = 0;
 	[SerializeField]
+	int damage = 1;
+	[SerializeField]
 	float cooldown = 1;
 	float current_cooldown = 0;
-	int damage = 1;
 
 	Enemy target = null;
 

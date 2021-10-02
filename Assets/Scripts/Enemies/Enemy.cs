@@ -5,11 +5,13 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
 	protected SpriteRenderer sprite_renderer = null;
 
+	[SerializeField]
 	protected int max_hp = 100;
-	protected int hp = 100;
+	protected int hp;
 	public bool deletable = true;
 
 	protected void Start() {
+		hp = max_hp;
 		OnSpawned();
 		GameController.instance.AddEnemy(this);
 		sprite_renderer = GetComponent<SpriteRenderer>();
