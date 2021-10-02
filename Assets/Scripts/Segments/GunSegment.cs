@@ -59,7 +59,7 @@ public class GunSegment : ConstructionSegment {
 		gun.transform.rotation = Quaternion.Euler(0, 0, angle);
 		target.Damage(damage);
 
-		fire.SetPosition(0, transform.position);
+		fire.SetPosition(0, transform.position + gun.transform.right * 0.5f);
 		fire.SetPosition(1, target.transform.position);
 		animator.SetTrigger("Fire");
 	}

@@ -29,7 +29,7 @@ public class HealingSegment : ConstructionSegment {
 
 			foreach (Collider2D collider in colliders) {
 				ConstructionSegment segment = collider.gameObject.GetComponent<ConstructionSegment>();
-				if (segment != null && segment.hp < segment.max_hp) {
+				if (segment != null && segment != this && segment.hp < segment.max_hp) {
 					rays.SetPosition(0, transform.position);
 					rays.SetPosition(1, collider.transform.position);
 					segment.Heal(amount);
@@ -37,7 +37,6 @@ public class HealingSegment : ConstructionSegment {
 					return;
 				}
 			}
-
 		}
 	}
 }

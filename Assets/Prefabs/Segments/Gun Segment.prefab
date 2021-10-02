@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1341883733
-  m_SortingLayer: 2
+  m_SortingLayer: -2
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 575b8285aecc158ee85d7a85bf7e2f65, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -213,6 +213,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 673578c4cd1136e2787e3d966f645c2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  max_hp: 100
+  hp: 100
   deletable: 1
   meltable: 1
   gun: {fileID: 1230251858}
@@ -275,6 +277,10 @@ PrefabInstance:
     - target: {fileID: 8950723079009521217, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178111157218713962, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f26b41b42b2385793a887f57d1ece507, type: 3}

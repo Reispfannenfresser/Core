@@ -69,7 +69,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1341883733
-  m_SortingLayer: 2
+  m_SortingLayer: -2
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 19c2fee21a0d11157a1d411fa8ea34b4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -94,8 +94,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5feec81d0b9903c6a02fb98b7c0bb66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  max_hp: 100
+  hp: 100
   deletable: 1
   meltable: 1
+  stop_time: 3
 --- !u!1001 &56554498006786055
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -105,7 +108,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8950723079009521216, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
       propertyPath: m_Name
-      value: Segment
+      value: Bomb Segment
       objectReference: {fileID: 0}
     - target: {fileID: 8950723079009521217, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
       propertyPath: m_RootOrder
