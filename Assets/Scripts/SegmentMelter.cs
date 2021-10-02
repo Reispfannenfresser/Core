@@ -8,7 +8,7 @@ public class SegmentMelter : MonoBehaviour {
 
 	void OnTriggerStay2D(Collider2D other) {
 		ConstructionSegment segment = other.gameObject.GetComponent<ConstructionSegment>();
-		if (segment == null && !segment.meltable) {
+		if (segment == null || !segment.meltable) {
 			return;
 		}
 
