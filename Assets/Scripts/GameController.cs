@@ -8,10 +8,20 @@ public class GameController : MonoBehaviour {
 	[SerializeField]
 	GameObject[] segments = new GameObject[0];
 
-	static GameController instance = null;
+	public static GameController instance = null;
+
+	public HashSet<Enemy> enemies = new HashSet<Enemy>();
 
 	void Awake() {
 		instance = this;
+	}
+
+	public void AddEnemy(Enemy enemy) {
+		enemies.Add(enemy);
+	}
+
+	public void RemoveEnemy(Enemy enemy) {
+		enemies.Remove(enemy);
 	}
 
 	void Start() {
