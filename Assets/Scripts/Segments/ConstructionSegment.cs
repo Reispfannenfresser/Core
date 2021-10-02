@@ -6,8 +6,8 @@ public class ConstructionSegment : MonoBehaviour {
 	protected List<Joint2D> connectors = new List<Joint2D>();
 	protected SpriteRenderer sprite_renderer = null;
 
-	protected int max_hp = 100;
-	protected int hp = 100;
+	public int max_hp = 100;
+	public int hp = 100;
 	public bool deletable = true;
 	public bool meltable = true;
 

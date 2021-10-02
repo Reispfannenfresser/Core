@@ -14,7 +14,6 @@ public class Ufo : Enemy {
 		min_height = 5 + (Random.value - 0.5f) * 3;
 		x_offset = (Random.value - 0.5f) * 2 * Mathf.PI;
 		back = Random.value > 0.5f;
-		Debug.Log(min_height);
 	}
 
 	void Update() {

@@ -13,7 +13,15 @@ public class GunSegment : ConstructionSegment {
 	float cooldown = 1;
 	float current_cooldown = 0;
 
+	LineRenderer fire = null;
+	Animator animator = null;
+
 	Enemy target = null;
+
+	protected override void OnPlaced() {
+		fire = gun.gameObject.GetComponent<LineRenderer>();
+		animator = gun.gameObject.GetComponent<Animator>();
+	}
 
 	void FixedUpdate() {
 		current_cooldown -= Time.deltaTime;
@@ -51,8 +59,6 @@ public class GunSegment : ConstructionSegment {
 		gun.transform.rotation = Quaternion.Euler(0, 0, angle);
 		target.Damage(damage);
 
-		LineRenderer fire = gun.gameObject.GetComponent<LineRenderer>();
-		Animator animator = gun.gameObject.GetComponent<Animator>();
 		fire.SetPosition(0, transform.position);
 		fire.SetPosition(1, target.transform.position);
 		animator.SetTrigger("Fire");

@@ -10,6 +10,8 @@ public class GameController : MonoBehaviour {
 	GameObject[] segments = new GameObject[0];
 	[SerializeField]
 	GameObject[] enemy_types = new GameObject[0];
+	[SerializeField]
+	CoreSegment core = null;
 
 	int current_wave = 0;
 	float next_wave_in = 0;
@@ -50,6 +52,10 @@ public class GameController : MonoBehaviour {
 
 	public void RemoveEnemy(Enemy enemy) {
 		enemies.Remove(enemy);
+	}
+
+	public void StopCoreRotation(float time) {
+		core.StopRotating(time);
 	}
 
 	void Start() {
