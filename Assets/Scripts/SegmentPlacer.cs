@@ -49,8 +49,12 @@ public class SegmentPlacer : MonoBehaviour {
 			Place();
 		}
 
-		if (!can_place && Input.GetMouseButtonDown(1)) {
+		if (!can_place && Input.GetMouseButtonDown(0)) {
 			Collider2D collider = Physics2D.OverlapPoint(transform.position, construction);
+			if (collider == null) {
+				return;
+			}
+
 			ConstructionSegment segment = collider.gameObject.GetComponent<ConstructionSegment>();
 			if (segment.deletable) {
 				segment.Delete();
