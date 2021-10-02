@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ConstructionSegment : MonoBehaviour {
 	protected List<Joint2D> connectors = new List<Joint2D>();
+	protected SpriteRenderer sprite_renderer = null;
 
 	protected int max_hp = 100;
 	protected int hp = 100;
@@ -12,6 +13,7 @@ public class ConstructionSegment : MonoBehaviour {
 
 	protected void Start() {
 		OnPlaced();
+		sprite_renderer = GetComponent<SpriteRenderer>();
 	}
 
 	public void Damage(int amount) {
@@ -20,6 +22,7 @@ public class ConstructionSegment : MonoBehaviour {
 		if (hp < 0) {
 			Destroy();
 		}
+		UpdateColor();
 	}
 
 	public void Heal(int amount) {
@@ -28,6 +31,18 @@ public class ConstructionSegment : MonoBehaviour {
 			hp = max_hp;
 		}
 		OnHealed(amount);
+		UpdateColor();
+	}
+
+	private void UpdateColor() {
+		Color color = sprite_renderer.color;
+		float gb_values = (float) hp / max_hp;
+		float r_value = gb_values / 2 + 0.5f;
+
+		color.r = r_value;
+		color.g = gb_values;
+		color.b = gb_values;
+		sprite_renderer.color = color;
 	}
 
 	public void AddConnector(Joint2D joint) {
