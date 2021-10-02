@@ -14,9 +14,9 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
+  - Bridge
+  - Construction
+  - Melter
   - 
   - 
   - 
@@ -40,4 +40,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Bridge
+    uniqueID: 664018755
+    locked: 0
+  - name: Construction
+    uniqueID: 1341883733
     locked: 0
