@@ -114,7 +114,8 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void SetPaused(bool paused) {
-		if (!is_started) {
+		if (!paused && !is_started) {
+			StartGame();
 			return;
 		}
 		is_paused = paused;
