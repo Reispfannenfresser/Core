@@ -394,8 +394,8 @@ MonoBehaviour:
   - {fileID: 2971265268459546405}
   - {fileID: 2971265266718649546}
   rb2d: {fileID: 0}
-  max_hp: 100
-  hp: 100
+  max_hp: 500
+  hp: 500
   deletable: 0
   meltable: 0
   value: 0

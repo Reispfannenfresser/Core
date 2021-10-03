@@ -9,6 +9,10 @@ public class Shot : MonoBehaviour {
 	int damage = 5;
 	bool has_hit = false;
 
+	private void Start() {
+		GameController.instance.AddShot(this);
+	}
+
 	void FixedUpdate() {
 		transform.position += Vector3.down * Time.deltaTime * speed;
 		if (transform.position.y < -20) {
@@ -24,6 +28,7 @@ public class Shot : MonoBehaviour {
 
 		segment.Damage(damage);
 		has_hit = true;
+		GameController.instance.RemoveShot(this);
 		Destroy(gameObject);
 	}
 }

@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour {
 	GameObject start_segment = null;
 	[SerializeField]
 	GameObject[] enemy_types = new GameObject[0];
+	[SerializeField]
+	Image[] ui_images = new Image[0];
 
 	[SerializeField]
 	GameObject crawler = null;
@@ -48,12 +50,18 @@ public class GameController : MonoBehaviour {
 	public bool is_paused = true;
 	public bool is_started = true;
 
+	[SerializeField]
+	private Color ui_color = Color.white;
+	[SerializeField]
+	private Color ui_selected_color = Color.white;
+
 	int highscore = 0;
 
 	public static GameController instance = null;
 
 	public HashSet<Enemy> enemies = new HashSet<Enemy>();
 	public HashSet<ConstructionSegment> segments = new HashSet<ConstructionSegment>();
+	public HashSet<Shot> shots = new HashSet<Shot>();
 
 	void Awake() {
 		instance = this;
@@ -63,6 +71,7 @@ public class GameController : MonoBehaviour {
 		SetPaused(true);
 		is_started = false;
 		instance.SetSegment(start_segment);
+		instance.ResetUIImageColors(0);
 	}
 
 	public void ChangeMusicVolume(float sliderValue) {
@@ -81,11 +90,21 @@ public class GameController : MonoBehaviour {
 		Destroy(core);
 
 		foreach(Enemy enemy in enemies) {
-			enemy.Delete();
+			if (enemy != null) {
+				enemy.Delete();
+			}
 		}
 
 		foreach(ConstructionSegment segment in segments) {
-			segment.Delete();
+			if (segment != null) {
+				segment.Delete();
+			}
+		}
+
+		foreach(Shot shot in shots) {
+			if (shot != null) {
+				Destroy(shot.gameObject);
+			}
 		}
 
 		current_wave = 0;
@@ -115,6 +134,13 @@ public class GameController : MonoBehaviour {
 		if (Input.GetButtonDown("Cancel")) {
 			SetPaused(!is_paused);
 		}
+	}
+
+	public void ResetUIImageColors(int index) {
+		foreach (Image image in ui_images) {
+			image.color = ui_color;
+		}
+		ui_images[index].color = ui_selected_color;
 	}
 
 	public void SetPaused(bool paused) {
@@ -183,6 +209,14 @@ public class GameController : MonoBehaviour {
 
 	public void RemoveSegment(ConstructionSegment segment) {
 		segments.Remove(segment);
+	}
+
+	public void AddShot(Shot shot) {
+		shots.Add(shot);
+	}
+
+	public void RemoveShot(Shot shot) {
+		shots.Remove(shot);
 	}
 
 	public void StopCoreRotation(int time) {
