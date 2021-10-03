@@ -19,7 +19,7 @@ public class CoreSegment : ConstructionSegment {
 		}
 	}
 
-	public void StopRotating(float time) {
+	public void StopRotating(int time) {
 		stopped += time;
 		if (rb2d != null) {
 			rb2d.freezeRotation = true;

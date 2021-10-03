@@ -17,6 +17,7 @@ public class ConstructionSegment : MonoBehaviour {
 
 	protected void Start() {
 		OnPlaced();
+		GameController.instance.AddSegment(this);
 		rb2d = GetComponent<Rigidbody2D>();
 	}
 
@@ -85,5 +86,6 @@ public class ConstructionSegment : MonoBehaviour {
 		foreach(Joint2D connector in connectors) {
 			Destroy(connector);
 		}
+		GameController.instance.RemoveSegment(this);
 	}
 }

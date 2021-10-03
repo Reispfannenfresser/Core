@@ -32,6 +32,10 @@ public class CameraController : MonoBehaviour {
 	}
 
 	void Update() {
+		if (GameController.instance.is_paused) {
+			return;
+		}
+
 		Vector3 new_pos = transform.position;
 
 		if (Input.GetMouseButton(2)) {
