@@ -213,6 +213,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 673578c4cd1136e2787e3d966f645c2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sprite_renderers:
+  - {fileID: 4021297175705850268}
+  - {fileID: 1230251860}
+  rb2d: {fileID: 0}
   max_hp: 100
   hp: 100
   deletable: 1
@@ -292,5 +296,10 @@ GameObject:
 --- !u!4 &4021297175705850271 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8950723079009521217, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
+  m_PrefabInstance: {fileID: 5474652348573442014}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &4021297175705850268 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8950723079009521218, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
   m_PrefabInstance: {fileID: 5474652348573442014}
   m_PrefabAsset: {fileID: 0}

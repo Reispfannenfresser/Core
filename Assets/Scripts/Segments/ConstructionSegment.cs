@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class ConstructionSegment : MonoBehaviour {
 	protected List<Joint2D> connectors = new List<Joint2D>();
-	protected SpriteRenderer sprite_renderer = null;
+
+	[SerializeField]
+	protected SpriteRenderer[] sprite_renderers = new SpriteRenderer[0];
 	public Rigidbody2D rb2d = null;
 
 	public int max_hp = 100;
@@ -14,7 +16,6 @@ public class ConstructionSegment : MonoBehaviour {
 
 	protected void Start() {
 		OnPlaced();
-		sprite_renderer = GetComponent<SpriteRenderer>();
 		rb2d = GetComponent<Rigidbody2D>();
 	}
 
@@ -37,14 +38,11 @@ public class ConstructionSegment : MonoBehaviour {
 	}
 
 	private void UpdateColor() {
-		Color color = sprite_renderer.color;
-		float gb_values = (float) hp / max_hp;
-		float r_value = gb_values / 2 + 0.5f;
-
-		color.r = r_value;
-		color.g = gb_values;
-		color.b = gb_values;
-		sprite_renderer.color = color;
+		foreach (SpriteRenderer renderer in sprite_renderers) {
+			float gb_values = (float) hp / max_hp;
+			float r_value = gb_values / 2 + 0.5f;
+			renderer.color = new Color(r_value, gb_values, gb_values);
+		}
 	}
 
 	public void AddConnector(Joint2D joint) {

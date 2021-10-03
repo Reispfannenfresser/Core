@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CoreSegment : ConstructionSegment {
-	float stopped = 0;
-
-	[SerializeField]
-	SpriteRenderer[] to_freeze = new SpriteRenderer[0];
+	float stopped = 0f;
 
 	private void FixedUpdate() {
 		if (stopped < 0) {
 			stopped = 0;
 			rb2d.freezeRotation = false;
-			foreach (SpriteRenderer renderer in to_freeze) {
-				renderer.color = Color.white;
+			foreach (SpriteRenderer renderer in sprite_renderers) {
+				Color color = renderer.color;
+				color.a = 1f;
+				renderer.color = color;
 			}
 		} else {
 			stopped -= Time.deltaTime;
@@ -23,8 +22,10 @@ public class CoreSegment : ConstructionSegment {
 	public void StopRotating(float time) {
 		stopped += time;
 		rb2d.freezeRotation = true;
-		foreach (SpriteRenderer renderer in to_freeze) {
-			renderer.color = new Color(0.2f, 0.5f, 0.75f);
+		foreach (SpriteRenderer renderer in sprite_renderers) {
+			Color color = renderer.color;
+			color.a = 0.5f;
+			renderer.color = color;
 		}
 	}
 }

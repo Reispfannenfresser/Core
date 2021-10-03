@@ -94,6 +94,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4d146254f1c74c299383a0434477b54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sprite_renderers:
+  - {fileID: 7344136509832373859}
+  - {fileID: 2037619039}
+  rb2d: {fileID: 0}
   max_hp: 100
   hp: 100
   deletable: 1
@@ -107,7 +111,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8950723079009521216, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
       propertyPath: m_Name
-      value: HeavySegment Variant
+      value: HeavySegment
       objectReference: {fileID: 0}
     - target: {fileID: 8950723079009521217, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
       propertyPath: m_RootOrder
@@ -167,5 +171,10 @@ GameObject:
 --- !u!4 &7344136509832373856 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8950723079009521217, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
+  m_PrefabInstance: {fileID: 1863582088012884001}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &7344136509832373859 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8950723079009521218, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
   m_PrefabInstance: {fileID: 1863582088012884001}
   m_PrefabAsset: {fileID: 0}
