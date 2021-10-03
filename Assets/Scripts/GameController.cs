@@ -139,7 +139,7 @@ public class GameController : MonoBehaviour {
 			NextWave();
 		}
 
-		next_round_text.text = "" + Mathf.Floor(next_wave_in);
+		next_round_text.text = "" + Mathf.Ceil(next_wave_in);
 		round_count_text.text = "" + Mathf.Max(current_wave - 1, 0);
 		highscore_text.text = "" + Mathf.Max(highscore - 1, 0);
 		zollar_text.text = "" + zollars;
@@ -147,14 +147,15 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void NextWave() {
-		int spawn_amount = current_wave;
+		current_wave += 1;
+
+		int spawn_amount = current_wave * 2;
 		while (spawn_amount > 0) {
 			int index = UnityEngine.Random.Range(0, Math.Min(enemy_types.Length, spawn_amount));
 			SpawnEnemy(enemy_types[index]);
 			spawn_amount -= index + 1;
 		}
 
-		current_wave += 1;
 
 		if (current_wave > highscore) {
 			highscore = current_wave;
