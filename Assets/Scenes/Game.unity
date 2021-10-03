@@ -1324,7 +1324,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 100, y: 700}
+  m_Size: {x: 200, y: 200}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1343,7 +1343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  tp_distance: 4
+  tp_distance: 8
 --- !u!1 &310906895
 GameObject:
   m_ObjectHideFlags: 0
@@ -2136,11 +2136,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   current_zoom_level: 1
   min_zoom_level: 0.5
-  max_zoom_level: 2
+  max_zoom_level: 5
   zoom_smooth_time: 0.3
   zoom_multiplier: 0.1
-  min_y: -5
-  max_y: 15
+  min_y: 0
+  max_y: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -3912,63 +3912,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1109109150}
   m_CullTransparentMesh: 1
---- !u!1001 &1117158482
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1332924699840116545, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
-      propertyPath: m_RootOrder
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1332924699840116545, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1332924699840116545, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1332924699840116545, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1332924699840116545, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1332924699840116545, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1332924699840116545, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1332924699840116545, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1332924699840116545, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1332924699840116545, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1332924699840116545, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1332924699840116546, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
-      propertyPath: m_Name
-      value: Ufo
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
 --- !u!1 &1164024182
 GameObject:
   m_ObjectHideFlags: 0
@@ -6313,7 +6256,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3900384838436544915, guid: 9bec3d3a2c2084594bffbe2f6790a7d8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3900384838436544915, guid: 9bec3d3a2c2084594bffbe2f6790a7d8, type: 3}
       propertyPath: m_LocalPosition.z

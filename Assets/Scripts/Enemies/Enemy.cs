@@ -33,7 +33,9 @@ public class Enemy : MonoBehaviour {
 	}
 
 	private void UpdateHPBar() {
-
+		float gb_values = (float) hp / max_hp;
+		float r_value = gb_values / 2 + 0.5f;
+		sprite_renderer.color = new Color(r_value, gb_values, gb_values);
 	}
 
 	public void Delete() {

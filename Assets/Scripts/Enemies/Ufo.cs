@@ -27,6 +27,7 @@ public class Ufo : Enemy {
 		back = Random.value > 0.5f;
 		speed = 0.2f + (Random.value - 0.5f) * 0.2f;
 		current_cooldown = Random.value * cooldown;
+		transform.position = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 40;
 	}
 
 	private void FixedUpdate() {
