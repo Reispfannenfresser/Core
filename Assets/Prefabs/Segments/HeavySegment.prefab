@@ -102,6 +102,7 @@ MonoBehaviour:
   hp: 100
   deletable: 1
   meltable: 1
+  value: 15
 --- !u!1001 &1863582088012884001
 PrefabInstance:
   m_ObjectHideFlags: 0

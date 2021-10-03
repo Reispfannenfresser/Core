@@ -398,3 +398,4 @@ MonoBehaviour:
   hp: 100
   deletable: 0
   meltable: 0
+  value: 0

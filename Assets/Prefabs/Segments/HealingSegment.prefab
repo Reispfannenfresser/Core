@@ -219,12 +219,14 @@ MonoBehaviour:
   hp: 100
   deletable: 1
   meltable: 1
-  amount: 20
+  value: 20
+  amount: 10
   radius: 2
-  cooldown: 1
+  cooldown: 0.1
   construction:
     serializedVersion: 2
     m_Bits: 1024
+  cost: 1
 --- !u!1001 &3601381579023692584
 PrefabInstance:
   m_ObjectHideFlags: 0

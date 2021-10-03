@@ -12,6 +12,8 @@ public class SegmentPlacer : MonoBehaviour {
 	Animator animator;
 	SpriteRenderer sprite_renderer;
 
+	int cost = 0;
+
 	void Awake() {
 		animator = GetComponent<Animator>();
 		sprite_renderer = GetComponent<SpriteRenderer>();
@@ -39,6 +41,7 @@ public class SegmentPlacer : MonoBehaviour {
 			return;
 		}
 
+		cost = segment.value;
 		SpriteRenderer segment_renderer = segment_object.GetComponent<SpriteRenderer>();
 		sprite_renderer.sprite = segment_renderer.sprite;
 		to_place = segment_object;
@@ -63,9 +66,11 @@ public class SegmentPlacer : MonoBehaviour {
 	}
 
 	void Place() {
-		if (to_place == null) {
+		if (to_place == null || GameController.instance.GetZollars() < cost) {
 			return;
 		}
+
+		GameController.instance.RemoveZollars(cost);
 
 		Collider2D[] segments = Physics2D.OverlapCircleAll(transform.position, 0.75f, construction);
 

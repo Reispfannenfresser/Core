@@ -119,6 +119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   max_hp: 10
   deletable: 1
+  prize: 10
 --- !u!50 &353655395971821487
 Rigidbody2D:
   serializedVersion: 4

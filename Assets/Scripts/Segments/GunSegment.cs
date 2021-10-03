@@ -13,6 +13,9 @@ public class GunSegment : ConstructionSegment {
 	float cooldown = 1;
 	float current_cooldown = 0;
 
+	[SerializeField]
+	int cost = 1;
+
 	LineRenderer fire = null;
 	Animator animator = null;
 
@@ -40,9 +43,11 @@ public class GunSegment : ConstructionSegment {
 	}
 
 	private void Fire() {
-		if (target == null) {
+		if (target == null || GameController.instance.GetZollars() < cost) {
 			return;
 		}
+
+		GameController.instance.RemoveZollars(cost);
 
 		Vector3 direction = target.transform.position - transform.position;
 		RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, 30, construction);

@@ -21,8 +21,13 @@ public class CoreSegment : ConstructionSegment {
 
 	public void StopRotating(float time) {
 		stopped += time;
-		rb2d.freezeRotation = true;
+		if (rb2d != null) {
+			rb2d.freezeRotation = true;
+		}
 		foreach (SpriteRenderer renderer in sprite_renderers) {
+			if (renderer == null) {
+				continue;
+			}
 			Color color = renderer.color;
 			color.a = 0.5f;
 			renderer.color = color;

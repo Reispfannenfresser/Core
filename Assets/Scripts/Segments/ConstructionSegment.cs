@@ -13,10 +13,17 @@ public class ConstructionSegment : MonoBehaviour {
 	public int hp = 100;
 	public bool deletable = true;
 	public bool meltable = true;
+	public int value = 10;
 
 	protected void Start() {
 		OnPlaced();
 		rb2d = GetComponent<Rigidbody2D>();
+	}
+
+	private void LateUpdate() {
+		if(transform.position.y < -30) {
+			Destroy();
+		}
 	}
 
 	public void Damage(int amount) {

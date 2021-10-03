@@ -13,6 +13,9 @@ public class HealingSegment : ConstructionSegment {
 	[SerializeField]
 	LayerMask construction = 0;
 
+	[SerializeField]
+	int cost = 5;
+
 	LineRenderer rays = null;
 	Animator animator = null;
 
@@ -25,11 +28,17 @@ public class HealingSegment : ConstructionSegment {
 		current_cooldown -= Time.deltaTime;
 		if (current_cooldown < 0) {
 			current_cooldown += cooldown;
+
+			if (GameController.instance.GetZollars() < cost) {
+				return;
+			}
+
 			Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius, construction);
 
 			foreach (Collider2D collider in colliders) {
 				ConstructionSegment segment = collider.gameObject.GetComponent<ConstructionSegment>();
 				if (segment != null && segment != this && segment.hp < segment.max_hp) {
+					GameController.instance.RemoveZollars(cost);
 					rays.SetPosition(0, transform.position);
 					rays.SetPosition(1, collider.transform.position);
 					segment.Heal(amount);

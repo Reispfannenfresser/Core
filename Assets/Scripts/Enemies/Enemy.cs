@@ -9,6 +9,8 @@ public class Enemy : MonoBehaviour {
 	protected int max_hp = 100;
 	protected int hp;
 	public bool deletable = true;
+	public int prize = 5;
+	private bool is_dead = false;
 
 	protected void Start() {
 		hp = max_hp;
@@ -18,6 +20,10 @@ public class Enemy : MonoBehaviour {
 	}
 
 	public void Damage(int amount) {
+		if (is_dead) {
+			return;
+		}
+
 		hp -= amount;
 		OnDamaged(amount);
 		if (hp < 0) {
@@ -31,11 +37,14 @@ public class Enemy : MonoBehaviour {
 	}
 
 	public void Delete() {
+		is_dead = true;
 		OnDeleted();
 		Destroy(gameObject);
 	}
 
 	public void Kill() {
+		is_dead = true;
+		GameController.instance.AddZollars(prize);
 		OnKilled();
 		Destroy(gameObject);
 	}

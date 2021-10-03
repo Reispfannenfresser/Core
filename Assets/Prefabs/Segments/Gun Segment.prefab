@@ -221,12 +221,14 @@ MonoBehaviour:
   hp: 100
   deletable: 1
   meltable: 1
+  value: 10
   gun: {fileID: 1230251858}
   construction:
     serializedVersion: 2
     m_Bits: 1024
   damage: 1
   cooldown: 0.25
+  cost: 0
 --- !u!1001 &5474652348573442014
 PrefabInstance:
   m_ObjectHideFlags: 0

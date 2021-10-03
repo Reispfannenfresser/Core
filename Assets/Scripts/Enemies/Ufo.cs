@@ -15,11 +15,13 @@ public class Ufo : Enemy {
 	float current_cooldown = 0f;
 
 	private float x_offset = 0f;
+	private float total_x_offset = 0f;
 
 	protected override void OnSpawned() {
 		start_pos = transform.position;
-		min_height = 8 + (Random.value - 0.5f) * 5;
+		min_height = 12 + (Random.value - 0.5f) * 20;
 		x_offset = (Random.value - 0.5f) * 2 * Mathf.PI;
+		total_x_offset = (Random.value - 0.5f) * 20;
 		back = Random.value > 0.5f;
 		current_cooldown = Random.value * cooldown;
 	}
@@ -49,6 +51,6 @@ public class Ufo : Enemy {
 			back = false;
 		}
 
-		transform.position = start_pos + new Vector3(x_offset, (back ? 1 : -1) * Mathf.Sin(x_offset), 0);
+		transform.position = start_pos + new Vector3(total_x_offset + x_offset, (back ? 1 : -1) * Mathf.Sin(x_offset) * 4, 0);
 	}
 }

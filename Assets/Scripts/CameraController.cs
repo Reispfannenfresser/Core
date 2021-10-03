@@ -14,6 +14,11 @@ public class CameraController : MonoBehaviour {
 	[SerializeField]
 	float zoom_multiplier = 0.1f;
 
+	[SerializeField]
+	float min_y = -5;
+	[SerializeField]
+	float max_y = 15f;
+
 	private Camera own_camera = null;
 
 	float original_orthographic_size;
@@ -41,12 +46,12 @@ public class CameraController : MonoBehaviour {
 		current_zoom_level = Mathf.SmoothDamp(current_zoom_level, wanted_zoom_level, ref zoom_velocity, zoom_smooth_time);
 		own_camera.orthographicSize = original_orthographic_size / own_camera.aspect * current_zoom_level;
 
-		if (new_pos.y > 15) {
-			new_pos.y = 15;
+		if (new_pos.y > max_y) {
+			new_pos.y = max_y;
 		}
 
-		if (new_pos.y < -5) {
-			new_pos.y = -5;
+		if (new_pos.y < min_y) {
+			new_pos.y = min_y;
 		}
 
 		transform.position = new_pos;

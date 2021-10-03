@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 public class GameController : MonoBehaviour {
@@ -13,8 +14,19 @@ public class GameController : MonoBehaviour {
 	[SerializeField]
 	CoreSegment core = null;
 
+	[SerializeField]
+	Text zollar_text = null;
+	[SerializeField]
+	Text kills_text = null;
+	[SerializeField]
+	Text next_round_text = null;
+	[SerializeField]
+	Text round_count_text = null;
+
 	int current_wave = 0;
 	float next_wave_in = 0;
+	int zollars = 100;
+	int kills = 0;
 
 	public static GameController instance = null;
 
@@ -28,13 +40,17 @@ public class GameController : MonoBehaviour {
 		next_wave_in -= Time.deltaTime;
 
 		if (current_wave > 5 && enemies.Count == 0 && next_wave_in > 3) {
-			Debug.Log("Next wave shortened");
 			next_wave_in = 3;
 		}
 
 		if (next_wave_in < 0) {
 			NextWave();
 		}
+
+		next_round_text.text = "" + Mathf.Floor(next_wave_in);
+		round_count_text.text = "" + current_wave;
+		zollar_text.text = "" + zollars;
+		kills_text.text = "" + kills;
 	}
 
 	public void NextWave() {
@@ -45,7 +61,7 @@ public class GameController : MonoBehaviour {
 			spawn_amount -= index + 1;
 		}
 		current_wave += 1;
-		next_wave_in = 20;
+		next_wave_in = current_wave + 5;
 	}
 
 	private void SpawnEnemy(GameObject enemy) {
@@ -58,6 +74,7 @@ public class GameController : MonoBehaviour {
 
 	public void RemoveEnemy(Enemy enemy) {
 		enemies.Remove(enemy);
+		kills++;
 	}
 
 	public void StopCoreRotation(float time) {
@@ -70,5 +87,17 @@ public class GameController : MonoBehaviour {
 
 	public void SetSegment(GameObject to_place) {
 		segment_placer.SetSegment(to_place);
+	}
+
+	public int GetZollars() {
+		return zollars;
+	}
+
+	public void AddZollars(int amount) {
+		zollars += amount;
+	}
+
+	public void RemoveZollars(int amount) {
+		zollars -= amount;
 	}
 }
