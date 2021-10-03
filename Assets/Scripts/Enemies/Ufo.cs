@@ -17,16 +17,23 @@ public class Ufo : Enemy {
 	private float x_offset = 0f;
 	private float total_x_offset = 0f;
 
+	float angle = 0f;
+	float distance = 0f;
+	float speed = 1f;
+
 	protected override void OnSpawned() {
-		start_pos = transform.position;
-		min_height = 12 + (Random.value - 0.5f) * 20;
-		x_offset = (Random.value - 0.5f) * 2 * Mathf.PI;
-		total_x_offset = (Random.value - 0.5f) * 20;
+		angle = Random.value * 2 * Mathf.PI;
+		distance = 15 + (Random.value - 0.5f) * 10;
 		back = Random.value > 0.5f;
+		speed = 0.2f + (Random.value - 0.5f) * 0.2f;
 		current_cooldown = Random.value * cooldown;
 	}
 
 	private void FixedUpdate() {
+		angle += (back ? -1 : 1) * Time.deltaTime * speed;
+
+		transform.position += (new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * distance - transform.position) * Time.deltaTime;
+
 		current_cooldown -= Time.deltaTime;
 		if (current_cooldown <= 0) {
 			current_cooldown += cooldown;
@@ -36,21 +43,5 @@ public class Ufo : Enemy {
 
 	private void Shoot() {
 		Instantiate(shot, transform.position, transform.rotation);
-	}
-
-	void Update() {
-		if (start_pos.y > min_height) {
-			start_pos = start_pos + Vector3.down * Time.deltaTime * 5;
-		}
-
-		x_offset += (back ? -1 : 1) * Time.deltaTime;
-		if (x_offset > Mathf.PI) {
-			back = true;
-		}
-		if (x_offset < -Mathf.PI) {
-			back = false;
-		}
-
-		transform.position = start_pos + new Vector3(total_x_offset + x_offset, (back ? 1 : -1) * Mathf.Sin(x_offset) * 4, 0);
 	}
 }

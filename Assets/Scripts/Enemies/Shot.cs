@@ -8,14 +8,19 @@ public class Shot : MonoBehaviour {
 	[SerializeField]
 	int damage = 5;
 	bool has_hit = false;
+	Vector3 direction = Vector3.zero;
 
 	private void Start() {
 		GameController.instance.AddShot(this);
+
+		direction -= transform.position;
+		direction.Normalize();
+		transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
 	}
 
 	void FixedUpdate() {
-		transform.position += Vector3.down * Time.deltaTime * speed;
-		if (transform.position.y < -20) {
+		transform.position += direction * Time.deltaTime * speed;
+		if (transform.position.y < -40) {
 			Destroy(gameObject);
 		}
 	}
