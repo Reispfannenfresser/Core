@@ -44,7 +44,7 @@ public class GameController : MonoBehaviour {
 	int zollars = 150;
 	int kills = 0;
 	public bool is_paused = true;
-	public bool is_started = false;
+	public bool is_started = true;
 
 	public static GameController instance = null;
 
@@ -57,6 +57,7 @@ public class GameController : MonoBehaviour {
 
 	void Start() {
 		SetPaused(true);
+		is_started = false;
 		instance.SetSegment(start_segment);
 	}
 
