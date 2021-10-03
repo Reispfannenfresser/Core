@@ -30,6 +30,8 @@ public class GameController : MonoBehaviour {
 	[SerializeField]
 	Text restart_text = null;
 	[SerializeField]
+	Text highscore_text = null;
+	[SerializeField]
 	GameObject resume_button = null;
 
 	public AudioMixer mixer;
@@ -45,6 +47,8 @@ public class GameController : MonoBehaviour {
 	int kills = 0;
 	public bool is_paused = true;
 	public bool is_started = true;
+
+	int highscore = 0;
 
 	public static GameController instance = null;
 
@@ -137,6 +141,7 @@ public class GameController : MonoBehaviour {
 
 		next_round_text.text = "" + Mathf.Floor(next_wave_in);
 		round_count_text.text = "" + Mathf.Max(current_wave - 1, 0);
+		highscore_text.text = "" + Mathf.Max(highscore - 1, 0);
 		zollar_text.text = "" + zollars;
 		kills_text.text = "" + kills;
 	}
@@ -148,7 +153,13 @@ public class GameController : MonoBehaviour {
 			SpawnEnemy(enemy_types[index]);
 			spawn_amount -= index + 1;
 		}
+
 		current_wave += 1;
+
+		if (current_wave > highscore) {
+			highscore = current_wave;
+		}
+
 		next_wave_in = current_wave + 5;
 	}
 

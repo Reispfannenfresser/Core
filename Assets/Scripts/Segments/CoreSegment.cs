@@ -33,4 +33,8 @@ public class CoreSegment : ConstructionSegment {
 			renderer.color = color;
 		}
 	}
+
+	protected override void OnDestroyed() {
+		GameController.instance.LoseGame();
+	}
 }
