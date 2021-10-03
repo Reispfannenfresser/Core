@@ -7,13 +7,33 @@ public class Ufo : Enemy {
 	private Vector3 start_pos;
 	private float min_height;
 
-	private float x_offset = 0;
+	[SerializeField]
+	GameObject shot = null;
+
+	[SerializeField]
+	float cooldown = 1f;
+	float current_cooldown = 0f;
+
+	private float x_offset = 0f;
 
 	protected override void OnSpawned() {
 		start_pos = transform.position;
 		min_height = 8 + (Random.value - 0.5f) * 5;
 		x_offset = (Random.value - 0.5f) * 2 * Mathf.PI;
 		back = Random.value > 0.5f;
+		current_cooldown = Random.value * cooldown;
+	}
+
+	private void FixedUpdate() {
+		current_cooldown -= Time.deltaTime;
+		if (current_cooldown <= 0) {
+			current_cooldown += cooldown;
+			Shoot();
+		}
+	}
+
+	private void Shoot() {
+		Instantiate(shot, transform.position, transform.rotation);
 	}
 
 	void Update() {

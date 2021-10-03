@@ -26,6 +26,12 @@ public class GameController : MonoBehaviour {
 
 	public void FixedUpdate() {
 		next_wave_in -= Time.deltaTime;
+
+		if (current_wave > 5 && enemies.Count == 0 && next_wave_in > 3) {
+			Debug.Log("Next wave shortened");
+			next_wave_in = 3;
+		}
+
 		if (next_wave_in < 0) {
 			NextWave();
 		}
@@ -39,7 +45,7 @@ public class GameController : MonoBehaviour {
 			spawn_amount -= index + 1;
 		}
 		current_wave += 1;
-		next_wave_in = current_wave;
+		next_wave_in = 20;
 	}
 
 	private void SpawnEnemy(GameObject enemy) {
