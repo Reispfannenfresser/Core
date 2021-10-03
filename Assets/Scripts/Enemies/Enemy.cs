@@ -41,19 +41,15 @@ public class Enemy : MonoBehaviour {
 	}
 
 	protected virtual void OnSpawned() {
-		Debug.Log("Hi");
 	}
 
 	protected virtual void OnDamaged(int amount) {
-		Debug.Log("Ouch");
 	}
 
 	protected virtual void OnDeleted() {
-		Debug.Log("Bye");
 	}
 
 	protected virtual void OnKilled() {
-		Debug.Log("ARGH!!!");
 	}
 
 	protected virtual void OnDestroy() {

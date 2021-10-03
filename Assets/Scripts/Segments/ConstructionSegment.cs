@@ -60,23 +60,18 @@ public class ConstructionSegment : MonoBehaviour {
 	}
 
 	protected virtual void OnPlaced() {
-		Debug.Log("Hi");
 	}
 
 	protected virtual void OnDamaged(int amount) {
-		Debug.Log("Ouch");
 	}
 
 	protected virtual void OnHealed(int amount) {
-		Debug.Log("ahh");
 	}
 
 	protected virtual void OnDeleted() {
-		Debug.Log("Bye");
 	}
 
 	protected virtual void OnDestroyed() {
-		Debug.Log("ARGH!!!");
 	}
 
 	protected void OnDestroy() {

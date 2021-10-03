@@ -1846,7 +1846,7 @@ HingeJoint2D:
   m_GameObject: {fileID: 1759052712}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 0
+  m_EnableCollision: 1
   m_ConnectedRigidBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -1970,10 +1970,6 @@ MonoBehaviour:
   hp: 100
   deletable: 0
   meltable: 0
-  to_freeze:
-  - {fileID: 1593271586}
-  - {fileID: 1759052717}
-  - {fileID: 119343170}
 --- !u!1 &1795580982
 GameObject:
   m_ObjectHideFlags: 0

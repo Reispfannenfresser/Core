@@ -11,10 +11,12 @@ public class Shot : MonoBehaviour {
 
 	void FixedUpdate() {
 		transform.position += Vector3.down * Time.deltaTime * speed;
+		if (transform.position.y < -20) {
+			Destroy(gameObject);
+		}
 	}
 
 	private void OnTriggerEnter2D(Collider2D other) {
-		Debug.Log("HiIII");
 		ConstructionSegment segment = other.gameObject.GetComponent<ConstructionSegment>();
 		if (segment == null || has_hit) {
 			return;

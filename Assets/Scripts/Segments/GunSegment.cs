@@ -46,7 +46,6 @@ public class GunSegment : ConstructionSegment {
 
 		Vector3 direction = target.transform.position - transform.position;
 		RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, 30, construction);
-		Debug.Log(hits);
 		if (hits.Length > 1) {
 			target = null;
 			return;
