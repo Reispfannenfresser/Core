@@ -29,10 +29,16 @@ public class SegmentPlacer : MonoBehaviour {
 			transform.position = new_pos;
 		}
 
-		can_place = Physics2D.OverlapCircle(transform.position, 0.45f, construction) == null && Physics2D.OverlapCircle(transform.position, 0.75f, construction) != null;
-		if (animator != null) {
-			animator.SetBool("can_place", can_place);
+		if (GameController.instance.GetZollars() < cost) {
+			sprite_renderer.color = new Color(0.75f, 0.5f, 0.5f);
+		} else {
+			sprite_renderer.color = Color.white;
 		}
+
+		can_place = Physics2D.OverlapCircle(transform.position, 0.45f, construction) == null && Physics2D.OverlapCircle(transform.position, 0.75f, construction) != null;
+		Color color = sprite_renderer.color;
+		color.a = can_place ? 0.75f : 0.25f;
+		sprite_renderer.color = color;
 	}
 
 	public void SetSegment(GameObject segment_object) {
@@ -42,8 +48,6 @@ public class SegmentPlacer : MonoBehaviour {
 		}
 
 		cost = segment.value;
-		SpriteRenderer segment_renderer = segment_object.GetComponent<SpriteRenderer>();
-		sprite_renderer.sprite = segment_renderer.sprite;
 		to_place = segment_object;
 	}
 

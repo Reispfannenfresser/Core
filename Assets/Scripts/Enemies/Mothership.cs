@@ -21,6 +21,8 @@ public class Mothership : Enemy {
 	ConstructionSegment target = null;
 	private bool is_attacking = false;
 
+	private int total_damage = 0;
+
 	private float angle = 0f;
 	private float distance = 0f;
 	protected override void OnSpawned() {
@@ -70,8 +72,9 @@ public class Mothership : Enemy {
 			laser.SetPosition(1, target.transform.position);
 		}
 
-		if (target != null && is_attacking) {
-			target.Damage(20);
+		if (target != null && is_attacking && total_damage < 150) {
+			target.Damage(10);
+			total_damage += 10;
 		}
 	}
 
@@ -87,6 +90,7 @@ public class Mothership : Enemy {
 				if (index <= 0 && segment != null) {
 					target = segment;
 					animator.SetTrigger("Fire");
+					total_damage = 0;
 					is_attacking = true;
 					return;
 				}
