@@ -14,9 +14,6 @@ public class Ufo : Enemy {
 	float cooldown = 1f;
 	float current_cooldown = 0f;
 
-	private float x_offset = 0f;
-	private float total_x_offset = 0f;
-
 	float angle = 0f;
 	float distance = 0f;
 	float speed = 1f;

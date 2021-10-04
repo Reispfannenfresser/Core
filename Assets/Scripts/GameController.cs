@@ -13,13 +13,15 @@ public class GameController : MonoBehaviour {
 	[SerializeField]
 	GameObject[] enemy_types = new GameObject[0];
 	[SerializeField]
+	GameObject mothership = null;
+	[SerializeField]
 	Image[] ui_images = new Image[0];
 
 	[SerializeField]
 	GameObject crawler = null;
 
 	GameObject core = null;
-	CoreSegment core_segment = null;
+	public CoreSegment core_segment = null;
 
 	[SerializeField]
 	Text zollar_text = null;
@@ -43,12 +45,16 @@ public class GameController : MonoBehaviour {
 	[SerializeField]
 	GameObject menu = null;
 
+	int bosses_at = 10;
 	int current_wave = 0;
 	float next_wave_in = 20;
 	int zollars = 150;
 	int kills = 0;
 	public bool is_paused = true;
 	public bool is_started = true;
+	public bool is_practice = false;
+
+	public int boss_count = 0;
 
 	[SerializeField]
 	private Color ui_color = Color.white;
@@ -111,13 +117,22 @@ public class GameController : MonoBehaviour {
 		next_wave_in = 20;
 		zollars = 150;
 		kills = 0;
+		boss_count = 0;
 
 		is_started = true;
 		SetPaused(false);
+		is_practice = false;
 		restart_text.text = "Restart";
 		resume_button.SetActive(true);
 		core = Instantiate(crawler, transform.position, transform.rotation);
 		core_segment = core.GetComponentInChildren<CoreSegment>();
+	}
+
+	public void StartPractice() {
+		StartGame();
+		restart_text.text = "Start";
+		is_practice = true;
+		next_wave_in = 5;
 	}
 
 	public void LoseGame() {
@@ -156,12 +171,19 @@ public class GameController : MonoBehaviour {
 
 	public void FixedUpdate() {
 		next_wave_in -= Time.deltaTime;
-
-		if (current_wave > 5 && enemies.Count == 0 && next_wave_in > 3) {
-			next_wave_in = 3;
+		if (next_wave_in < 0) {
+			next_wave_in = 0;
 		}
 
-		if (next_wave_in < 0) {
+		if (boss_count > 0 && next_wave_in < 5) {
+			next_wave_in = 5;
+		}
+
+		if (current_wave > 5 && enemies.Count == 0 && next_wave_in > 5) {
+			next_wave_in = 5;
+		}
+
+		if (next_wave_in <= 0) {
 			NextWave();
 		}
 
@@ -173,6 +195,12 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void NextWave() {
+		if (is_practice) {
+			AddZollars(50);
+			next_wave_in = 5;
+			return;
+		}
+
 		current_wave += 1;
 
 		int spawn_amount = current_wave * 2;
@@ -182,6 +210,12 @@ public class GameController : MonoBehaviour {
 			spawn_amount -= index + 1;
 		}
 
+		if ((current_wave - 1) % bosses_at == 0) {
+			int num_bosses = (current_wave - 1) / bosses_at;
+			for (int i = 0; i < num_bosses; i++) {
+				SpawnEnemy(mothership);
+			}
+		}
 
 		if (current_wave > highscore) {
 			highscore = current_wave;
@@ -241,5 +275,13 @@ public class GameController : MonoBehaviour {
 
 	public void RemoveZollars(int amount) {
 		zollars -= amount;
+	}
+
+	public void AddBoss() {
+		boss_count += 1;
+	}
+
+	public void RemoveBoss() {
+		boss_count -= 1;
 	}
 }

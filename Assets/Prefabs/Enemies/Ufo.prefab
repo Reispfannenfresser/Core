@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f757df3a518c63c52b033b72cddd0b83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max_hp: 20
+  max_hp: 15
   deletable: 1
   prize: 10
   shot: {fileID: 1562789161147081517, guid: e54aa6710da9533f8b8ab69de422d275, type: 3}
