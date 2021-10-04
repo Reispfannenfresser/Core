@@ -40,6 +40,9 @@ public class GameController : MonoBehaviour {
 
 	public AudioMixer mixer;
 
+	private AudioSource test_sound = null;
+	bool volume_changed = false;
+
 	[SerializeField]
 	GameObject hud = null;
 	[SerializeField]
@@ -78,6 +81,7 @@ public class GameController : MonoBehaviour {
 		is_started = false;
 		instance.SetSegment(start_segment);
 		instance.ResetUIImageColors(0);
+		test_sound = GetComponent<AudioSource>();
 	}
 
 	public void ChangeMusicVolume(float sliderValue) {
@@ -86,6 +90,7 @@ public class GameController : MonoBehaviour {
 
 	public void ChangeSfxVolume(float sliderValue) {
 		mixer.SetFloat("Sfx", Mathf.Log10(sliderValue) * 20);
+		volume_changed = true;
 	}
 
 	public void ResumeGame() {
@@ -148,6 +153,10 @@ public class GameController : MonoBehaviour {
 	private void Update() {
 		if (Input.GetButtonDown("Cancel")) {
 			SetPaused(!is_paused);
+		}
+		if(volume_changed && Input.GetMouseButtonUp(0)) {
+			volume_changed = false;
+			test_sound.Play();
 		}
 	}
 

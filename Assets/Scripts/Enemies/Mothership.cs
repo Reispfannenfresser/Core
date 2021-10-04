@@ -17,6 +17,7 @@ public class Mothership : Enemy {
 
 	LineRenderer laser = null;
 	Animator animator = null;
+	AudioSource laser_audio = null;
 
 	ConstructionSegment target = null;
 	private bool is_attacking = false;
@@ -36,6 +37,7 @@ public class Mothership : Enemy {
 		transform.position = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 40;
 		laser = GetComponent<LineRenderer>();
 		animator = GetComponent<Animator>();
+		laser_audio = GetComponent<AudioSource>();
 
 		GameController.instance.AddBoss();
 	}
@@ -90,6 +92,7 @@ public class Mothership : Enemy {
 				if (index <= 0 && segment != null) {
 					target = segment;
 					animator.SetTrigger("Fire");
+					laser_audio.Play();
 					total_damage = 0;
 					is_attacking = true;
 					return;

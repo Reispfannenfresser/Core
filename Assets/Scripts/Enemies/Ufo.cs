@@ -18,6 +18,8 @@ public class Ufo : Enemy {
 	float distance = 0f;
 	float speed = 1f;
 
+	AudioSource shot_audio = null;
+
 	protected override void OnSpawned() {
 		angle = Random.value * 2 * Mathf.PI;
 		distance = 15 + (Random.value - 0.5f) * 10;
@@ -25,6 +27,7 @@ public class Ufo : Enemy {
 		speed = 0.2f + (Random.value - 0.5f) * 0.2f;
 		current_cooldown = Random.value * cooldown;
 		transform.position = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 40;
+		shot_audio = GetComponent<AudioSource>();
 	}
 
 	private void FixedUpdate() {
@@ -41,5 +44,6 @@ public class Ufo : Enemy {
 
 	private void Shoot() {
 		Instantiate(shot, transform.position, transform.rotation);
+		shot_audio.Play();
 	}
 }

@@ -20,10 +20,15 @@ public class GunSegment : ConstructionSegment {
 	Animator animator = null;
 
 	Enemy target = null;
+	AudioSource shot_audio = null;
+	bool is_playing = false;
+
+	static int sound_amount = 0;
 
 	protected override void OnPlaced() {
 		fire = gun.gameObject.GetComponent<LineRenderer>();
 		animator = gun.gameObject.GetComponent<Animator>();
+		shot_audio = gun.gameObject.GetComponent<AudioSource>();
 	}
 
 	void FixedUpdate() {
@@ -72,6 +77,15 @@ public class GunSegment : ConstructionSegment {
 		fire.SetPosition(0, transform.position + gun.transform.right * 0.5f);
 		fire.SetPosition(1, target.transform.position);
 		animator.SetTrigger("Fire");
+
+		if (sound_amount < 3 && !shot_audio.isPlaying) {
+			shot_audio.Play();
+			is_playing = true;
+			sound_amount += 1;
+		}
+		if (is_playing && !shot_audio.isPlaying) {
+			sound_amount -= 1;
+		}
 	}
 
 	private void PickTarget() {

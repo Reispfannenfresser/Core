@@ -19,9 +19,15 @@ public class HealingSegment : ConstructionSegment {
 	LineRenderer rays = null;
 	Animator animator = null;
 
+	AudioSource mend_audio = null;
+	bool is_playing = false;
+
+	static int sound_amount = 0;
+
 	protected override void OnPlaced() {
 		rays = GetComponent<LineRenderer>();
 		animator = GetComponent<Animator>();
+		mend_audio = GetComponent<AudioSource>();
 	}
 
 	void FixedUpdate() {
@@ -43,6 +49,15 @@ public class HealingSegment : ConstructionSegment {
 					rays.SetPosition(1, collider.transform.position);
 					segment.Heal(amount);
 					animator.SetTrigger("Heal");
+
+					if (sound_amount < 4 && !mend_audio.isPlaying) {
+						mend_audio.Play();
+						is_playing = true;
+						sound_amount += 1;
+					}
+					if (is_playing && !mend_audio.isPlaying) {
+						sound_amount -= 1;
+					}
 					return;
 				}
 			}

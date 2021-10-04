@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class CameraController : MonoBehaviour {
 	[SerializeField]
@@ -25,6 +26,8 @@ public class CameraController : MonoBehaviour {
 	float wanted_zoom_level = 1;
 	float last_mouse_y;
 	float zoom_velocity = 0;
+
+	public AudioMixer mixer;
 
 	void Awake() {
 		own_camera = GetComponent<Camera>();
@@ -57,6 +60,8 @@ public class CameraController : MonoBehaviour {
 		if (new_pos.y < min_y) {
 			new_pos.y = min_y;
 		}
+
+		mixer.SetFloat("CameraDistance", Mathf.Log10(0.1f + (1 - (current_zoom_level / max_zoom_level)) * 0.9f) * 20);
 
 		transform.position = new_pos;
 	}
