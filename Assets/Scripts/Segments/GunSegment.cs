@@ -23,7 +23,7 @@ public class GunSegment : ConstructionSegment {
 	AudioSource shot_audio = null;
 	bool is_playing = false;
 
-	static int sound_amount = 0;
+	public static int sound_amount = 0;
 
 	protected override void OnPlaced() {
 		fire = gun.gameObject.GetComponent<LineRenderer>();
@@ -44,6 +44,18 @@ public class GunSegment : ConstructionSegment {
 
 		if (current_cooldown <= 0) {
 			Fire();
+		}
+	}
+
+	protected override void OnDestroyed() {
+		if (is_playing) {
+			sound_amount -= 1;
+		}
+	}
+
+	protected override void OnDeleted() {
+		if (is_playing) {
+			sound_amount -= 1;
 		}
 	}
 

@@ -22,7 +22,7 @@ public class HealingSegment : ConstructionSegment {
 	AudioSource mend_audio = null;
 	bool is_playing = false;
 
-	static int sound_amount = 0;
+	public static int sound_amount = 0;
 
 	protected override void OnPlaced() {
 		rays = GetComponent<LineRenderer>();
@@ -61,6 +61,18 @@ public class HealingSegment : ConstructionSegment {
 					return;
 				}
 			}
+		}
+	}
+
+	protected override void OnDestroyed() {
+		if (is_playing) {
+			sound_amount -= 1;
+		}
+	}
+
+	protected override void OnDeleted() {
+		if (is_playing) {
+			sound_amount -= 1;
 		}
 	}
 }
