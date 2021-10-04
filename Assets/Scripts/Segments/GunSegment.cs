@@ -51,11 +51,17 @@ public class GunSegment : ConstructionSegment {
 
 		Vector3 direction = target.transform.position - transform.position;
 		RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, 30, construction);
-		if (hits.Length > 1) {
-			target = null;
-			return;
+		foreach (RaycastHit2D hit in hits) {
+			ConstructionSegment segment = hit.collider.gameObject.GetComponent<ConstructionSegment>();
+			if (segment != null && segment != this) {
+				target = null;
+				return;
+			}
+			Enemy enemy = hit.collider.gameObject.GetComponent<Enemy>();
+			if (enemy != null && enemy == target) {
+				break;
+			}
 		}
-
 
 		current_cooldown = cooldown;
 
@@ -72,9 +78,16 @@ public class GunSegment : ConstructionSegment {
 		foreach(Enemy enemy in GameController.instance.enemies) {
 			Vector3 direction = enemy.transform.position - transform.position;
 			RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, 30, construction);
-			if (hits.Length == 1) {
-				target = enemy;
-				return;
+			foreach (RaycastHit2D hit in hits) {
+				ConstructionSegment segment = hit.collider.gameObject.GetComponent<ConstructionSegment>();
+				if (segment != null && segment != this) {
+					break;
+				}
+				Enemy enemy_component = hit.collider.gameObject.GetComponent<Enemy>();
+				if (enemy_component != null) {
+					target = enemy_component;
+					return;
+				}
 			}
 		}
 		target = null;
