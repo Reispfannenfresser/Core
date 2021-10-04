@@ -78,9 +78,11 @@ public class GunSegment : ConstructionSegment {
 		foreach(Enemy enemy in GameController.instance.enemies) {
 			Vector3 direction = enemy.transform.position - transform.position;
 			RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, 30, construction);
+			bool aborted = false;
 			foreach (RaycastHit2D hit in hits) {
 				ConstructionSegment segment = hit.collider.gameObject.GetComponent<ConstructionSegment>();
 				if (segment != null && segment != this) {
+					aborted = true;
 					break;
 				}
 				Enemy enemy_component = hit.collider.gameObject.GetComponent<Enemy>();
@@ -88,6 +90,10 @@ public class GunSegment : ConstructionSegment {
 					target = enemy_component;
 					return;
 				}
+			}
+			if (!aborted) {
+				target = enemy;
+				return;
 			}
 		}
 		target = null;
