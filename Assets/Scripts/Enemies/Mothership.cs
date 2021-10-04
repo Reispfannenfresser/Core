@@ -19,6 +19,7 @@ public class Mothership : Enemy {
 	Animator animator = null;
 
 	ConstructionSegment target = null;
+	private bool is_attacking = false;
 
 	private float angle = 0f;
 	private float distance = 0f;
@@ -68,6 +69,10 @@ public class Mothership : Enemy {
 		if (target != null) {
 			laser.SetPosition(1, target.transform.position);
 		}
+
+		if (target != null && is_attacking) {
+			target.Damage(20);
+		}
 	}
 
 	void CallUfo() {
@@ -82,6 +87,7 @@ public class Mothership : Enemy {
 				if (index <= 0 && segment != null) {
 					target = segment;
 					animator.SetTrigger("Fire");
+					is_attacking = true;
 					return;
 				}
 				index--;
@@ -90,8 +96,7 @@ public class Mothership : Enemy {
 	}
 
 	void DamageTarget() {
-		target.Damage(150);
-		Debug.Log("Bzzt");
+		is_attacking = false;
 	}
 
 	protected override void OnKilled() {
