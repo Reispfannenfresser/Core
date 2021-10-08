@@ -27,6 +27,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4613083552123600912, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
+      propertyPath: m_Radius
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 8950723079009521216, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
       propertyPath: m_Name
       value: Empty Segment

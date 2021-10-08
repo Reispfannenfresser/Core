@@ -124,9 +124,6 @@ public class GameController : MonoBehaviour {
 		kills = 0;
 		boss_count = 0;
 
-		GunSegment.sound_amount = 0;
-		HealingSegment.sound_amount = 0;
-
 		is_started = true;
 		SetPaused(false);
 		is_practice = false;

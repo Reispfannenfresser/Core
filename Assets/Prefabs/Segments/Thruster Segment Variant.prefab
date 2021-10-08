@@ -129,7 +129,7 @@ HingeJoint2D:
   m_AngleLimits:
     m_LowerAngle: 0
     m_UpperAngle: 359
---- !u!114 &1433471459
+--- !u!114 &4670154456750199811
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4284714309636319755}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4d146254f1c74c299383a0434477b54, type: 3}
+  m_Script: {fileID: 11500000, guid: 36ca41ced4e7a2fe1b6f0c8913c78422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sprite_renderers:
@@ -151,6 +151,9 @@ MonoBehaviour:
   deletable: 1
   meltable: 0
   value: 15
+  max_power: 3
+  acceleration: 2
+  fire: {fileID: 8977875844628584446}
 --- !u!1001 &655004216824127499
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -161,6 +164,10 @@ PrefabInstance:
     - target: {fileID: 8467005201630033800, guid: eaa3940fca694837991c7d0cbcf2bea9, type: 3}
       propertyPath: m_Name
       value: Fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 8467005201630033909, guid: eaa3940fca694837991c7d0cbcf2bea9, type: 3}
+      propertyPath: m_Color.a
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8467005201630033911, guid: eaa3940fca694837991c7d0cbcf2bea9, type: 3}
       propertyPath: m_RootOrder
@@ -275,7 +282,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9178111157218713962, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
       propertyPath: m_Mass
-      value: 5
+      value: 0.0001
       objectReference: {fileID: 0}
     - target: {fileID: 9178111157218713962, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
       propertyPath: m_GravityScale

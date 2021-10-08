@@ -49,7 +49,8 @@ public class ConstructionSegment : MonoBehaviour {
 		foreach (SpriteRenderer renderer in sprite_renderers) {
 			float gb_values = (float) hp / max_hp;
 			float r_value = gb_values / 2 + 0.5f;
-			renderer.color = new Color(r_value, gb_values, gb_values);
+			float a_value = renderer.color.a;
+			renderer.color = new Color(r_value, gb_values, gb_values, a_value);
 		}
 	}
 
