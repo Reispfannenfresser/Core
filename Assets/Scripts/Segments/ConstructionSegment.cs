@@ -22,7 +22,7 @@ public class ConstructionSegment : MonoBehaviour {
 	}
 
 	private void LateUpdate() {
-		if(transform.position.y < -30) {
+		if (transform.position.magnitude > 50) {
 			Destroy();
 		}
 	}

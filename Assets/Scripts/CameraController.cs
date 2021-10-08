@@ -16,16 +16,15 @@ public class CameraController : MonoBehaviour {
 	float zoom_multiplier = 0.1f;
 
 	[SerializeField]
-	float min_y = -5;
-	[SerializeField]
-	float max_y = 15f;
+	float max_shift_distance = 10f;
 
 	private Camera own_camera = null;
 
 	float original_orthographic_size;
 	float wanted_zoom_level = 1;
-	float last_mouse_y;
+	Vector3 last_mouse_pos = Vector3.zero;
 	float zoom_velocity = 0;
+
 
 	public AudioMixer mixer;
 
@@ -42,24 +41,25 @@ public class CameraController : MonoBehaviour {
 		Vector3 new_pos = transform.position;
 
 		if (Input.GetMouseButton(2)) {
-			float mouse_y = (own_camera.ScreenToWorldPoint(Input.mousePosition) - transform.position).y;
+			Vector3 mouse_pos = (own_camera.ScreenToWorldPoint(Input.mousePosition) - transform.position);
 			if (!Input.GetMouseButtonDown(2)) {
-				new_pos.y -= mouse_y - last_mouse_y;
+				new_pos -= mouse_pos - last_mouse_pos;
 			}
-			last_mouse_y = mouse_y;
+			last_mouse_pos = mouse_pos;
 		}
+
+		new_pos.z = 0;
+
+		if (new_pos.magnitude > max_shift_distance) {
+			new_pos.Normalize();
+			new_pos *= max_shift_distance;
+		}
+
+		new_pos.z = -10;
 
 		wanted_zoom_level = Mathf.Clamp(wanted_zoom_level - Input.mouseScrollDelta.y * zoom_multiplier, min_zoom_level, max_zoom_level);
 		current_zoom_level = Mathf.SmoothDamp(current_zoom_level, wanted_zoom_level, ref zoom_velocity, zoom_smooth_time);
 		own_camera.orthographicSize = original_orthographic_size / own_camera.aspect * current_zoom_level;
-
-		if (new_pos.y > max_y) {
-			new_pos.y = max_y;
-		}
-
-		if (new_pos.y < min_y) {
-			new_pos.y = min_y;
-		}
 
 		mixer.SetFloat("CameraDistance", Mathf.Log10(0.1f + (1 - (current_zoom_level / max_zoom_level)) * 0.9f) * 20);
 
