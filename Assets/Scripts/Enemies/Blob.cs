@@ -10,6 +10,8 @@ public class Blob : Enemy {
 	[SerializeField]
 	float speed = 5;
 
+	HashSet<ConstructionSegment> blocked_segments = new HashSet<ConstructionSegment>();
+
 	protected override void OnSpawned() {
 		float distance = 30 + Random.value * 10;
 		float angle = Random.value * Mathf.PI * 2 - Mathf.PI;
@@ -45,5 +47,28 @@ public class Blob : Enemy {
 		joint.motor = motor;
 		joint.useMotor = true;
 		segment.AddConnector(joint);
+		StartBlocking(segment);
+
+	}
+
+	protected override void OnKilled() {
+		RemoveAsBlocker();
+	}
+
+	protected override void OnDeleted() {
+		RemoveAsBlocker();
+	}
+
+	private void StartBlocking(ConstructionSegment segment) {
+		segment.AddBlocker();
+		blocked_segments.Add(segment);
+	}
+
+	private void RemoveAsBlocker() {
+		foreach (ConstructionSegment segment in blocked_segments) {
+			if (segment != null) {
+				segment.RemoveBlocker();
+			}
+		}
 	}
 }

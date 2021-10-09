@@ -13,7 +13,10 @@ public class ConstructionSegment : MonoBehaviour {
 	public int hp = 100;
 	public bool deletable = true;
 	public bool meltable = true;
+	public bool blockable = false;
 	public int value = 10;
+
+	protected int blocker_count = 0;
 
 	protected void Start() {
 		OnPlaced();
@@ -21,10 +24,17 @@ public class ConstructionSegment : MonoBehaviour {
 		rb2d = GetComponent<Rigidbody2D>();
 	}
 
-	private void LateUpdate() {
+	private void FixedUpdate() {
 		if (transform.position.magnitude > 50) {
 			Destroy();
 		}
+		if (!blockable || blocker_count == 0) {
+			OnFixedUpdate();
+		}
+	}
+
+	protected virtual void OnFixedUpdate() {
+
 	}
 
 	public void Damage(int amount) {
@@ -45,11 +55,25 @@ public class ConstructionSegment : MonoBehaviour {
 		UpdateColor();
 	}
 
+	public void AddBlocker() {
+		blocker_count++;
+		UpdateColor();
+	}
+
+	public void RemoveBlocker() {
+		blocker_count--;
+		UpdateColor();
+	}
+
 	private void UpdateColor() {
 		foreach (SpriteRenderer renderer in sprite_renderers) {
 			float gb_values = (float) hp / max_hp;
 			float r_value = gb_values / 2 + 0.5f;
 			float a_value = renderer.color.a;
+			if (blockable && blocker_count > 0) {
+				r_value *= 0.25f;
+				gb_values *= 0.25f;
+			}
 			renderer.color = new Color(r_value, gb_values, gb_values, a_value);
 		}
 	}
@@ -61,6 +85,7 @@ public class ConstructionSegment : MonoBehaviour {
 	public void Delete() {
 		OnDeleted();
 		Destroy(gameObject);
+		GameController.instance.AddZollars(value * hp / max_hp);
 	}
 
 	public void Destroy() {

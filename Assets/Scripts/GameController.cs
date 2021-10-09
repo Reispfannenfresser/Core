@@ -66,6 +66,9 @@ public class GameController : MonoBehaviour {
 
 	int highscore = 0;
 
+	int spawn_amount = 0;
+	int num_bosses = 0;
+
 	public static GameController instance = null;
 
 	public HashSet<Enemy> enemies = new HashSet<Enemy>();
@@ -119,10 +122,12 @@ public class GameController : MonoBehaviour {
 		}
 
 		current_wave = 0;
-		next_wave_in = 20;
-		zollars = 150;
+		next_wave_in = 25;
+		zollars = 250;
 		kills = 0;
 		boss_count = 0;
+		num_bosses = 0;
+		spawn_amount = 0;
 
 		is_started = true;
 		SetPaused(false);
@@ -196,6 +201,17 @@ public class GameController : MonoBehaviour {
 			NextWave();
 		}
 
+		if (spawn_amount > 0) {
+			int index = UnityEngine.Random.Range(0, Math.Min(enemy_types.Length, spawn_amount));
+			SpawnEnemy(enemy_types[index]);
+			spawn_amount -= index + 1;
+		}
+
+		if (num_bosses > 0) {
+			SpawnEnemy(mothership);
+			num_bosses -= 1;
+		}
+
 		next_round_text.text = "" + Mathf.Ceil(next_wave_in);
 		round_count_text.text = "" + Mathf.Max(current_wave - 1, 0);
 		highscore_text.text = "" + Mathf.Max(highscore - 1, 0);
@@ -205,32 +221,28 @@ public class GameController : MonoBehaviour {
 
 	public void NextWave() {
 		if (is_practice) {
-			AddZollars(50);
+			AddZollars(250);
 			next_wave_in = 5;
 			return;
 		}
 
 		current_wave += 1;
 
-		int spawn_amount = current_wave * 2;
-		while (spawn_amount > 0) {
-			int index = UnityEngine.Random.Range(0, Math.Min(enemy_types.Length, spawn_amount));
-			SpawnEnemy(enemy_types[index]);
-			spawn_amount -= index + 1;
-		}
-
-		if ((current_wave - 1) % bosses_at == 0) {
-			int num_bosses = (current_wave - 1) / bosses_at;
-			for (int i = 0; i < num_bosses; i++) {
-				SpawnEnemy(mothership);
-			}
-		}
+		spawn_amount += current_wave * 2;
 
 		if (current_wave > highscore) {
 			highscore = current_wave;
 		}
 
 		next_wave_in = current_wave + 5;
+
+		if ((current_wave - 1) % bosses_at == 0) {
+			num_bosses += (current_wave - 1) / bosses_at;
+		}
+
+		if (current_wave > 25) {
+			num_bosses += (int) (UnityEngine.Random.value * current_wave / 10);
+		}
 	}
 
 	private void SpawnEnemy(GameObject enemy) {

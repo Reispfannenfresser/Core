@@ -12,10 +12,9 @@ public class ThrusterSegment : ConstructionSegment {
 	[SerializeField]
 	private SpriteRenderer fire = null;
 
-	private void FixedUpdate() {
+	protected override void OnFixedUpdate() {
 		if (current_power < max_power) {
 			current_power += Time.deltaTime * acceleration;
-			Debug.Log(current_power);
 			rb2d.mass = current_power;
 			Color c = fire.color;
 			c.a = Mathf.Min(current_power / max_power, 1);

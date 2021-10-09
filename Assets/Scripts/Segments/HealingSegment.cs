@@ -25,11 +25,10 @@ public class HealingSegment : ConstructionSegment {
 		rays = GetComponent<LineRenderer>();
 		animator = GetComponent<Animator>();
 		mend_audio = GetComponent<AudioSource>();
-		cooldown += (Random.value - 0.5f) * 0.2f;
 		current_cooldown += Random.value * cooldown;
 	}
 
-	void FixedUpdate() {
+	protected override void OnFixedUpdate() {
 		current_cooldown -= Time.deltaTime;
 		if (current_cooldown < 0) {
 			current_cooldown += cooldown;

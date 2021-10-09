@@ -315,10 +315,11 @@ MonoBehaviour:
   hp: 100
   deletable: 1
   meltable: 1
+  blockable: 1
   value: 20
   amount: 10
   radius: 2
-  cooldown: 0.1
+  cooldown: 0.5
   construction:
     serializedVersion: 2
     m_Bits: 1024

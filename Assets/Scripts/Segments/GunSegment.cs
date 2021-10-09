@@ -23,11 +23,10 @@ public class GunSegment : ConstructionSegment {
 		fire = gun.gameObject.GetComponent<LineRenderer>();
 		animator = gun.gameObject.GetComponent<Animator>();
 		shot_audio = gun.gameObject.GetComponent<AudioSource>();
-		cooldown += (Random.value - 0.5f) * 0.2f;
 		current_cooldown += Random.value * cooldown;
 	}
 
-	void FixedUpdate() {
+	protected override void OnFixedUpdate() {
 		current_cooldown -= Time.deltaTime;
 
 		if (current_cooldown <= 0) {
