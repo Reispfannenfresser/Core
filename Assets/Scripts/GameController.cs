@@ -64,6 +64,7 @@ public class GameController : MonoBehaviour {
 	[SerializeField]
 	private Color ui_selected_color = Color.white;
 
+	int score = 0;
 	int highscore = 0;
 
 	int spawn_amount = 0;
@@ -197,6 +198,14 @@ public class GameController : MonoBehaviour {
 			next_wave_in = 5;
 		}
 
+		if (current_wave > highscore && enemies.Count == 0) {
+			score = current_wave;
+			if (score > highscore) {
+				highscore = score;
+
+			}
+		}
+
 		if (next_wave_in <= 0) {
 			NextWave();
 		}
@@ -213,7 +222,7 @@ public class GameController : MonoBehaviour {
 		}
 
 		next_round_text.text = "" + Mathf.Ceil(next_wave_in);
-		round_count_text.text = "" + Mathf.Max(current_wave - 1, 0);
+		round_count_text.text = "" + Mathf.Max(score - 1, 0);
 		highscore_text.text = "" + Mathf.Max(highscore - 1, 0);
 		zollar_text.text = "" + zollars;
 		kills_text.text = "" + kills;
@@ -229,10 +238,6 @@ public class GameController : MonoBehaviour {
 		current_wave += 1;
 
 		spawn_amount += current_wave * 2;
-
-		if (current_wave > highscore) {
-			highscore = current_wave;
-		}
 
 		next_wave_in = current_wave + 5;
 
