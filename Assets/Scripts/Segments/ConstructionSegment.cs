@@ -110,7 +110,9 @@ public class ConstructionSegment : MonoBehaviour {
 
 	protected void OnDestroy() {
 		foreach(Joint2D connector in connectors) {
-			Destroy(connector);
+			if (connector != null) {
+				Destroy(connector);
+			}
 		}
 		GameController.instance.RemoveSegment(this);
 	}

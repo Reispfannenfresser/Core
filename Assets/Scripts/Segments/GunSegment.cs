@@ -68,10 +68,6 @@ public class GunSegment : ConstructionSegment {
 				target = null;
 				return false;
 			}
-			Enemy enemy = hit.collider.gameObject.GetComponent<Enemy>();
-			if (enemy == target) {
-				return true;
-			}
 		}
 
 		return true;
@@ -87,11 +83,6 @@ public class GunSegment : ConstructionSegment {
 				if (segment != null && segment != this) {
 					aborted = true;
 					break;
-				}
-				Enemy enemy_component = hit.collider.gameObject.GetComponent<Enemy>();
-				if (enemy_component != null) {
-					target = enemy_component;
-					return;
 				}
 			}
 			if (!aborted) {

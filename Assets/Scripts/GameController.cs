@@ -274,14 +274,6 @@ public class GameController : MonoBehaviour {
 		shots.Remove(shot);
 	}
 
-	public void StopCoreRotation(int time) {
-		int cost = 10 * time;
-		if (zollars > cost) {
-			RemoveZollars(cost);
-			core_segment.StopRotating(time);
-		}
-	}
-
 	public void SetSegment(GameObject to_place) {
 		segment_placer.SetSegment(to_place);
 	}

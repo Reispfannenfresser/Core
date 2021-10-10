@@ -33,22 +33,20 @@ public class Blob : Enemy {
 		}
 	}
 
-	private void OnCollisionEnter2D(Collision2D other) {
+	private void OnTriggerEnter2D(Collider2D other) {
 		ConstructionSegment segment = other.gameObject.GetComponent<ConstructionSegment>();
 		if (segment == null) {
 			return;
 		}
-		collided = true;
+
+		if (!collided) {
+			rb2d.velocity = Vector3.zero;
+			collided = true;
+		}
 		HingeJoint2D joint = gameObject.AddComponent<HingeJoint2D>();
 		joint.connectedBody = segment.rb2d;
-		JointMotor2D motor = joint.motor;
-		motor.maxMotorTorque = 10;
-		motor.motorSpeed = 0;
-		joint.motor = motor;
-		joint.useMotor = true;
 		segment.AddConnector(joint);
 		StartBlocking(segment);
-
 	}
 
 	protected override void OnKilled() {
