@@ -33,8 +33,8 @@ public class Blob : Enemy {
 		}
 	}
 
-	private void OnTriggerEnter2D(Collider2D other) {
-		ConstructionSegment segment = other.gameObject.GetComponent<ConstructionSegment>();
+	private void OnCollisionEnter2D(Collision2D collision) {
+		ConstructionSegment segment = collision.gameObject.GetComponent<ConstructionSegment>();
 		if (segment == null) {
 			return;
 		}
