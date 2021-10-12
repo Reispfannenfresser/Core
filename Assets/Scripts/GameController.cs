@@ -43,6 +43,10 @@ public class GameController : MonoBehaviour {
 	private AudioSource test_sound = null;
 	bool volume_changed = false;
 
+	float current_ui_scale = 1;
+	float next_ui_scale = 1;
+	bool ui_scale_changed = false;
+
 	[SerializeField]
 	GameObject hud = null;
 	[SerializeField]
@@ -95,6 +99,11 @@ public class GameController : MonoBehaviour {
 	public void ChangeSfxVolume(float sliderValue) {
 		mixer.SetFloat("Sfx", Mathf.Log10(sliderValue) * 20);
 		volume_changed = true;
+	}
+
+	public void ChangeUIScale(float scale) {
+		next_ui_scale = scale;
+		ui_scale_changed = true;
 	}
 
 	public void ResumeGame() {
@@ -160,9 +169,23 @@ public class GameController : MonoBehaviour {
 		if (Input.GetButtonDown("Cancel")) {
 			SetPaused(!is_paused);
 		}
-		if(volume_changed && Input.GetMouseButtonUp(0)) {
+
+		bool ui_input = Input.GetMouseButtonUp(0) || Input.GetButtonUp("Horizontal");
+		Debug.Log(Input.GetButtonUp("Horizontal"));
+
+		if(volume_changed && ui_input) {
 			volume_changed = false;
 			test_sound.Play();
+		}
+		if(ui_scale_changed && ui_input) {
+			ui_scale_changed = false;
+			float scale_factor = next_ui_scale / current_ui_scale;
+
+			foreach (RectTransform rt in UnityEngine.Object.FindObjectsOfType<RectTransform>(true)) {
+				rt.sizeDelta *= scale_factor;
+			}
+
+			current_ui_scale = next_ui_scale;
 		}
 	}
 
