@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour {
 	[SerializeField]
 	Text highscore_text = null;
 	[SerializeField]
-	GameObject resume_button = null;
+	Button resume_button = null;
 
 	public AudioMixer mixer;
 
@@ -143,7 +143,7 @@ public class GameController : MonoBehaviour {
 		SetPaused(false);
 		is_practice = false;
 		restart_text.text = "Restart";
-		resume_button.SetActive(true);
+		resume_button.interactable = true;
 		core = Instantiate(crawler, transform.position, transform.rotation);
 		core_segment = core.GetComponentInChildren<CoreSegment>();
 	}
@@ -156,7 +156,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void LoseGame() {
-		resume_button.SetActive(false);
+		resume_button.interactable = false;
 		SetPaused(true);
 		is_started = false;
 	}
@@ -171,7 +171,6 @@ public class GameController : MonoBehaviour {
 		}
 
 		bool ui_input = Input.GetMouseButtonUp(0) || Input.GetButtonUp("Horizontal");
-		Debug.Log(Input.GetButtonUp("Horizontal"));
 
 		if(volume_changed && ui_input) {
 			volume_changed = false;
