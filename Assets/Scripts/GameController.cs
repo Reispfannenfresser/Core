@@ -138,6 +138,7 @@ public class GameController : MonoBehaviour {
 		boss_count = 0;
 		num_bosses = 0;
 		spawn_amount = 0;
+		score = 0;
 
 		is_started = true;
 		SetPaused(false);
@@ -153,6 +154,7 @@ public class GameController : MonoBehaviour {
 		restart_text.text = "Start";
 		is_practice = true;
 		next_wave_in = 5;
+		score = 0;
 	}
 
 	public void LoseGame() {
@@ -220,11 +222,10 @@ public class GameController : MonoBehaviour {
 			next_wave_in = 5;
 		}
 
-		if (current_wave > highscore && enemies.Count == 0) {
+		if (current_wave > score && enemies.Count == 0) {
 			score = current_wave;
 			if (score > highscore) {
 				highscore = score;
-
 			}
 		}
 

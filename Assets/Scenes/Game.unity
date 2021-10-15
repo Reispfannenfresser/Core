@@ -590,7 +590,7 @@ GameObject:
   - component: {fileID: 177415214}
   - component: {fileID: 177415213}
   m_Layer: 5
-  m_Name: Score
+  m_Name: Highscore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5074,7 +5074,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Score
+  m_Text: Highscore
 --- !u!222 &1734976082
 CanvasRenderer:
   m_ObjectHideFlags: 0
