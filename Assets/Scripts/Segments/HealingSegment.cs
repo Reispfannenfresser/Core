@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class HealingSegment : ConstructionSegment {
-	[SerializeField]
-	int amount = 1;
 	[SerializeField]
 	int healing_radius = 2;
 	[SerializeField]
@@ -13,8 +12,8 @@ public class HealingSegment : ConstructionSegment {
 	[SerializeField]
 	LayerMask construction = 0;
 
-	[SerializeField]
-	int cost = 5;
+	int amount = 20;
+	int cost = 1;
 
 	LineRenderer rays = null;
 	Animator animator = null;
@@ -25,7 +24,7 @@ public class HealingSegment : ConstructionSegment {
 		rays = GetComponent<LineRenderer>();
 		animator = GetComponent<Animator>();
 		mend_audio = GetComponent<AudioSource>();
-		current_cooldown += Random.value * cooldown;
+		current_cooldown += UnityEngine.Random.value * cooldown;
 	}
 
 	protected override void OnFixedUpdate() {
@@ -37,7 +36,7 @@ public class HealingSegment : ConstructionSegment {
 	}
 
 	private void Mend() {
-		if (GameController.instance.GetZollars() < cost) {
+		if (GameController.instance.GetZollars() == 0) {
 			return;
 		}
 
@@ -45,8 +44,8 @@ public class HealingSegment : ConstructionSegment {
 
 		foreach (Collider2D collider in colliders) {
 			ConstructionSegment segment = collider.gameObject.GetComponent<ConstructionSegment>();
-			if (segment != null && segment != this && segment.hp < segment.max_hp) {
-				GameController.instance.RemoveZollars(cost);
+			if (segment != null && segment != this && segment.max_hp - segment.hp >= amount) {
+				GameController.instance.RemoveZollars(1);
 				rays.SetPosition(0, transform.position);
 				rays.SetPosition(1, collider.transform.position);
 				segment.Heal(amount);

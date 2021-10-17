@@ -57,6 +57,7 @@ public class SegmentPlacer : MonoBehaviour {
 		cost = segment.value;
 		to_place = segment_object;
 		to_place_radius = segment.radius;
+		sprite_renderer.sprite = segment_object.GetComponent<SpriteRenderer>().sprite;
 	}
 
 	void Update() {

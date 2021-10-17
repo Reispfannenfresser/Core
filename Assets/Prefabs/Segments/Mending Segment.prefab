@@ -318,13 +318,12 @@ MonoBehaviour:
   blockable: 1
   value: 20
   radius: 0.5
-  amount: 10
   healing_radius: 2
-  cooldown: 0.5
+  cooldown: 1
   construction:
     serializedVersion: 2
     m_Bits: 1024
-  cost: 1
+  cost_factor: 2
 --- !u!1001 &3601381579023692584
 PrefabInstance:
   m_ObjectHideFlags: 0
