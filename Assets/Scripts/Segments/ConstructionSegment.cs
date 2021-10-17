@@ -15,6 +15,7 @@ public class ConstructionSegment : MonoBehaviour {
 	public bool meltable = true;
 	public bool blockable = false;
 	public int value = 10;
+	public float radius = 0.4f;
 
 	protected int blocker_count = 0;
 
@@ -57,12 +58,26 @@ public class ConstructionSegment : MonoBehaviour {
 
 	public void AddBlocker() {
 		blocker_count++;
-		UpdateColor();
+		if (blocker_count == 1) {
+			OnBlocked();
+			UpdateColor();
+		}
 	}
 
 	public void RemoveBlocker() {
 		blocker_count--;
-		UpdateColor();
+		if (blocker_count == 0) {
+			OnUnBlocked();
+			UpdateColor();
+		}
+	}
+
+	protected virtual void OnBlocked() {
+
+	}
+
+	protected virtual void OnUnBlocked() {
+
 	}
 
 	private void UpdateColor() {

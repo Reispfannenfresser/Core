@@ -15,9 +15,11 @@ public class SegmentPlacer : MonoBehaviour {
 	int cost = 0;
 
 	[SerializeField]
-	float inner_radius = 0.4f;
+	float max_distance = 0.4f;
 	[SerializeField]
-	float outer_radius = 0.8f;
+	float max_overlap = 0.1f;
+
+	float to_place_radius = 0.5f;
 
 	void Awake() {
 		animator = GetComponent<Animator>();
@@ -40,7 +42,7 @@ public class SegmentPlacer : MonoBehaviour {
 			sprite_renderer.color = Color.white;
 		}
 
-		can_place = Physics2D.OverlapCircle(transform.position, inner_radius, construction) == null && Physics2D.OverlapCircle(transform.position, outer_radius, construction) != null;
+		can_place = Physics2D.OverlapCircle(transform.position, to_place_radius - max_overlap, construction) == null && Physics2D.OverlapCircle(transform.position, to_place_radius + max_distance, construction) != null;
 		Color color = sprite_renderer.color;
 		color.a = can_place ? 0.75f : 0.25f;
 		sprite_renderer.color = color;
@@ -54,6 +56,7 @@ public class SegmentPlacer : MonoBehaviour {
 
 		cost = segment.value;
 		to_place = segment_object;
+		to_place_radius = segment.radius;
 	}
 
 	void Update() {
@@ -81,7 +84,7 @@ public class SegmentPlacer : MonoBehaviour {
 
 		GameController.instance.RemoveZollars(cost);
 
-		Collider2D[] segments = Physics2D.OverlapCircleAll(transform.position, outer_radius, construction);
+		Collider2D[] segments = Physics2D.OverlapCircleAll(transform.position, to_place_radius + max_distance, construction);
 
 		GameObject new_object = GameObject.Instantiate(to_place, transform.position, transform.rotation);
 		ConstructionSegment new_segment = new_object.GetComponent<ConstructionSegment>();

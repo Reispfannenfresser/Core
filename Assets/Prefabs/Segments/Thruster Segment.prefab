@@ -152,6 +152,7 @@ MonoBehaviour:
   meltable: 0
   blockable: 0
   value: 15
+  radius: 0.5
   max_power: 3
   acceleration: 2
   fire: {fileID: 8977875844628584446}
@@ -235,7 +236,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8950723079009521216, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
       propertyPath: m_Name
-      value: Thruster Segment Variant
+      value: Thruster Segment
       objectReference: {fileID: 0}
     - target: {fileID: 8950723079009521217, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
       propertyPath: m_RootOrder

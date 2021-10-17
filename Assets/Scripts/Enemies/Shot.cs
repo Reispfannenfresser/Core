@@ -26,7 +26,7 @@ public class Shot : MonoBehaviour {
 	}
 
 	private void OnTriggerEnter2D(Collider2D other) {
-		ConstructionSegment segment = other.gameObject.GetComponent<ConstructionSegment>();
+		ConstructionSegment segment = other.gameObject.GetComponentInParent<ConstructionSegment>();
 		if (segment == null || has_hit) {
 			return;
 		}

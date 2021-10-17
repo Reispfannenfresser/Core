@@ -6,7 +6,7 @@ public class HealingSegment : ConstructionSegment {
 	[SerializeField]
 	int amount = 1;
 	[SerializeField]
-	int radius = 2;
+	int healing_radius = 2;
 	[SerializeField]
 	float cooldown = 1;
 	float current_cooldown = 0;
@@ -41,7 +41,7 @@ public class HealingSegment : ConstructionSegment {
 			return;
 		}
 
-		Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius, construction);
+		Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, healing_radius, construction);
 
 		foreach (Collider2D collider in colliders) {
 			ConstructionSegment segment = collider.gameObject.GetComponent<ConstructionSegment>();
