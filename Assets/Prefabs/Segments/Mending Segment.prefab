@@ -320,10 +320,11 @@ MonoBehaviour:
   radius: 0.5
   healing_radius: 2
   cooldown: 1
+  amount: 25
+  cost: 5
   construction:
     serializedVersion: 2
     m_Bits: 1024
-  cost_factor: 2
 --- !u!1001 &3601381579023692584
 PrefabInstance:
   m_ObjectHideFlags: 0

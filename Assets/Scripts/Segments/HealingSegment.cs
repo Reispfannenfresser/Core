@@ -10,11 +10,12 @@ public class HealingSegment : ConstructionSegment {
 	float cooldown = 1;
 	float current_cooldown = 0;
 	[SerializeField]
-	LayerMask construction = 0;
-
 	int amount = 20;
+	[SerializeField]
 	int cost = 1;
 
+	[SerializeField]
+	LayerMask construction = 0;
 	LineRenderer rays = null;
 	Animator animator = null;
 
@@ -36,7 +37,7 @@ public class HealingSegment : ConstructionSegment {
 	}
 
 	private void Mend() {
-		if (GameController.instance.GetZollars() == 0) {
+		if (GameController.instance.GetZollars() < cost) {
 			return;
 		}
 
@@ -45,7 +46,7 @@ public class HealingSegment : ConstructionSegment {
 		foreach (Collider2D collider in colliders) {
 			ConstructionSegment segment = collider.gameObject.GetComponent<ConstructionSegment>();
 			if (segment != null && segment != this && segment.max_hp - segment.hp >= amount) {
-				GameController.instance.RemoveZollars(1);
+				GameController.instance.RemoveZollars(cost);
 				rays.SetPosition(0, transform.position);
 				rays.SetPosition(1, collider.transform.position);
 				segment.Heal(amount);

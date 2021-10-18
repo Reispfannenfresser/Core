@@ -23,7 +23,9 @@ public class ShieldSegment : ConstructionSegment {
 
 	protected override void OnDamaged(int amount) {
 		animator.SetTrigger("Block");
-		block_audio.Play();
+		if (!block_audio.isPlaying) {
+			block_audio.Play();
+		}
 		Heal(amount / 2);
 	}
 }
