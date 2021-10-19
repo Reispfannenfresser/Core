@@ -267,9 +267,8 @@ public class GameController : MonoBehaviour {
 		if ((current_wave - 1) % bosses_at == 0) {
 			num_bosses += (current_wave - 1) / bosses_at;
 		}
-
-		if (current_wave > 25) {
-			num_bosses += (int) (UnityEngine.Random.value * current_wave / 10);
+		else if (current_wave > 25) {
+			num_bosses += (int) (UnityEngine.Random.value * current_wave / bosses_at);
 		}
 	}
 
