@@ -214,12 +214,12 @@ public class GameController : MonoBehaviour {
 			next_wave_in = 0;
 		}
 
-		if (boss_count > 0 && next_wave_in < 5) {
-			next_wave_in = 5;
+		if (boss_count > 0 && next_wave_in < 20) {
+			next_wave_in = 20;
 		}
 
-		if (current_wave > 5 && enemies.Count == 0 && next_wave_in > 5) {
-			next_wave_in = 5;
+		if (enemies.Count == 0 && next_wave_in > 20) {
+			next_wave_in = 20;
 		}
 
 		if (current_wave > score && enemies.Count == 0) {
@@ -262,7 +262,7 @@ public class GameController : MonoBehaviour {
 
 		spawn_amount += current_wave * 2;
 
-		next_wave_in = current_wave + 5;
+		next_wave_in = current_wave * 2;
 
 		if ((current_wave - 1) % bosses_at == 0) {
 			num_bosses += (current_wave - 1) / bosses_at;
