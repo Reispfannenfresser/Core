@@ -14,11 +14,6 @@ public class SegmentPlacer : MonoBehaviour {
 
 	int cost = 0;
 
-	[SerializeField]
-	float max_distance = 0.4f;
-	[SerializeField]
-	float max_overlap = 0.1f;
-
 	float to_place_radius = 0.5f;
 
 	void Awake() {
@@ -42,7 +37,7 @@ public class SegmentPlacer : MonoBehaviour {
 			sprite_renderer.color = Color.white;
 		}
 
-		can_place = Physics2D.OverlapCircle(transform.position, to_place_radius - max_overlap, construction) == null && Physics2D.OverlapCircle(transform.position, to_place_radius + max_distance, construction) != null;
+		can_place = Physics2D.OverlapCircle(transform.position, to_place_radius - ConstructionSegment.max_overlap, construction) == null && Physics2D.OverlapCircle(transform.position, to_place_radius + ConstructionSegment.max_distance, construction) != null;
 		Color color = sprite_renderer.color;
 		color.a = can_place ? 0.75f : 0.25f;
 		sprite_renderer.color = color;
@@ -83,23 +78,8 @@ public class SegmentPlacer : MonoBehaviour {
 			return;
 		}
 
-		GameController.instance.RemoveZollars(cost);
-
-		Collider2D[] segments = Physics2D.OverlapCircleAll(transform.position, to_place_radius + max_distance, construction);
-
 		GameObject new_object = GameObject.Instantiate(to_place, transform.position, transform.rotation);
-		ConstructionSegment new_segment = new_object.GetComponent<ConstructionSegment>();
-		foreach (Collider2D old_collider in segments) {
-			ConstructionSegment old_segment = old_collider.gameObject.GetComponent<ConstructionSegment>();
-			Rigidbody2D old_segment_rb2d = old_segment.GetComponent<Rigidbody2D>();
-			HingeJoint2D joint = new_object.AddComponent<HingeJoint2D>();
-			joint.connectedBody = old_segment_rb2d;
-			JointMotor2D motor = joint.motor;
-			motor.maxMotorTorque = 10;
-			motor.motorSpeed = 0;
-			joint.motor = motor;
-			joint.useMotor = true;
-			old_segment.AddConnector(joint);
-		}
+
+		GameController.instance.RemoveZollars(cost);
 	}
 }

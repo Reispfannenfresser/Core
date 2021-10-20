@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ConstructionSegment : MonoBehaviour {
 	protected List<Joint2D> connectors = new List<Joint2D>();
@@ -17,12 +18,41 @@ public class ConstructionSegment : MonoBehaviour {
 	public int value = 10;
 	public float radius = 0.4f;
 
+	public static float max_distance = 0.4f;
+	public static float max_overlap = 0.1f;
+
 	protected int blocker_count = 0;
 
-	protected void Start() {
-		OnPlaced();
+	private bool initialized = false;
+
+	protected void Awake() {
 		GameController.instance.AddSegment(this);
 		rb2d = GetComponent<Rigidbody2D>();
+	}
+
+	protected void Start() {
+		Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius + max_distance, 1 << gameObject.layer);
+
+		foreach (Collider2D collider in colliders) {
+			ConstructionSegment segment = collider.gameObject.GetComponent<ConstructionSegment>();
+			if (!segment.initialized || segment == this) {
+				continue;
+			}
+
+			Rigidbody2D segment_rb2d = segment.GetComponent<Rigidbody2D>();
+			HingeJoint2D joint = gameObject.AddComponent<HingeJoint2D>();
+			joint.connectedBody = segment_rb2d;
+			JointMotor2D motor = joint.motor;
+			motor.maxMotorTorque = 10;
+			motor.motorSpeed = 0;
+			joint.motor = motor;
+			joint.useMotor = true;
+			segment.AddConnector(joint);
+		}
+
+		initialized = true;
+
+		OnPlaced();
 	}
 
 	private void FixedUpdate() {
