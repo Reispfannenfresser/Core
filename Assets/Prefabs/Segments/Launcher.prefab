@@ -126,7 +126,7 @@ MonoBehaviour:
   value: 30
   radius: 0.75
   bomb: {fileID: 1509016389895916502, guid: adbc124ffaeedce0baf73724e8692ef5, type: 3}
-  cooldown: 10
+  cooldown: 5
   loaded_bomb: {fileID: 0}
 --- !u!1 &8356168818419418723
 GameObject:

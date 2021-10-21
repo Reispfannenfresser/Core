@@ -2283,7 +2283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   segment_placer: {fileID: 1414263206}
-  start_segment: {fileID: 8003369773548044582, guid: 7c1274366a242ae488d6ad999e7a08e9, type: 3}
+  start_segment: {fileID: 33547693720685759, guid: 6cef7346525f8393aa56124826481fd1, type: 3}
   enemy_types:
   - {fileID: 1332924699840116546, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
   - {fileID: 1332924699840116546, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
