@@ -68,9 +68,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1341883733
+  m_SortingLayer: -2
+  m_SortingOrder: 3
   m_Sprite: {fileID: 4641159851008064247, guid: 8e612ab428a3cfa5d8fb439494f2c5b8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -125,9 +125,9 @@ MonoBehaviour:
   blockable: 1
   value: 30
   radius: 0.75
-  launcher: {fileID: 0}
-  bomb: {fileID: 0}
+  bomb: {fileID: 1509016389895916502, guid: adbc124ffaeedce0baf73724e8692ef5, type: 3}
   cooldown: 10
+  loaded_bomb: {fileID: 0}
 --- !u!1 &8356168818419418723
 GameObject:
   m_ObjectHideFlags: 0

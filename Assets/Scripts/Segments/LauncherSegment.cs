@@ -13,11 +13,13 @@ public class LauncherSegment : ConstructionSegment {
 
 	AudioSource launch_audio = null;
 
+	[SerializeField]
 	Bomb loaded_bomb = null;
 
 	protected override void OnPlaced() {
 		animator = GetComponent<Animator>();
 		launch_audio = GetComponent<AudioSource>();
+		Reload();
 		current_cooldown += Random.value * cooldown;
 	}
 
@@ -33,9 +35,8 @@ public class LauncherSegment : ConstructionSegment {
 			Color color = bomb_sr.color;
 			color.a = 1 - (current_cooldown / cooldown);
 			bomb_sr.color = color;
-			current_cooldown = cooldown;
 
-			if (cooldown == 0) {
+			if (current_cooldown == 0) {
 				Fire();
 			}
 		}
@@ -45,14 +46,15 @@ public class LauncherSegment : ConstructionSegment {
 		loaded_bomb.transform.SetParent(null, true);
 		loaded_bomb.Launch();
 		loaded_bomb = null;
+		animator.SetTrigger("Launch");
 	}
 
 	private void Reload() {
+		current_cooldown = cooldown;
 		loaded_bomb = Instantiate(bomb, transform).GetComponent<Bomb>();
 		SpriteRenderer bomb_sr = loaded_bomb.gameObject.GetComponent<SpriteRenderer>();
 		Color color = bomb_sr.color;
 		color.a = 0;
 		bomb_sr.color = color;
-		current_cooldown = cooldown;
 	}
 }
