@@ -9,15 +9,29 @@ public class Bomb : MonoBehaviour {
 	private int explosion_radius = 3;
 	[SerializeField]
 	LayerMask enemies = 0;
+	[SerializeField]
+	float speed = 3;
+
+	[SerializeField]
+	GameObject fire = null;
 
 	private Animator animator = null;
+
+	private bool is_launched = false;
 
 	public void Start() {
 		animator = GetComponent<Animator>();
 	}
 
 	public void Launch() {
+		is_launched = true;
+		fire.SetActive(true);
+	}
 
+	private void FixedUpdate() {
+		if (is_launched) {
+			transform.position += transform.up * Time.deltaTime * speed;
+		}
 	}
 
 	public void OnTriggerEnter2D(Collider2D other) {

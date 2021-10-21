@@ -33,7 +33,8 @@ public class LauncherSegment : ConstructionSegment {
 		if (loaded_bomb != null) {
 			SpriteRenderer bomb_sr = loaded_bomb.gameObject.GetComponent<SpriteRenderer>();
 			Color color = bomb_sr.color;
-			color.a = 1 - (current_cooldown / cooldown);
+			float progress = current_cooldown / cooldown;
+			color.a = 1 - (int)(progress * 3)/3f;
 			bomb_sr.color = color;
 
 			if (current_cooldown == 0) {
