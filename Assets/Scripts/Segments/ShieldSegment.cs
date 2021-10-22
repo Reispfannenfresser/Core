@@ -22,10 +22,12 @@ public class ShieldSegment : ConstructionSegment {
 	}
 
 	protected override void OnDamaged(int amount) {
-		animator.SetTrigger("Block");
-		if (!block_audio.isPlaying) {
-			block_audio.Play();
+		if (blocker_count == 0) {
+			animator.SetTrigger("Block");
+			if (!block_audio.isPlaying) {
+				block_audio.Play();
+			}
+			Heal(amount / 2);
 		}
-		Heal(amount / 2);
 	}
 }
