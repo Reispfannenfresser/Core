@@ -102,7 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   max_hp: 300
   deletable: 1
-  prize: 25
+  prize: 30
   ufo: {fileID: 1332924699840116546, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
   spawn_cooldown: 5
   move_cooldown: 3

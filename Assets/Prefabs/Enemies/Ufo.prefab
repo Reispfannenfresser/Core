@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   max_hp: 15
   deletable: 1
-  prize: 5
+  prize: 12
   shot: {fileID: 1562789161147081517, guid: e54aa6710da9533f8b8ab69de422d275, type: 3}
   cooldown: 5
 --- !u!82 &5184668564278326114

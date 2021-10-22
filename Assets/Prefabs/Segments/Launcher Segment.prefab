@@ -126,7 +126,7 @@ MonoBehaviour:
   value: 30
   radius: 0.75
   bomb: {fileID: 1509016389895916502, guid: adbc124ffaeedce0baf73724e8692ef5, type: 3}
-  cooldown: 5
+  cooldown: 15
   loaded_bomb: {fileID: 0}
 --- !u!1 &8356168818419418723
 GameObject:
@@ -223,7 +223,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8950723079009521216, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
       propertyPath: m_Name
-      value: Launcher
+      value: Launcher Segment
       objectReference: {fileID: 0}
     - target: {fileID: 8950723079009521217, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
       propertyPath: m_RootOrder

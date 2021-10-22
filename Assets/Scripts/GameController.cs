@@ -26,9 +26,7 @@ public class GameController : MonoBehaviour {
 	[SerializeField]
 	Text zollar_text = null;
 	[SerializeField]
-	Text kills_text = null;
-	[SerializeField]
-	Text next_round_text = null;
+	Text enemy_count_text = null;
 	[SerializeField]
 	Text round_count_text = null;
 	[SerializeField]
@@ -37,6 +35,8 @@ public class GameController : MonoBehaviour {
 	Text highscore_text = null;
 	[SerializeField]
 	Button resume_button = null;
+	[SerializeField]
+	Button next_wave_button = null;
 
 	public AudioMixer mixer;
 
@@ -54,9 +54,7 @@ public class GameController : MonoBehaviour {
 
 	int bosses_at = 10;
 	int current_wave = 0;
-	float next_wave_in = 20;
 	int zollars = 150;
-	int kills = 0;
 	public bool is_paused = true;
 	public bool is_started = true;
 	public bool is_practice = false;
@@ -68,7 +66,6 @@ public class GameController : MonoBehaviour {
 	[SerializeField]
 	private Color ui_selected_color = Color.white;
 
-	int score = 0;
 	int highscore = 0;
 
 	int spawn_amount = 0;
@@ -79,6 +76,7 @@ public class GameController : MonoBehaviour {
 	public HashSet<Enemy> enemies = new HashSet<Enemy>();
 	public HashSet<ConstructionSegment> segments = new HashSet<ConstructionSegment>();
 	public HashSet<Shot> shots = new HashSet<Shot>();
+	public HashSet<Bomb> bombs = new HashSet<Bomb>();
 
 	void Awake() {
 		instance = this;
@@ -131,14 +129,17 @@ public class GameController : MonoBehaviour {
 			}
 		}
 
+		foreach(Bomb bomb in bombs) {
+			if (bomb != null) {
+				Destroy(bomb.gameObject);
+			}
+		}
+
 		current_wave = 0;
-		next_wave_in = 25;
-		zollars = 250;
-		kills = 0;
+		zollars = 50;
 		boss_count = 0;
 		num_bosses = 0;
 		spawn_amount = 0;
-		score = 0;
 
 		is_started = true;
 		SetPaused(false);
@@ -147,14 +148,14 @@ public class GameController : MonoBehaviour {
 		resume_button.interactable = true;
 		core = Instantiate(crawler, transform.position, transform.rotation);
 		core_segment = core.GetComponentInChildren<CoreSegment>();
+
+		round_count_text.text = "" + current_wave;
 	}
 
 	public void StartPractice() {
 		StartGame();
 		restart_text.text = "Start";
 		is_practice = true;
-		next_wave_in = 5;
-		score = 0;
 	}
 
 	public void LoseGame() {
@@ -209,66 +210,43 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void FixedUpdate() {
-		next_wave_in -= Time.deltaTime;
-		if (next_wave_in < 0) {
-			next_wave_in = 0;
-		}
-
-		if (boss_count > 0 && next_wave_in < 20) {
-			next_wave_in = 20;
-		}
-
-		if (enemies.Count == 0 && next_wave_in > 20) {
-			next_wave_in = 20;
-		}
-
-		if (current_wave > score && enemies.Count == 0) {
-			score = current_wave;
-			if (score > highscore) {
-				highscore = score;
-			}
-		}
-
-		if (next_wave_in <= 0) {
-			NextWave();
-		}
-
 		if (spawn_amount > 0) {
 			int index = UnityEngine.Random.Range(0, Math.Min(enemy_types.Length, spawn_amount));
 			SpawnEnemy(enemy_types[index]);
 			spawn_amount -= index + 1;
-		}
-
-		if (num_bosses > 0) {
+		}else if (num_bosses > 0) {
 			SpawnEnemy(mothership);
 			num_bosses -= 1;
 		}
 
-		next_round_text.text = "" + Mathf.Ceil(next_wave_in);
-		round_count_text.text = "" + Mathf.Max(score - 1, 0);
-		highscore_text.text = "" + Mathf.Max(highscore - 1, 0);
 		zollar_text.text = "" + zollars;
-		kills_text.text = "" + kills;
+		enemy_count_text.text = "" + enemies.Count;
+
+		enemy_count_text.gameObject.SetActive(enemies.Count > 0);
+		next_wave_button.gameObject.SetActive(enemies.Count == 0);
+		next_wave_button.interactable = enemies.Count == 0;
 	}
 
 	public void NextWave() {
 		if (is_practice) {
 			AddZollars(250);
-			next_wave_in = 5;
 			return;
 		}
 
 		current_wave += 1;
+		spawn_amount += current_wave * 2 + 5;
 
-		spawn_amount += current_wave * 2;
-
-		next_wave_in = current_wave * 2;
-
-		if ((current_wave - 1) % bosses_at == 0) {
-			num_bosses += (current_wave - 1) / bosses_at;
+		if ((current_wave) % bosses_at == 0) {
+			num_bosses += (current_wave) / bosses_at;
 		}
-		else if (current_wave > 25) {
+		else if (current_wave >= 25) {
 			num_bosses += (int) (UnityEngine.Random.value * current_wave / bosses_at);
+		}
+
+		round_count_text.text = "" + current_wave;
+		if (highscore < current_wave) {
+			highscore = current_wave;
+			highscore_text.text = "" + highscore;
 		}
 	}
 
@@ -282,7 +260,6 @@ public class GameController : MonoBehaviour {
 
 	public void RemoveEnemy(Enemy enemy) {
 		enemies.Remove(enemy);
-		kills++;
 	}
 
 	public void AddSegment(ConstructionSegment segment) {
@@ -295,6 +272,10 @@ public class GameController : MonoBehaviour {
 
 	public void AddShot(Shot shot) {
 		shots.Add(shot);
+	}
+
+	public void AddBomb(Bomb bomb) {
+		bombs.Add(bomb);
 	}
 
 	public void RemoveShot(Shot shot) {

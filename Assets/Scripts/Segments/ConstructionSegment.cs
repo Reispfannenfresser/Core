@@ -35,7 +35,7 @@ public class ConstructionSegment : MonoBehaviour {
 
 		foreach (Collider2D collider in colliders) {
 			ConstructionSegment segment = collider.gameObject.GetComponent<ConstructionSegment>();
-			if (!segment.initialized || segment == this) {
+			if (segment == null || !segment.initialized || segment == this) {
 				continue;
 			}
 
@@ -59,7 +59,7 @@ public class ConstructionSegment : MonoBehaviour {
 		if (transform.position.magnitude > 50) {
 			Destroy();
 		}
-		if (!blockable || blocker_count == 0) {
+		if (!blockable || (blocker_count == 0 && GameController.instance.enemies.Count > 0)) {
 			OnFixedUpdate();
 		}
 	}

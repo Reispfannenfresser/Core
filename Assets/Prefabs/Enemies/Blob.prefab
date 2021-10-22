@@ -167,7 +167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   max_hp: 25
   deletable: 1
-  prize: 10
+  prize: 7
   speed: 5
 --- !u!50 &353655395971821487
 Rigidbody2D:

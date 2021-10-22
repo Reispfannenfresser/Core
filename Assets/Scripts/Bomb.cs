@@ -24,6 +24,7 @@ public class Bomb : MonoBehaviour {
 	float search_cooldown = 3;
 	float current_search_cooldown = 0;
 
+	Vector3 goal_pos = Vector3.zero;
 
 	[SerializeField]
 	GameObject fire = null;
@@ -33,6 +34,10 @@ public class Bomb : MonoBehaviour {
 	private bool is_launched = false;
 
 	GameObject target = null;
+
+	public void Awake() {
+		GameController.instance.AddBomb(this);
+	}
 
 	public void Start() {
 		animator = GetComponent<Animator>();
@@ -58,22 +63,24 @@ public class Bomb : MonoBehaviour {
 			if (target == null) {
 				PickTarget();
 			}
+			goal_pos = transform.position + new Vector3(10 * Random.value - 5, 10 * Random.value - 5, 0);
+			goal_pos.x = Mathf.Clamp(goal_pos.x, -20, 20);
+			goal_pos.y = Mathf.Clamp(goal_pos.y, -20, 20);
 		}
 
-		if (target == null) {
-			return;
-		}
+		Vector3 direction = transform.InverseTransformDirection(goal_pos - transform.position);
 
-		Vector3 direction = transform.InverseTransformDirection(target.transform.position - transform.position);
+		if (target != null) {
+			direction = transform.InverseTransformDirection(target.transform.position - transform.position);
+		}
 		float distance = direction.magnitude;
 		direction.Normalize();
 
 		float change_needed = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
-		float change = Mathf.Clamp(change_needed, -current_turn_speed, current_turn_speed) * Time.deltaTime;
-		transform.Rotate(new Vector3(0, 0, change));
 
 		float angle_factor = 1 - Mathf.Abs(change_needed / 180);
 		float wanted_speed = ((angle_factor * 2) - 1) * speed;
+
 		current_speed += Mathf.Clamp(wanted_speed - current_speed, -max_acceleration, max_acceleration);
 		current_speed = Mathf.Clamp(current_speed, 0, speed);
 
@@ -81,6 +88,9 @@ public class Bomb : MonoBehaviour {
 		float wanted_turn_speed = ((distance_factor * 2) - 1) * turn_speed;
 		current_turn_speed += Mathf.Clamp(wanted_turn_speed - current_turn_speed, -max_turn_acceleration, max_turn_acceleration);
 		current_turn_speed = Mathf.Clamp(current_turn_speed, 0, turn_speed);
+
+		float rotational_change = Mathf.Clamp(change_needed, -current_turn_speed, current_turn_speed) * Time.deltaTime;
+		transform.Rotate(new Vector3(0, 0, rotational_change));
 	}
 
 	private void PickTarget() {
