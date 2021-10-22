@@ -67,7 +67,7 @@ public class SegmentPlacer : MonoBehaviour {
 			}
 
 			ConstructionSegment segment = collider.gameObject.GetComponent<ConstructionSegment>();
-			if (segment.deletable) {
+			if (segment != null && segment.deletable) {
 				segment.Delete();
 			}
 		}
