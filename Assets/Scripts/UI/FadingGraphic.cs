@@ -27,7 +27,7 @@ public class FadingGraphic : MonoBehaviour {
 			g.color = c;
 		}
 
-		gameObject.transform.position += Time.deltaTime * Vector3.up * speed * current_cooldown / cooldown;
+		gameObject.transform.position += Time.deltaTime * Vector3.up * speed;
 
 		if (current_cooldown <= 0) {
 			Destroy(gameObject);

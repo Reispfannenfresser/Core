@@ -31,7 +31,9 @@ public class Ufo : Enemy {
 		speed = 0.2f + (Random.value - 0.5f) * 0.2f;
 		flee_cooldown = 20 + (Random.value - 0.5f) * 10;
 		current_cooldown = Random.value * cooldown;
-		transform.position = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 50;
+		if (transform.position == Vector3.zero) {
+			transform.position = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 50;
+		}
 		shot_audio = GetComponent<AudioSource>();
 	}
 

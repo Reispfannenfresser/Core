@@ -102,9 +102,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   max_hp: 300
   deletable: 1
-  prize: 30
+  is_harmful: 1
   ufo: {fileID: 1332924699840116546, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
   spawn_cooldown: 5
+  ufo_call_count: 2
   move_cooldown: 3
   laser_cooldown: 7
 --- !u!120 &7198867644751211616

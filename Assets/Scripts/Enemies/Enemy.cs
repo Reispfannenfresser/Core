@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour {
 	[SerializeField]
 	public bool is_harmful = true;
 
-	protected void Start() {
+	protected void Awake() {
 		hp = max_hp;
 		OnSpawned();
 		GameController.instance.AddEnemy(this);

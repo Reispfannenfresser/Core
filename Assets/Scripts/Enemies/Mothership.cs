@@ -7,6 +7,8 @@ public class Mothership : Enemy {
 	GameObject ufo = null;
 	[SerializeField]
 	float spawn_cooldown = 5f;
+	[SerializeField]
+	int ufo_call_count = 3;
 	float current_spawn_cooldown = 0f;
 	[SerializeField]
 	float move_cooldown = 2f;
@@ -56,12 +58,7 @@ public class Mothership : Enemy {
 
 		if (current_spawn_cooldown <= 0) {
 			current_spawn_cooldown += spawn_cooldown;
-			CallUfo();
-		}
-
-		if (current_spawn_cooldown <= 0) {
-			current_spawn_cooldown += spawn_cooldown;
-			CallUfo();
+			CallUfos();
 		}
 
 		if (current_laser_cooldown <= 0) {
@@ -80,8 +77,10 @@ public class Mothership : Enemy {
 		}
 	}
 
-	void CallUfo() {
-		Instantiate(ufo, transform.position, transform.rotation);
+	void CallUfos() {
+		for (int i = 0; i < ufo_call_count; i++) {
+			Instantiate(ufo, transform.position, transform.rotation);
+		}
 	}
 
 	void Laser() {

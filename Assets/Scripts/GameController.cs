@@ -26,6 +26,8 @@ public class GameController : MonoBehaviour {
 	[SerializeField]
 	Text zollar_text = null;
 	[SerializeField]
+	Text zollar_change_text = null;
+	[SerializeField]
 	Text enemy_count_text = null;
 	[SerializeField]
 	Text round_count_text = null;
@@ -55,6 +57,7 @@ public class GameController : MonoBehaviour {
 	int bosses_at = 10;
 	int current_wave = 0;
 	int zollars = 0;
+	int zollar_change = 0;
 	public bool is_paused = true;
 	public bool is_started = true;
 	public bool is_practice = false;
@@ -142,6 +145,7 @@ public class GameController : MonoBehaviour {
 
 		current_wave = 0;
 		ResetZollars();
+		zollar_change = 0;
 		boss_count = 0;
 		num_bosses = 0;
 		spawn_amount = 0;
@@ -236,6 +240,9 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void NextWave() {
+		zollar_change = 0;
+		zollar_change_text.text = "+" + zollar_change;
+
 		if (is_practice) {
 			return;
 		}
@@ -259,7 +266,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	private void SpawnEnemy(GameObject enemy) {
-		Instantiate(enemy, transform.position + Vector3.up * 40, transform.rotation);
+		Instantiate(enemy, transform.position, transform.rotation);
 	}
 
 	public void AddEnemy(Enemy enemy) {
@@ -309,12 +316,21 @@ public class GameController : MonoBehaviour {
 			return;
 		}
 
+		zollar_change += change;
+		zollar_change_text.text = "" + zollar_change;
+		if (zollar_change >= 0) {
+			zollar_change_text.text = "+" + zollar_change_text.text;
+		}
+
+		Graphic[] change_graphics = zollar_change_text.GetComponentsInChildren<Graphic>();
+		foreach (Graphic g in change_graphics) {
+			g.color = (zollar_change < 0) ? new Color(1, 0.5f, 0.5f) : new Color(0.5f, 1, 0.5f);
+		}
+
 		zollars += change;
 		zollar_text.text = "" + zollars;
 
-		GameObject new_balance_change = Instantiate(balance_change_indicator, zollar_text.transform);
-
-		new_balance_change.transform.position -= ((RectTransform) zollar_text.transform).sizeDelta.y * Vector3.up * 4;
+		GameObject new_balance_change = Instantiate(balance_change_indicator, zollar_change_text.transform);
 
 		RectTransform[] transforms = new_balance_change.GetComponentsInChildren<RectTransform>();
 		foreach (RectTransform t in transforms) {

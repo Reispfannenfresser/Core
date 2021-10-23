@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class HealingSegment : ConstructionSegment {
+public class MenderSegment : ConstructionSegment {
 	[SerializeField]
 	int healing_radius = 2;
 	[SerializeField]
