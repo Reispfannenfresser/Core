@@ -292,9 +292,12 @@ MonoBehaviour:
   hp: 500
   deletable: 0
   meltable: 0
-  blockable: 0
+  blockable: 1
+  should_pause: 1
   value: 0
   radius: 1
+  money_cooldown: 5
+  money_amount: 25
 --- !u!1001 &804702221920045654
 PrefabInstance:
   m_ObjectHideFlags: 0

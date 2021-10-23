@@ -42,7 +42,7 @@ public class Mothership : Enemy {
 		GameController.instance.AddBoss();
 	}
 
-	private void FixedUpdate() {
+	protected override void OnFixedUpdate() {
 		if (current_move_cooldown <= 0) {
 			current_move_cooldown += move_cooldown;
 			angle += (Random.value - 0.5f) * Mathf.PI;

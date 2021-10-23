@@ -54,7 +54,7 @@ public class GameController : MonoBehaviour {
 
 	int bosses_at = 10;
 	int current_wave = 0;
-	int zollars = 150;
+	int zollars = 0;
 	public bool is_paused = true;
 	public bool is_started = true;
 	public bool is_practice = false;
@@ -66,14 +66,19 @@ public class GameController : MonoBehaviour {
 	[SerializeField]
 	private Color ui_selected_color = Color.white;
 
+	[SerializeField]
+	GameObject balance_change_indicator = null;
+
 	int highscore = 0;
 
+	int budget = 0;
 	int spawn_amount = 0;
-	int num_bosses = 0;
+	public int num_bosses = 0;
 
 	public static GameController instance = null;
 
 	public HashSet<Enemy> enemies = new HashSet<Enemy>();
+	public int harmful_enemies = 0;
 	public HashSet<ConstructionSegment> segments = new HashSet<ConstructionSegment>();
 	public HashSet<Shot> shots = new HashSet<Shot>();
 	public HashSet<Bomb> bombs = new HashSet<Bomb>();
@@ -119,7 +124,7 @@ public class GameController : MonoBehaviour {
 
 		foreach(ConstructionSegment segment in segments) {
 			if (segment != null) {
-				segment.Delete();
+				segment.Destroy();
 			}
 		}
 
@@ -136,10 +141,12 @@ public class GameController : MonoBehaviour {
 		}
 
 		current_wave = 0;
-		zollars = 50;
+		ResetZollars();
 		boss_count = 0;
 		num_bosses = 0;
 		spawn_amount = 0;
+		harmful_enemies = 0;
+		budget = 0;
 
 		is_started = true;
 		SetPaused(false);
@@ -219,22 +226,23 @@ public class GameController : MonoBehaviour {
 			num_bosses -= 1;
 		}
 
-		zollar_text.text = "" + zollars;
 		enemy_count_text.text = "" + enemies.Count;
 
-		enemy_count_text.gameObject.SetActive(enemies.Count > 0);
-		next_wave_button.gameObject.SetActive(enemies.Count == 0);
-		next_wave_button.interactable = enemies.Count == 0;
+		bool round_continues = harmful_enemies > 0;
+
+		enemy_count_text.gameObject.SetActive(round_continues);
+		next_wave_button.gameObject.SetActive(!round_continues);
+		next_wave_button.interactable = !round_continues;
 	}
 
 	public void NextWave() {
 		if (is_practice) {
-			AddZollars(250);
 			return;
 		}
 
 		current_wave += 1;
-		spawn_amount += current_wave * 2 + 5;
+		spawn_amount += current_wave * 2 + 5 + budget * 5;
+		budget = 0;
 
 		if ((current_wave) % bosses_at == 0) {
 			num_bosses += (current_wave) / bosses_at;
@@ -256,10 +264,16 @@ public class GameController : MonoBehaviour {
 
 	public void AddEnemy(Enemy enemy) {
 		enemies.Add(enemy);
+		if (enemy.is_harmful) {
+			harmful_enemies += 1;
+		}
 	}
 
 	public void RemoveEnemy(Enemy enemy) {
 		enemies.Remove(enemy);
+		if (enemy.is_harmful) {
+			harmful_enemies -= 1;
+		}
 	}
 
 	public void AddSegment(ConstructionSegment segment) {
@@ -290,12 +304,45 @@ public class GameController : MonoBehaviour {
 		return zollars;
 	}
 
+	private void ZollarsChanged(int change) {
+		if (change == 0) {
+			return;
+		}
+
+		zollars += change;
+		zollar_text.text = "" + zollars;
+
+		GameObject new_balance_change = Instantiate(balance_change_indicator, zollar_text.transform);
+
+		new_balance_change.transform.position -= ((RectTransform) zollar_text.transform).sizeDelta.y * Vector3.up * 4;
+
+		RectTransform[] transforms = new_balance_change.GetComponentsInChildren<RectTransform>();
+		foreach (RectTransform t in transforms) {
+			t.sizeDelta *= current_ui_scale;
+		}
+
+		Graphic[] graphics = new_balance_change.GetComponentsInChildren<Graphic>();
+		foreach (Graphic g in graphics) {
+			g.color = (change < 0) ? new Color(1, 0.5f, 0.5f) : new Color(0.5f, 1, 0.5f);
+		}
+
+		Text text = new_balance_change.GetComponent<Text>();
+		text.text = "" + change;
+		if (change > 0) {
+			text.text = "+" + text.text;
+		}
+	}
+
+	public void ResetZollars() {
+		ZollarsChanged(-zollars);
+	}
+
 	public void AddZollars(int amount) {
-		zollars += amount;
+		ZollarsChanged(amount);
 	}
 
 	public void RemoveZollars(int amount) {
-		zollars -= amount;
+		ZollarsChanged(-amount);
 	}
 
 	public void AddBoss() {
@@ -304,5 +351,9 @@ public class GameController : MonoBehaviour {
 
 	public void RemoveBoss() {
 		boss_count -= 1;
+	}
+
+	public void AddBudget(int amount) {
+		budget += amount;
 	}
 }

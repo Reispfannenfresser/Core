@@ -24,12 +24,9 @@ public class Blob : Enemy {
 		rb2d = gameObject.GetComponent<Rigidbody2D>();
 	}
 
-	private void FixedUpdate() {
+	protected override void OnFixedUpdate() {
 		if (!collided) {
 			rb2d.velocity = direction * speed;
-		}
-		if (transform.position.magnitude > 80) {
-			Delete();
 		}
 	}
 

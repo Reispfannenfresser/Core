@@ -15,6 +15,7 @@ public class ConstructionSegment : MonoBehaviour {
 	public bool deletable = true;
 	public bool meltable = true;
 	public bool blockable = false;
+	public bool should_pause = false;
 	public int value = 10;
 	public float radius = 0.4f;
 
@@ -59,7 +60,7 @@ public class ConstructionSegment : MonoBehaviour {
 		if (transform.position.magnitude > 50) {
 			Destroy();
 		}
-		if (!blockable || (blocker_count == 0 && GameController.instance.enemies.Count > 0)) {
+		if ((!blockable || blocker_count == 0) && (!should_pause || GameController.instance.enemies.Count > 0)) {
 			OnFixedUpdate();
 		}
 	}

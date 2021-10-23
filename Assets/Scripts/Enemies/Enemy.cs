@@ -9,8 +9,10 @@ public class Enemy : MonoBehaviour {
 	protected int max_hp = 100;
 	protected int hp;
 	public bool deletable = true;
-	public int prize = 5;
 	private bool is_dead = false;
+
+	[SerializeField]
+	public bool is_harmful = true;
 
 	protected void Start() {
 		hp = max_hp;
@@ -38,15 +40,26 @@ public class Enemy : MonoBehaviour {
 		sprite_renderer.color = new Color(r_value, gb_values, gb_values);
 	}
 
+	private void FixedUpdate() {
+		if (transform.position.magnitude > 70) {
+			Delete();
+		}
+		OnFixedUpdate();
+	}
+
+	protected virtual void OnFixedUpdate() {
+
+	}
+
 	public void Delete() {
 		is_dead = true;
 		OnDeleted();
+		GameController.instance.AddBudget(1);
 		Destroy(gameObject);
 	}
 
 	public void Kill() {
 		is_dead = true;
-		GameController.instance.AddZollars(prize);
 		OnKilled();
 		Destroy(gameObject);
 	}

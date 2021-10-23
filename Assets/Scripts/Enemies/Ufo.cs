@@ -14,9 +14,13 @@ public class Ufo : Enemy {
 	float cooldown = 1f;
 	float current_cooldown = 0f;
 
+	float flee_cooldown = 0;
+
 	float angle = 0f;
 	float distance = 0f;
 	float speed = 1f;
+
+	float flee_speed = 7;
 
 	AudioSource shot_audio = null;
 
@@ -25,15 +29,24 @@ public class Ufo : Enemy {
 		distance = 15 + (Random.value - 0.5f) * 10;
 		back = Random.value > 0.5f;
 		speed = 0.2f + (Random.value - 0.5f) * 0.2f;
+		flee_cooldown = 20 + (Random.value - 0.5f) * 10;
 		current_cooldown = Random.value * cooldown;
-		transform.position = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 40;
+		transform.position = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 50;
 		shot_audio = GetComponent<AudioSource>();
 	}
 
-	private void FixedUpdate() {
+	protected override void OnFixedUpdate() {
+		if (GameController.instance.num_bosses <= 0) {
+			flee_cooldown -= Time.deltaTime;
+		}
+		if (flee_cooldown < 0) {
+			distance += flee_speed * Time.deltaTime;
+		}
 		angle += (back ? -1 : 1) * Time.deltaTime * speed;
 
-		transform.position += (new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * distance - transform.position) * Time.deltaTime;
+		Vector3 wanted_pos = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * distance;
+
+		transform.position += (wanted_pos - transform.position) * Time.deltaTime;
 
 		current_cooldown -= Time.deltaTime;
 		if (current_cooldown <= 0) {

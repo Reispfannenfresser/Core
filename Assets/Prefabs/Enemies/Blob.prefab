@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2126227699426158750}
   - component: {fileID: 6303891046522918032}
-  m_Layer: 10
+  m_Layer: 16
   m_Name: ConstructionCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   max_hp: 25
   deletable: 1
-  prize: 7
+  is_harmful: 0
   speed: 5
 --- !u!50 &353655395971821487
 Rigidbody2D:

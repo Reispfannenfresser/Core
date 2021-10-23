@@ -319,9 +319,9 @@ MonoBehaviour:
   value: 20
   radius: 0.5
   healing_radius: 2
-  cooldown: 1
-  amount: 25
-  cost: 5
+  cooldown: 3
+  amount: 15
+  cost: 3
   construction:
     serializedVersion: 2
     m_Bits: 1024
