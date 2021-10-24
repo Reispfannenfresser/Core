@@ -52,6 +52,9 @@ public class Enemy : MonoBehaviour {
 	}
 
 	public void Delete() {
+		if (is_dead) {
+			return;
+		}
 		is_dead = true;
 		OnDeleted();
 		GameController.instance.AddBudget(1);
@@ -59,6 +62,9 @@ public class Enemy : MonoBehaviour {
 	}
 
 	public void Kill() {
+		if (is_dead) {
+			return;
+		}
 		is_dead = true;
 		OnKilled();
 		Destroy(gameObject);

@@ -2478,7 +2478,7 @@ MonoBehaviour:
   enemy_count_text: {fileID: 761646768}
   round_count_text: {fileID: 1958423552}
   restart_text: {fileID: 433259217}
-  highscore_text: {fileID: 1734976081}
+  highscore_text: {fileID: 1430262876}
   resume_button: {fileID: 1727234027}
   next_wave_button: {fileID: 1479749859}
   mixer: {fileID: 24100000, guid: fb37c435dae851f8d96840c73fb341a9, type: 2}
@@ -6262,11 +6262,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3900384838436544915, guid: 9bec3d3a2c2084594bffbe2f6790a7d8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -40
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3900384838436544915, guid: 9bec3d3a2c2084594bffbe2f6790a7d8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 3900384838436544915, guid: 9bec3d3a2c2084594bffbe2f6790a7d8, type: 3}
       propertyPath: m_LocalPosition.z

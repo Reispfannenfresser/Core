@@ -63,6 +63,8 @@ public class GameController : MonoBehaviour {
 	public bool is_practice = false;
 
 	public int boss_count = 0;
+	public int enemy_count = 0;
+	public int harmful_enemies = 0;
 
 	[SerializeField]
 	private Color ui_color = Color.white;
@@ -81,7 +83,6 @@ public class GameController : MonoBehaviour {
 	public static GameController instance = null;
 
 	public HashSet<Enemy> enemies = new HashSet<Enemy>();
-	public int harmful_enemies = 0;
 	public HashSet<ConstructionSegment> segments = new HashSet<ConstructionSegment>();
 	public HashSet<Shot> shots = new HashSet<Shot>();
 	public HashSet<Bomb> bombs = new HashSet<Bomb>();
@@ -230,7 +231,7 @@ public class GameController : MonoBehaviour {
 			num_bosses -= 1;
 		}
 
-		enemy_count_text.text = "" + enemies.Count;
+		enemy_count_text.text = "" + enemy_count;
 
 		bool round_continues = harmful_enemies > 0;
 
@@ -271,15 +272,17 @@ public class GameController : MonoBehaviour {
 
 	public void AddEnemy(Enemy enemy) {
 		enemies.Add(enemy);
+		enemy_count++;
 		if (enemy.is_harmful) {
-			harmful_enemies += 1;
+			harmful_enemies++;
 		}
 	}
 
 	public void RemoveEnemy(Enemy enemy) {
 		enemies.Remove(enemy);
+		enemy_count--;
 		if (enemy.is_harmful) {
-			harmful_enemies -= 1;
+			harmful_enemies--;
 		}
 	}
 

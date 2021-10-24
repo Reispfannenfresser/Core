@@ -60,7 +60,7 @@ public class ConstructionSegment : MonoBehaviour {
 		if (transform.position.magnitude > 50) {
 			Destroy();
 		}
-		if ((!blockable || blocker_count == 0) && (!should_pause || GameController.instance.enemies.Count > 0)) {
+		if ((!blockable || blocker_count == 0) && (!should_pause || GameController.instance.enemy_count > 0)) {
 			OnFixedUpdate();
 		}
 	}
