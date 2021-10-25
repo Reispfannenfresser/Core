@@ -29,7 +29,10 @@ public class Bomb : MonoBehaviour {
 	[SerializeField]
 	GameObject fire = null;
 
+	bool detonated = false;
+
 	private Animator animator = null;
+	private SpriteRenderer sr = null;
 
 	private bool is_launched = false;
 
@@ -37,10 +40,11 @@ public class Bomb : MonoBehaviour {
 
 	public void Awake() {
 		GameController.instance.AddBomb(this);
+		animator = GetComponent<Animator>();
+		sr = GetComponent<SpriteRenderer>();
 	}
 
 	public void Start() {
-		animator = GetComponent<Animator>();
 		current_search_cooldown = search_cooldown * Random.value;
 	}
 
@@ -49,10 +53,11 @@ public class Bomb : MonoBehaviour {
 		fire.SetActive(true);
 		current_speed = speed;
 		current_turn_speed = turn_speed;
+		sr.sortingOrder = 7;
 	}
 
 	private void FixedUpdate() {
-		if (!is_launched) {
+		if (!is_launched || detonated) {
 			return;
 		}
 		transform.position += transform.up * Time.deltaTime * current_speed;
@@ -107,14 +112,15 @@ public class Bomb : MonoBehaviour {
 	}
 
 	public void OnTriggerEnter2D(Collider2D other) {
-		Detonate();
+		if (!detonated) {
+			Detonate();
+		}
 	}
 
 	private void Detonate() {
+		detonated = true;
+		fire.SetActive(false);
 		Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, explosion_radius, enemies);
-
-		Debug.Log("Boom!");
-
 		foreach (Collider2D collider in colliders) {
 			Enemy enemy = collider.gameObject.GetComponent<Enemy>();
 			if (enemy != null) {
@@ -122,6 +128,10 @@ public class Bomb : MonoBehaviour {
 				enemy.Damage(Mathf.Max(0, (int) (damage * multiplier)));
 			}
 		}
+		animator.SetTrigger("Boom");
+	}
+
+	private void Remove() {
 		Destroy(gameObject);
 	}
 }

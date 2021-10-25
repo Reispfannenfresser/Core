@@ -19,7 +19,6 @@ public class GeneratorSegment : ConstructionSegment {
 
 	protected override void OnFixedUpdate() {
 		if (!GameController.instance.is_practice && GameController.instance.harmful_enemies <= 0) {
-			Debug.Log("Hi");
 			return;
 		}
 
