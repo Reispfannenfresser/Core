@@ -150,7 +150,6 @@ public class GameController : MonoBehaviour {
 		boss_count = 0;
 		num_bosses = 0;
 		spawn_amount = 0;
-		harmful_enemies = 0;
 		budget = 0;
 
 		is_started = true;

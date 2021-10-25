@@ -33,6 +33,7 @@ public class Bomb : MonoBehaviour {
 
 	private Animator animator = null;
 	private SpriteRenderer sr = null;
+	private AudioSource explosion_audio = null;
 
 	private bool is_launched = false;
 
@@ -42,6 +43,7 @@ public class Bomb : MonoBehaviour {
 		GameController.instance.AddBomb(this);
 		animator = GetComponent<Animator>();
 		sr = GetComponent<SpriteRenderer>();
+		explosion_audio = GetComponent<AudioSource>();
 	}
 
 	public void Start() {
@@ -111,8 +113,8 @@ public class Bomb : MonoBehaviour {
 		target = new_target;
 	}
 
-	public void OnTriggerEnter2D(Collider2D other) {
-		if (!detonated) {
+	public void OnTriggerStay2D(Collider2D other) {
+		if (is_launched && !detonated) {
 			Detonate();
 		}
 	}
@@ -129,6 +131,7 @@ public class Bomb : MonoBehaviour {
 			}
 		}
 		animator.SetTrigger("Boom");
+		explosion_audio.Play();
 	}
 
 	private void Remove() {
