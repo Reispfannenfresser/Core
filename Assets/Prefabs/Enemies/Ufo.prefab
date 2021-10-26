@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1332924699840116546}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 10, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   max_hp: 15
   deletable: 1
-  prize: 12
+  is_harmful: 1
   shot: {fileID: 1562789161147081517, guid: e54aa6710da9533f8b8ab69de422d275, type: 3}
   cooldown: 5
 --- !u!82 &5184668564278326114
