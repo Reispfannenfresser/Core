@@ -40,7 +40,6 @@ public class Bomb : MonoBehaviour {
 	GameObject target = null;
 
 	public void Awake() {
-		GameController.instance.AddBomb(this);
 		animator = GetComponent<Animator>();
 		sr = GetComponent<SpriteRenderer>();
 		explosion_audio = GetComponent<AudioSource>();
@@ -103,7 +102,7 @@ public class Bomb : MonoBehaviour {
 	private void PickTarget() {
 		GameObject new_target = null;
 		float shortest_distance = Mathf.Infinity;
-		foreach (Enemy enemy in GameController.instance.enemies) {
+		foreach (Enemy enemy in Enemy.all_enemies) {
 			float distance_to = (enemy.transform.position - transform.position).magnitude;
 			if (distance_to < shortest_distance) {
 				new_target = enemy.gameObject;

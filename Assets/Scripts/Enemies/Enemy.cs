@@ -3,13 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour {
+	public static HashSet<Enemy> all_enemies = new HashSet<Enemy>();
+	public static int harmful_enemies = 0;
+	public static int boss_enemies = 0;
+	public static int total_enemies = 0;
+
 	protected SpriteRenderer sprite_renderer = null;
 
 	[SerializeField]
 	protected int max_hp = 100;
 	protected int hp;
-	public bool deletable = true;
 	private bool is_dead = false;
+	[SerializeField]
+	public bool deletable = true;
+	[SerializeField]
+	public bool is_boss = false;
 
 	[SerializeField]
 	public bool is_harmful = true;
@@ -17,7 +25,14 @@ public class Enemy : MonoBehaviour {
 	protected void Awake() {
 		hp = max_hp;
 		OnSpawned();
-		GameController.instance.AddEnemy(this);
+		all_enemies.Add(this);
+		if (is_harmful) {
+			harmful_enemies++;
+		}
+		if (is_boss) {
+			boss_enemies++;
+		}
+		total_enemies++;
 		sprite_renderer = GetComponent<SpriteRenderer>();
 	}
 
@@ -41,24 +56,11 @@ public class Enemy : MonoBehaviour {
 	}
 
 	private void FixedUpdate() {
-		if (transform.position.magnitude > 70) {
-			Delete();
-		}
 		OnFixedUpdate();
 	}
 
 	protected virtual void OnFixedUpdate() {
 
-	}
-
-	public void Delete() {
-		if (is_dead) {
-			return;
-		}
-		is_dead = true;
-		OnDeleted();
-		GameController.instance.AddBudget(1);
-		Destroy(gameObject);
 	}
 
 	public void Kill() {
@@ -70,19 +72,29 @@ public class Enemy : MonoBehaviour {
 		Destroy(gameObject);
 	}
 
+	protected virtual void OnDestroy() {
+		OnDestroyed();
+
+		if (is_harmful) {
+			harmful_enemies--;
+		}
+		if (is_boss) {
+			boss_enemies--;
+		}
+		total_enemies--;
+
+		all_enemies.Remove(this);
+	}
+
 	protected virtual void OnSpawned() {
 	}
 
 	protected virtual void OnDamaged(int amount) {
 	}
 
-	protected virtual void OnDeleted() {
+	protected virtual void OnDestroyed() {
 	}
 
 	protected virtual void OnKilled() {
-	}
-
-	protected virtual void OnDestroy() {
-		GameController.instance.RemoveEnemy(this);
 	}
 }

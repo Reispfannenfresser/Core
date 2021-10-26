@@ -40,8 +40,6 @@ public class Mothership : Enemy {
 		laser = GetComponent<LineRenderer>();
 		animator = GetComponent<Animator>();
 		laser_audio = GetComponent<AudioSource>();
-
-		GameController.instance.AddBoss();
 	}
 
 	protected override void OnFixedUpdate() {
@@ -84,10 +82,10 @@ public class Mothership : Enemy {
 	}
 
 	void Laser() {
-		int segment_count = GameController.instance.segments.Count;
+		int segment_count = ConstructionSegment.all_segments.Count;
 		if (segment_count > 0) {
 			int index = Random.Range(0, segment_count);
-			foreach (ConstructionSegment segment in GameController.instance.segments) {
+			foreach (ConstructionSegment segment in ConstructionSegment.all_segments) {
 				if (index <= 0 && segment != null) {
 					target = segment;
 					animator.SetTrigger("Fire");
@@ -103,13 +101,5 @@ public class Mothership : Enemy {
 
 	void DamageTarget() {
 		is_attacking = false;
-	}
-
-	protected override void OnKilled() {
-		GameController.instance.RemoveBoss();
-	}
-
-	protected override void OnDeleted() {
-		GameController.instance.RemoveBoss();
 	}
 }

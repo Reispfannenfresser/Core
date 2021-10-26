@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 5184668564278326114}
   - component: {fileID: 8280693912065802280}
   - component: {fileID: 1466905013703596321}
+  - component: {fileID: 3097708653509413401}
+  - component: {fileID: -6721908467322481920}
   m_Layer: 12
   m_Name: Ufo
   m_TagString: Untagged
@@ -100,6 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   max_hp: 15
   deletable: 1
+  is_boss: 0
   is_harmful: 1
   shot: {fileID: 1562789161147081517, guid: e54aa6710da9533f8b8ab69de422d275, type: 3}
   cooldown: 5
@@ -236,3 +239,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &3097708653509413401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1332924699840116546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8543498e25de3200930b0ec3c71dbc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  max_distance: 60
+  origin: {x: 0, y: 0, z: 0}
+--- !u!114 &-6721908467322481920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1332924699840116546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d1cc0999290ab07d9ad6946815cc282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 8950723079009521218}
   - component: {fileID: 9178111157218713962}
   - component: {fileID: -4613083552123600912}
+  - component: {fileID: 365940496253038473}
+  - component: {fileID: 6732057244131122700}
   m_Layer: 10
   m_Name: Segment Template
   m_TagString: Untagged
@@ -121,3 +123,29 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.4
+--- !u!114 &365940496253038473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950723079009521216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8543498e25de3200930b0ec3c71dbc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  max_distance: 40
+  origin: {x: 0, y: 0, z: 0}
+--- !u!114 &6732057244131122700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950723079009521216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d1cc0999290ab07d9ad6946815cc282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

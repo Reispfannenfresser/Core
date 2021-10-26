@@ -13,15 +13,12 @@ public class GameController : MonoBehaviour {
 	[SerializeField]
 	GameObject[] enemy_types = new GameObject[0];
 	[SerializeField]
-	GameObject mothership = null;
+	GameObject[] boss_types = new GameObject[0];
 	[SerializeField]
 	Image[] ui_images = new Image[0];
 
 	[SerializeField]
 	GameObject crawler = null;
-
-	GameObject core = null;
-	public CoreSegment core_segment = null;
 
 	[SerializeField]
 	Text zollar_text = null;
@@ -62,10 +59,6 @@ public class GameController : MonoBehaviour {
 	public bool is_started = true;
 	public bool is_practice = false;
 
-	public int boss_count = 0;
-	public int enemy_count = 0;
-	public int harmful_enemies = 0;
-
 	[SerializeField]
 	private Color ui_color = Color.white;
 	[SerializeField]
@@ -76,16 +69,12 @@ public class GameController : MonoBehaviour {
 
 	int highscore = 0;
 
-	int budget = 0;
 	int spawn_amount = 0;
-	public int num_bosses = 0;
+	int boss_spawn_amount = 0;
+
+	public HashSet<GameObject> delete_on_start = new HashSet<GameObject>();
 
 	public static GameController instance = null;
-
-	public HashSet<Enemy> enemies = new HashSet<Enemy>();
-	public HashSet<ConstructionSegment> segments = new HashSet<ConstructionSegment>();
-	public HashSet<Shot> shots = new HashSet<Shot>();
-	public HashSet<Bomb> bombs = new HashSet<Bomb>();
 
 	void Awake() {
 		instance = this;
@@ -118,49 +107,29 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void StartGame() {
-		Destroy(core);
-
-		foreach(Enemy enemy in enemies) {
-			if (enemy != null) {
-				enemy.Delete();
-			}
-		}
-
-		foreach(ConstructionSegment segment in segments) {
-			if (segment != null) {
-				segment.Destroy();
-			}
-		}
-
-		foreach(Shot shot in shots) {
-			if (shot != null) {
-				Destroy(shot.gameObject);
-			}
-		}
-
-		foreach(Bomb bomb in bombs) {
-			if (bomb != null) {
-				Destroy(bomb.gameObject);
+		foreach(GameObject to_delete in delete_on_start) {
+			if (to_delete != null) {
+				Destroy(to_delete);
 			}
 		}
 
 		current_wave = 0;
+
 		ResetZollars();
 		zollar_change = 0;
-		boss_count = 0;
-		num_bosses = 0;
+
 		spawn_amount = 0;
-		budget = 0;
+		boss_spawn_amount = 0;
 
 		is_started = true;
-		SetPaused(false);
 		is_practice = false;
+		SetPaused(false);
+
 		restart_text.text = "Restart";
 		resume_button.interactable = true;
-		core = Instantiate(crawler, transform.position, transform.rotation);
-		core_segment = core.GetComponentInChildren<CoreSegment>();
-
 		round_count_text.text = "" + current_wave;
+
+		Instantiate(crawler, transform.position, transform.rotation);
 	}
 
 	public void StartPractice() {
@@ -225,14 +194,15 @@ public class GameController : MonoBehaviour {
 			int index = UnityEngine.Random.Range(0, Math.Min(enemy_types.Length, spawn_amount));
 			SpawnEnemy(enemy_types[index]);
 			spawn_amount -= index + 1;
-		}else if (num_bosses > 0) {
-			SpawnEnemy(mothership);
-			num_bosses -= 1;
+		}else if (boss_spawn_amount > 0) {
+			int index = UnityEngine.Random.Range(0, Math.Min(boss_types.Length, boss_spawn_amount));
+			SpawnEnemy(boss_types[index]);
+			boss_spawn_amount -= index + 1;
 		}
 
-		enemy_count_text.text = "" + enemy_count;
+		enemy_count_text.text = "" + Enemy.total_enemies;
 
-		bool round_continues = harmful_enemies > 0;
+		bool round_continues = Enemy.harmful_enemies > 0;
 
 		enemy_count_text.gameObject.SetActive(round_continues);
 		next_wave_button.gameObject.SetActive(!round_continues);
@@ -248,14 +218,13 @@ public class GameController : MonoBehaviour {
 		}
 
 		current_wave += 1;
-		spawn_amount += current_wave * 2 + 5 + budget * 5;
-		budget = 0;
+		spawn_amount += current_wave * 2 + 5;
 
 		if ((current_wave) % bosses_at == 0) {
-			num_bosses += (current_wave) / bosses_at;
+			boss_spawn_amount += (current_wave) / bosses_at;
 		}
 		else if (current_wave >= 25) {
-			num_bosses += (int) (UnityEngine.Random.value * current_wave / bosses_at);
+			boss_spawn_amount += (int) (UnityEngine.Random.value * current_wave / bosses_at);
 		}
 
 		round_count_text.text = "" + current_wave;
@@ -269,48 +238,24 @@ public class GameController : MonoBehaviour {
 		Instantiate(enemy, transform.position, transform.rotation);
 	}
 
-	public void AddEnemy(Enemy enemy) {
-		enemies.Add(enemy);
-		enemy_count++;
-		if (enemy.is_harmful) {
-			harmful_enemies++;
-		}
-	}
-
-	public void RemoveEnemy(Enemy enemy) {
-		enemies.Remove(enemy);
-		enemy_count--;
-		if (enemy.is_harmful) {
-			harmful_enemies--;
-		}
-	}
-
-	public void AddSegment(ConstructionSegment segment) {
-		segments.Add(segment);
-	}
-
-	public void RemoveSegment(ConstructionSegment segment) {
-		segments.Remove(segment);
-	}
-
-	public void AddShot(Shot shot) {
-		shots.Add(shot);
-	}
-
-	public void AddBomb(Bomb bomb) {
-		bombs.Add(bomb);
-	}
-
-	public void RemoveShot(Shot shot) {
-		shots.Remove(shot);
-	}
-
 	public void SetSegment(GameObject to_place) {
 		segment_placer.SetSegment(to_place);
 	}
 
 	public int GetZollars() {
 		return zollars;
+	}
+
+	public void ResetZollars() {
+		ZollarsChanged(-zollars);
+	}
+
+	public void AddZollars(int amount) {
+		ZollarsChanged(amount);
+	}
+
+	public void RemoveZollars(int amount) {
+		ZollarsChanged(-amount);
 	}
 
 	private void ZollarsChanged(int change) {
@@ -349,29 +294,5 @@ public class GameController : MonoBehaviour {
 		if (change > 0) {
 			text.text = "+" + text.text;
 		}
-	}
-
-	public void ResetZollars() {
-		ZollarsChanged(-zollars);
-	}
-
-	public void AddZollars(int amount) {
-		ZollarsChanged(amount);
-	}
-
-	public void RemoveZollars(int amount) {
-		ZollarsChanged(-amount);
-	}
-
-	public void AddBoss() {
-		boss_count += 1;
-	}
-
-	public void RemoveBoss() {
-		boss_count -= 1;
-	}
-
-	public void AddBudget(int amount) {
-		budget += amount;
 	}
 }

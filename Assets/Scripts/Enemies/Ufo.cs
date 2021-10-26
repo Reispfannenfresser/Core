@@ -38,7 +38,7 @@ public class Ufo : Enemy {
 	}
 
 	protected override void OnFixedUpdate() {
-		if (GameController.instance.num_bosses <= 0) {
+		if (Enemy.boss_enemies <= 0) {
 			flee_cooldown -= Time.deltaTime;
 		}
 		if (flee_cooldown < 0) {
@@ -58,7 +58,10 @@ public class Ufo : Enemy {
 	}
 
 	private void Shoot() {
-		Instantiate(shot, transform.position, transform.rotation);
+		Vector3 direction = -transform.position;
+		direction.Normalize();
+
+		Instantiate(shot, transform.position, Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg));
 		shot_audio.Play();
 	}
 }

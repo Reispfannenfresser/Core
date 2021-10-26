@@ -78,7 +78,7 @@ public class GunSegment : ConstructionSegment {
 	}
 
 	private void PickTarget() {
-		foreach(Enemy enemy in GameController.instance.enemies) {
+		foreach(Enemy enemy in Enemy.all_enemies) {
 			Vector3 direction = enemy.transform.position - transform.position;
 			RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, 30, construction);
 			bool aborted = false;

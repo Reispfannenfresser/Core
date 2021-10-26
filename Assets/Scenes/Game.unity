@@ -2386,7 +2386,9 @@ MonoBehaviour:
   - {fileID: 7391649750818325283, guid: fcbbebf23261e510f9bc0a8d3819e69f, type: 3}
   - {fileID: 1332924699840116546, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
   - {fileID: 7391649750818325283, guid: fcbbebf23261e510f9bc0a8d3819e69f, type: 3}
-  mothership: {fileID: 6532792034792728501, guid: 55ca93e77848ecfd09706c3ec453292d, type: 3}
+  boss_types:
+  - {fileID: 6532792034792728501, guid: 55ca93e77848ecfd09706c3ec453292d, type: 3}
+  - {fileID: 5900410693099785329, guid: 3630d3140015d6484b54fd53f74a8bc5, type: 3}
   ui_images:
   - {fileID: 927843251}
   - {fileID: 1204927806}

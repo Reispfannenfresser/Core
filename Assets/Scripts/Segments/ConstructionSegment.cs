@@ -4,6 +4,8 @@ using UnityEngine;
 using System;
 
 public class ConstructionSegment : MonoBehaviour {
+	public static HashSet<ConstructionSegment> all_segments = new HashSet<ConstructionSegment>();
+
 	protected List<Joint2D> connectors = new List<Joint2D>();
 
 	[SerializeField]
@@ -26,8 +28,10 @@ public class ConstructionSegment : MonoBehaviour {
 
 	private bool initialized = false;
 
+	HashSet<Blob> blocked_by = new HashSet<Blob>();
+
 	protected void Awake() {
-		GameController.instance.AddSegment(this);
+		all_segments.Add(this);
 		rb2d = GetComponent<Rigidbody2D>();
 	}
 
@@ -56,26 +60,29 @@ public class ConstructionSegment : MonoBehaviour {
 		OnPlaced();
 	}
 
+	protected virtual void OnPlaced() {
+	}
+
 	private void FixedUpdate() {
-		if (transform.position.magnitude > 50) {
-			Destroy();
-		}
-		if ((!blockable || blocker_count == 0) && (!should_pause || GameController.instance.enemy_count > 0)) {
+		if ((!blockable || blocker_count == 0) && (!should_pause || Enemy.all_enemies.Count > 0)) {
 			OnFixedUpdate();
 		}
 	}
 
 	protected virtual void OnFixedUpdate() {
-
 	}
 
 	public void Damage(int amount) {
 		hp -= amount;
 		OnDamaged(amount);
-		if (hp < 0) {
-			Destroy();
-		}
 		UpdateColor();
+
+		if (hp < 0) {
+			Destroy(gameObject);
+		}
+	}
+
+	protected virtual void OnDamaged(int amount) {
 	}
 
 	public void Heal(int amount) {
@@ -87,28 +94,33 @@ public class ConstructionSegment : MonoBehaviour {
 		UpdateColor();
 	}
 
-	public void AddBlocker() {
+	protected virtual void OnHealed(int amount) {
+	}
+
+	public void AddBlocker(Blob blob) {
 		blocker_count++;
 		if (blocker_count == 1) {
 			OnBlocked();
 			UpdateColor();
 		}
+
+		blocked_by.Add(blob);
 	}
 
-	public void RemoveBlocker() {
+	protected virtual void OnBlocked() {
+	}
+
+	public void RemoveBlocker(Blob blob) {
 		blocker_count--;
 		if (blocker_count == 0) {
 			OnUnBlocked();
 			UpdateColor();
 		}
-	}
 
-	protected virtual void OnBlocked() {
-
+		blocked_by.Remove(blob);
 	}
 
 	protected virtual void OnUnBlocked() {
-
 	}
 
 	private void UpdateColor() {
@@ -130,36 +142,28 @@ public class ConstructionSegment : MonoBehaviour {
 
 	public void Delete() {
 		OnDeleted();
-		Destroy(gameObject);
 		GameController.instance.AddZollars(value * hp / max_hp);
-	}
-
-	public void Destroy() {
-		OnDestroyed();
 		Destroy(gameObject);
-	}
-
-	protected virtual void OnPlaced() {
-	}
-
-	protected virtual void OnDamaged(int amount) {
-	}
-
-	protected virtual void OnHealed(int amount) {
 	}
 
 	protected virtual void OnDeleted() {
 	}
 
-	protected virtual void OnDestroyed() {
-	}
-
 	protected void OnDestroy() {
+		OnDestroyed();
+
 		foreach(Joint2D connector in connectors) {
 			if (connector != null) {
 				Destroy(connector);
 			}
 		}
-		GameController.instance.RemoveSegment(this);
+		foreach (Blob blob in blocked_by) {
+			blob.StopBlocking(this);
+		}
+
+		all_segments.Remove(this);
+	}
+
+	protected virtual void OnDestroyed() {
 	}
 }
