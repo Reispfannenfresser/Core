@@ -11,14 +11,11 @@ public class Bomb : MonoBehaviour {
 	LayerMask enemies = 0;
 	[SerializeField]
 	float speed = 3;
-	float current_speed = 3;
-	[SerializeField]
-	float max_acceleration = 0.1f;
 	[SerializeField]
 	float turn_speed = 1;
-	float current_turn_speed = 1;
-	[SerializeField]
-	float max_turn_acceleration = 0.1f;
+
+	public float current_turn_speed = 0;
+	public float turn_acceleration = 90;
 
 	[SerializeField]
 	float search_cooldown = 3;
@@ -52,8 +49,6 @@ public class Bomb : MonoBehaviour {
 	public void Launch() {
 		is_launched = true;
 		fire.SetActive(true);
-		current_speed = speed;
-		current_turn_speed = turn_speed;
 		sr.sortingOrder = 7;
 	}
 
@@ -61,42 +56,44 @@ public class Bomb : MonoBehaviour {
 		if (!is_launched || detonated) {
 			return;
 		}
-		transform.position += transform.up * Time.deltaTime * current_speed;
 
 		current_search_cooldown -= Time.deltaTime;
 		if (current_search_cooldown <= 0){
 			current_search_cooldown += search_cooldown;
 			if (target == null) {
 				PickTarget();
+				current_turn_speed = 0;
 			}
-			goal_pos = transform.position + new Vector3(10 * Random.value - 5, 10 * Random.value - 5, 0);
-			goal_pos.x = Mathf.Clamp(goal_pos.x, -20, 20);
-			goal_pos.y = Mathf.Clamp(goal_pos.y, -20, 20);
+			if (target == null) {
+				current_turn_speed = 0;
+				goal_pos = transform.position + new Vector3(30 * Random.value - 15, 30 * Random.value - 15, 0);
+				goal_pos.x = Mathf.Clamp(goal_pos.x, -20, 20);
+				goal_pos.y = Mathf.Clamp(goal_pos.y, -20, 20);
+			}
 		}
 
 		Vector3 direction = transform.InverseTransformDirection(goal_pos - transform.position);
-
 		if (target != null) {
 			direction = transform.InverseTransformDirection(target.transform.position - transform.position);
 		}
-		float distance = direction.magnitude;
 		direction.Normalize();
 
 		float change_needed = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
+		while (change_needed < -180) {
+			change_needed += 360;
+		}
+		while (change_needed > 180) {
+			change_needed -= 360;
+		}
 
-		float angle_factor = 1 - Mathf.Abs(change_needed / 180);
-		float wanted_speed = ((angle_factor * 2) - 1) * speed;
+		if (current_turn_speed < turn_speed) {
+			current_turn_speed += Time.deltaTime * turn_acceleration;
+		} else {
+			current_turn_speed = turn_speed;
+		}
 
-		current_speed += Mathf.Clamp(wanted_speed - current_speed, -max_acceleration, max_acceleration);
-		current_speed = Mathf.Clamp(current_speed, 0, speed);
-
-		float distance_factor = 1 - (Mathf.Min(5, distance) / 5);
-		float wanted_turn_speed = ((distance_factor * 2) - 1) * turn_speed;
-		current_turn_speed += Mathf.Clamp(wanted_turn_speed - current_turn_speed, -max_turn_acceleration, max_turn_acceleration);
-		current_turn_speed = Mathf.Clamp(current_turn_speed, 0, turn_speed);
-
-		float rotational_change = Mathf.Clamp(change_needed, -current_turn_speed, current_turn_speed) * Time.deltaTime;
-		transform.Rotate(new Vector3(0, 0, rotational_change));
+		transform.Rotate(new Vector3(0, 0, Mathf.Clamp(change_needed, -current_turn_speed, current_turn_speed)));
+		transform.position += transform.up * Time.deltaTime * speed;
 	}
 
 	private void PickTarget() {

@@ -122,9 +122,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4096
   speed: 10
-  max_acceleration: 0.05
-  turn_speed: 360
-  max_turn_acceleration: 0.05
+  turn_speed: 180
+  current_turn_speed: 0
+  current_speed: 0
+  turn_acceleration: 10
+  acceleration: 20
   search_cooldown: 1
   fire: {fileID: 4159814441818720416}
 --- !u!95 &3571682412438821909
@@ -324,7 +326,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1341883733
   m_SortingLayer: -2
-  m_SortingOrder: 2
+  m_SortingOrder: 7
   m_Sprite: {fileID: -1306106211859570339, guid: ba4b4e32804e89c0b8c6bc5cee605a20, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
