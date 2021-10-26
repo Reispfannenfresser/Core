@@ -184,7 +184,7 @@ public class GameController : MonoBehaviour {
 			return;
 		}
 		is_paused = paused;
-		Time.timeScale = paused ? 0 : 1;
+		Time.timeScale = is_paused ? 0 : 1;
 		hud.SetActive(!paused);
 		menu.SetActive(paused);
 	}

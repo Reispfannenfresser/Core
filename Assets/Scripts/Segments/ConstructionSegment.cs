@@ -78,11 +78,20 @@ public class ConstructionSegment : MonoBehaviour {
 		UpdateColor();
 
 		if (hp < 0) {
+			Kill();
 			Destroy(gameObject);
 		}
 	}
 
 	protected virtual void OnDamaged(int amount) {
+	}
+
+	public void Kill() {
+		OnKilled();
+		Destroy(gameObject);
+	}
+
+	protected virtual void OnKilled() {
 	}
 
 	public void Heal(int amount) {
