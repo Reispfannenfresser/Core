@@ -221,7 +221,7 @@ public class GameController : MonoBehaviour {
 		}
 
 		current_wave += 1;
-		spawn_amount += current_wave * current_wave / 2 + 5;
+		spawn_amount = current_wave * 3 + 5;
 
 		if ((current_wave) % bosses_at == 0) {
 			boss_spawn_amount += (current_wave) / bosses_at;

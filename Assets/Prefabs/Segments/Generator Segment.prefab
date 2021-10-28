@@ -223,7 +223,7 @@ MonoBehaviour:
   value: 25
   radius: 0.75
   money_cooldown: 5
-  money_amount: 5
+  money_amount: 7
 --- !u!1 &8943688075265091676
 GameObject:
   m_ObjectHideFlags: 0

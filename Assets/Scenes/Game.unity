@@ -2399,7 +2399,6 @@ MonoBehaviour:
   - {fileID: 447375780}
   - {fileID: 1283685285}
   crawler: {fileID: 2971265268221919656, guid: a2c5282f7375a55c1827ed5c936628a4, type: 3}
-  core_segment: {fileID: 0}
   zollar_text: {fileID: 121136395}
   zollar_change_text: {fileID: 285426593}
   enemy_count_text: {fileID: 761646768}
@@ -2411,16 +2410,13 @@ MonoBehaviour:
   mixer: {fileID: 24100000, guid: fb37c435dae851f8d96840c73fb341a9, type: 2}
   hud: {fileID: 689404614}
   menu: {fileID: 933590879}
+  starting_zollars: 40
   is_paused: 1
   is_started: 0
   is_practice: 0
-  boss_count: 0
-  enemy_count: 0
-  harmful_enemies: 0
   ui_color: {r: 0.039215688, g: 0.039215688, b: 0.06666667, a: 1}
   ui_selected_color: {r: 0.21960784, g: 0.23921569, b: 0.34117648, a: 1}
   balance_change_indicator: {fileID: 6992914741758068683, guid: 921edf71d5ead3b558edb1a79ceff758, type: 3}
-  num_bosses: 0
 --- !u!82 &849149950
 AudioSource:
   m_ObjectHideFlags: 0
