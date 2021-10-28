@@ -51,6 +51,8 @@ public class GameController : MonoBehaviour {
 	[SerializeField]
 	GameObject menu = null;
 
+	[SerializeField]
+	int starting_zollars = 40;
 	int bosses_at = 10;
 	int current_wave = 0;
 	int zollars = 0;
@@ -116,7 +118,8 @@ public class GameController : MonoBehaviour {
 		current_wave = 0;
 
 		ResetZollars();
-		zollar_change = 0;
+		zollar_change = -starting_zollars;
+		AddZollars(starting_zollars);
 
 		spawn_amount = 0;
 		boss_spawn_amount = 0;
@@ -218,7 +221,7 @@ public class GameController : MonoBehaviour {
 		}
 
 		current_wave += 1;
-		spawn_amount += current_wave * 2 + 5;
+		spawn_amount += current_wave * current_wave / 2 + 5;
 
 		if ((current_wave) % bosses_at == 0) {
 			boss_spawn_amount += (current_wave) / bosses_at;
