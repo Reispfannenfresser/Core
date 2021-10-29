@@ -15,8 +15,6 @@ public class Enemy : MonoBehaviour {
 	protected int hp;
 	private bool is_dead = false;
 	[SerializeField]
-	public bool deletable = true;
-	[SerializeField]
 	public bool is_boss = false;
 
 	[SerializeField]

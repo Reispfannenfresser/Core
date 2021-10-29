@@ -307,7 +307,7 @@ MonoBehaviour:
   hp: 500
   deletable: 0
   meltable: 0
-  blockable: 1
+  blockable: 0
   should_pause: 1
   value: 0
   radius: 1

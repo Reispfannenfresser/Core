@@ -3,23 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Blobfather : Blob {
-	[SerializeField]
-	float shot_amount = 3;
-	[SerializeField]
-	float shot_spread = 5;
+	protected AudioSource puke_audio = null;
+	protected float original_pitch = 0;
 
 	[SerializeField]
-	GameObject shot = null;
+	protected Transform mouth = null;
 	[SerializeField]
-	Transform mouth = null;
+	protected GameObject shot = null;
+
 	[SerializeField]
-	AudioSource puke_audio = null;
+	protected int shot_amount = 3;
+	[SerializeField]
+	protected float shot_spread = 5;
 
-	float original_pitch = 0;
-
-	private void Start() {
+	protected override void OnSpawned() {
+		base.OnSpawned();
 		puke_audio = GetComponent<AudioSource>();
 		original_pitch = puke_audio.pitch;
+	}
+
+	protected override void OnConnected(ConstructionSegment segment) {
+
+	}
+
+	private void OnTriggerEnter2D(Collider2D other) {
+		ConstructionSegment segment = other.gameObject.GetComponent<ConstructionSegment>();
+		if (segment != null && !blocked_segments.Contains(segment)) {
+			(this as ISegmentBlocker).StartBlocking(segment);
+		}
+	}
+
+	private void OnTriggerExit2D(Collider2D other) {
+		ConstructionSegment segment = other.gameObject.GetComponent<ConstructionSegment>();
+		if (segment != null && blocked_segments.Contains(segment)) {
+			(this as ISegmentBlocker).StopBlocking(segment);
+		}
 	}
 
 	private void Puke() {

@@ -28,7 +28,9 @@ public class ConstructionSegment : MonoBehaviour {
 
 	private bool initialized = false;
 
-	HashSet<Blob> blocked_by = new HashSet<Blob>();
+	bool allow_removals = true;
+
+	HashSet<ISegmentBlocker> blocked_by = new HashSet<ISegmentBlocker>();
 
 	protected void Awake() {
 		all_segments.Add(this);
@@ -79,7 +81,6 @@ public class ConstructionSegment : MonoBehaviour {
 
 		if (hp < 0) {
 			Kill();
-			Destroy(gameObject);
 		}
 	}
 
@@ -106,27 +107,30 @@ public class ConstructionSegment : MonoBehaviour {
 	protected virtual void OnHealed(int amount) {
 	}
 
-	public void AddBlocker(Blob blob) {
+	public void AddBlocker(ISegmentBlocker blocker) {
 		blocker_count++;
 		if (blocker_count == 1) {
 			OnBlocked();
 			UpdateColor();
 		}
 
-		blocked_by.Add(blob);
+		blocked_by.Add(blocker);
 	}
 
 	protected virtual void OnBlocked() {
 	}
 
-	public void RemoveBlocker(Blob blob) {
+	public void RemoveBlocker(ISegmentBlocker blocker) {
+		if (!allow_removals) {
+			return;
+		}
 		blocker_count--;
 		if (blocker_count == 0) {
 			OnUnBlocked();
 			UpdateColor();
 		}
 
-		blocked_by.Remove(blob);
+		blocked_by.Remove(blocker);
 	}
 
 	protected virtual void OnUnBlocked() {
@@ -166,8 +170,9 @@ public class ConstructionSegment : MonoBehaviour {
 				Destroy(connector);
 			}
 		}
-		foreach (Blob blob in blocked_by) {
-			blob.StopBlocking(this);
+		allow_removals = false;
+		foreach (ISegmentBlocker blocker in blocked_by) {
+			blocker.StopBlocking(this);
 		}
 
 		all_segments.Remove(this);

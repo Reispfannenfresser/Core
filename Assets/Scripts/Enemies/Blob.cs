@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Blob : Enemy {
-	private bool collided = false;
-	private Rigidbody2D rb2d = null;
+public class Blob : Enemy, ISegmentBlocker {
+	protected bool collided = false;
+	protected Rigidbody2D rb2d = null;
 
-	private Vector3 direction = Vector3.zero;
+	protected Vector3 direction = Vector3.zero;
 	[SerializeField]
-	float speed = 5;
-
-	HashSet<ConstructionSegment> blocked_segments = new HashSet<ConstructionSegment>();
+	protected float speed = 5;
 
 	[SerializeField]
-	float regrab_cooldown = 1;
-	float current_regrab_cooldown = 0;
+	protected float regrab_cooldown = 1;
+	protected float current_regrab_cooldown = 0;
+
+	protected HashSet<ConstructionSegment> blocked_segments = new HashSet<ConstructionSegment>();
 
 	protected override void OnSpawned() {
 		float distance = 30 + Random.value * 10;
@@ -56,12 +56,18 @@ public class Blob : Enemy {
 		}
 		HingeJoint2D joint = gameObject.AddComponent<HingeJoint2D>();
 		joint.connectedBody = segment.rb2d;
+		joint.enableCollision = true;
 		segment.AddConnector(joint);
-		StartBlocking(segment);
 		current_regrab_cooldown = regrab_cooldown;
+		OnConnected(segment);
+	}
+
+	protected virtual void OnConnected(ConstructionSegment segment) {
+		(this as ISegmentBlocker).StartBlocking(segment);
 	}
 
 	protected override void OnDestroyed() {
+		Debug.Log("Hi");
 		foreach (ConstructionSegment segment in blocked_segments) {
 			if (segment != null) {
 				segment.RemoveBlocker(this);
@@ -69,12 +75,13 @@ public class Blob : Enemy {
 		}
 	}
 
-	public void StopBlocking(ConstructionSegment segment) {
-		blocked_segments.Remove(segment);
-	}
-
-	private void StartBlocking(ConstructionSegment segment) {
+	void ISegmentBlocker.StartBlocking(ConstructionSegment segment) {
 		segment.AddBlocker(this);
 		blocked_segments.Add(segment);
+	}
+
+	void ISegmentBlocker.StopBlocking(ConstructionSegment segment) {
+		segment.RemoveBlocker(this);
+		blocked_segments.Remove(segment);
 	}
 }
