@@ -237,15 +237,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   max_hp: 150
-  deletable: 1
   is_boss: 1
   is_harmful: 1
+  speed: 3
+  regrab_cooldown: 0.5
   mouth: {fileID: 8823256043548390216}
   shot: {fileID: 1562789161147081517, guid: e54aa6710da9533f8b8ab69de422d275, type: 3}
   shot_amount: 3
   shot_spread: 5
-  speed: 3
-  regrab_cooldown: 0.5
 --- !u!114 &357949030467708561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -423,8 +422,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1795687659
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: 2141188580037841102, guid: 4799c62a95311ff58b8557377a2bc0cb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

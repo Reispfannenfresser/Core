@@ -6260,6 +6260,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SegmentPlacer
       objectReference: {fileID: 0}
+    - target: {fileID: 3900384838436544912, guid: 9bec3d3a2c2084594bffbe2f6790a7d8, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3900384838436544915, guid: 9bec3d3a2c2084594bffbe2f6790a7d8, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -6304,6 +6308,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3900384838436544917, guid: 9bec3d3a2c2084594bffbe2f6790a7d8, type: 3}
+      propertyPath: m_SortingLayer
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3900384838436544917, guid: 9bec3d3a2c2084594bffbe2f6790a7d8, type: 3}
+      propertyPath: m_SortingOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3900384838436544917, guid: 9bec3d3a2c2084594bffbe2f6790a7d8, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1341883733
+      objectReference: {fileID: 0}
+    - target: {fileID: 3900384838436544919, guid: 9bec3d3a2c2084594bffbe2f6790a7d8, type: 3}
+      propertyPath: current_camera
+      value: 
+      objectReference: {fileID: 519420031}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9bec3d3a2c2084594bffbe2f6790a7d8, type: 3}
 --- !u!1001 &4176016454772816102

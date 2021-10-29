@@ -8,7 +8,10 @@ public class SegmentPlacer : MonoBehaviour {
 
 	GameObject to_place = null;
 	bool can_place = false;
+
+	[SerializeField]
 	Camera current_camera = null;
+
 	Animator animator;
 	SpriteRenderer sprite_renderer;
 
@@ -22,14 +25,9 @@ public class SegmentPlacer : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		if (current_camera != Camera.current && Camera.current != null) {
-			current_camera = Camera.current;
-		}
-		if (current_camera != null) {
-			Vector3 new_pos = current_camera.ScreenToWorldPoint(Input.mousePosition);
-			new_pos.z = 0;
-			transform.position = new_pos;
-		}
+		Vector3 new_pos = current_camera.ScreenToWorldPoint(Input.mousePosition);
+		new_pos.z = 0;
+		transform.position = new_pos;
 
 		if (GameController.instance.GetZollars() < cost) {
 			sprite_renderer.color = new Color(0.75f, 0.5f, 0.5f);

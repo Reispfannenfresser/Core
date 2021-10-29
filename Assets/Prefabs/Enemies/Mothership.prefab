@@ -102,7 +102,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   max_hp: 300
-  deletable: 1
   is_boss: 1
   is_harmful: 1
   ufo: {fileID: 1332924699840116546, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
@@ -147,9 +146,9 @@ LineRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1795687659
+  m_SortingLayer: -1
+  m_SortingOrder: 1
   m_Positions:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
@@ -201,7 +200,7 @@ LineRenderer:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
-    numCapVertices: 2
+    numCapVertices: 3
     alignment: 0
     textureMode: 0
     shadowBias: 0.5
