@@ -19,6 +19,7 @@ public class ShieldSegment : ConstructionSegment {
 	protected override void OnPlaced() {
 		animator = GetComponent<Animator>();
 		block_audio = GetComponent<AudioSource>();
+		block_audio.pitch += Random.value * 0.125f - 0.0625f;
 	}
 
 	protected override void OnDamaged(int amount) {

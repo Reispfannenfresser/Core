@@ -20,9 +20,10 @@ public class GunSegment : ConstructionSegment {
 	AudioSource shot_audio = null;
 
 	protected override void OnPlaced() {
-		fire = gun.gameObject.GetComponent<LineRenderer>();
-		animator = gun.gameObject.GetComponent<Animator>();
-		shot_audio = gun.gameObject.GetComponent<AudioSource>();
+		fire = GetComponent<LineRenderer>();
+		animator = GetComponent<Animator>();
+		shot_audio = GetComponent<AudioSource>();
+		shot_audio.pitch += Random.value * 0.125f - 0.0625f;
 		current_cooldown += Random.value * cooldown;
 	}
 

@@ -124,9 +124,7 @@ MonoBehaviour:
   speed: 10
   turn_speed: 180
   current_turn_speed: 0
-  current_speed: 0
   turn_acceleration: 10
-  acceleration: 20
   search_cooldown: 1
   fire: {fileID: 4159814441818720416}
 --- !u!95 &3571682412438821909
@@ -160,7 +158,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 505252476347836747, guid: fb37c435dae851f8d96840c73fb341a9, type: 2}
   m_audioClip: {fileID: 8300000, guid: 995d53125a4cf2337aba00971b4eae7f, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 0
   Mute: 0

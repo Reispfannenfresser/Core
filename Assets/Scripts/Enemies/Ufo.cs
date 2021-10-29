@@ -35,6 +35,7 @@ public class Ufo : Enemy {
 			transform.position = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 50;
 		}
 		shot_audio = GetComponent<AudioSource>();
+		shot_audio.pitch += Random.value * 0.125f - 0.0625f;
 	}
 
 	protected override void OnFixedUpdate() {

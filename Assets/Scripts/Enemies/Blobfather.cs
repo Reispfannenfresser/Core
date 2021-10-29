@@ -12,8 +12,19 @@ public class Blobfather : Blob {
 	GameObject shot = null;
 	[SerializeField]
 	Transform mouth = null;
+	[SerializeField]
+	AudioSource puke_audio = null;
+
+	float original_pitch = 0;
+
+	private void Start() {
+		puke_audio = GetComponent<AudioSource>();
+		original_pitch = puke_audio.pitch;
+	}
 
 	private void Puke() {
+		puke_audio.pitch = original_pitch + Random.value * 0.25f - 0.125f;
+		puke_audio.Play();
 		Vector3 direction = -mouth.position;
 		direction.Normalize();
 		mouth.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);

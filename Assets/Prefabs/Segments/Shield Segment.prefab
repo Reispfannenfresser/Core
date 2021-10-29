@@ -193,13 +193,13 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 505252476347836747, guid: fb37c435dae851f8d96840c73fb341a9, type: 2}
   m_audioClip: {fileID: 8300000, guid: c71564afa74f30fd2b0e203556d4d061, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 10
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -317,6 +317,7 @@ MonoBehaviour:
   deletable: 1
   meltable: 1
   blockable: 1
+  should_pause: 0
   value: 30
   radius: 0.75
   shield_circle: {fileID: 1974081731}

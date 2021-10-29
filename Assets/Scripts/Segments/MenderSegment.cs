@@ -25,6 +25,7 @@ public class MenderSegment : ConstructionSegment {
 		rays = GetComponent<LineRenderer>();
 		animator = GetComponent<Animator>();
 		mend_audio = GetComponent<AudioSource>();
+		mend_audio.pitch += UnityEngine.Random.value * 0.125f - 0.0625f;
 		current_cooldown += UnityEngine.Random.value * cooldown;
 	}
 
