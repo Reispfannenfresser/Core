@@ -67,7 +67,6 @@ public class Blob : Enemy, ISegmentBlocker {
 	}
 
 	protected override void OnDestroyed() {
-		Debug.Log("Hi");
 		foreach (ConstructionSegment segment in blocked_segments) {
 			if (segment != null) {
 				segment.RemoveBlocker(this);

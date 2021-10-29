@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class GunSegment : ConstructionSegment {
 	[SerializeField]
-	GameObject gun = null;
+	Transform gun = null;
 	[SerializeField]
 	LayerMask construction = 0;
 	[SerializeField]
 	int damage = 1;
 	[SerializeField]
-	float cooldown = 1;
-	float current_cooldown = 0;
+	float shot_cooldown = 1;
+	float current_shot_cooldown = 0;
+	[SerializeField]
+	float search_cooldown = 1;
+	float current_search_cooldown = 0;
 
 	LineRenderer fire = null;
 	Animator animator = null;
@@ -24,19 +27,26 @@ public class GunSegment : ConstructionSegment {
 		animator = GetComponent<Animator>();
 		shot_audio = GetComponent<AudioSource>();
 		shot_audio.pitch += Random.value * 0.125f - 0.0625f;
-		current_cooldown += Random.value * cooldown;
+		current_shot_cooldown += Random.value * shot_cooldown;
+		current_search_cooldown += Random.value * search_cooldown;
 	}
 
 	protected override void OnFixedUpdate() {
-		current_cooldown -= Time.deltaTime;
+		current_search_cooldown -= Time.deltaTime;
+		current_shot_cooldown -= Time.deltaTime;
 
-		if (current_cooldown <= 0) {
-			current_cooldown += cooldown;
-			if (target == null) {
+		if (current_search_cooldown <= 0) {
+			current_search_cooldown += search_cooldown;
+			if (target == null || !TargetInSight()) {
 				PickTarget();
 				return;
 			}
-			Fire();
+		}
+		if (current_shot_cooldown <= 0) {
+			current_shot_cooldown += shot_cooldown;
+			if (target != null) {
+				Fire();
+			}
 		}
 	}
 
@@ -47,10 +57,10 @@ public class GunSegment : ConstructionSegment {
 
 		Vector3 direction = target.transform.position - transform.position;
 		float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-		gun.transform.rotation = Quaternion.Euler(0, 0, angle);
+		gun.rotation = Quaternion.Euler(0, 0, angle);
 		target.Damage(damage);
 
-		fire.SetPosition(0, transform.position + gun.transform.right * 0.5f);
+		fire.SetPosition(0, transform.position + gun.right * 0.5f);
 		fire.SetPosition(1, target.transform.position);
 		animator.SetTrigger("Fire");
 		shot_audio.Play();

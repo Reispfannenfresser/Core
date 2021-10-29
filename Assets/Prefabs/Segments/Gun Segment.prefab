@@ -319,12 +319,13 @@ MonoBehaviour:
   should_pause: 0
   value: 10
   radius: 0.5
-  gun: {fileID: 1230251858}
+  gun: {fileID: 4021297175705850271}
   construction:
     serializedVersion: 2
     m_Bits: 5120
-  damage: 5
-  cooldown: 1
+  damage: 15
+  shot_cooldown: 3
+  search_cooldown: 1
 --- !u!1001 &5474652348573442014
 PrefabInstance:
   m_ObjectHideFlags: 0
