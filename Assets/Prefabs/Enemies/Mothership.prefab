@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21fec3801c89a5f019124b7425f0b103, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max_hp: 300
+  max_hp: 250
   is_boss: 1
   is_harmful: 1
   ufo: {fileID: 1332924699840116546, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}

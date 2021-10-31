@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   max_hp: 25
-  deletable: 1
+  is_boss: 0
   is_harmful: 0
   speed: 5
   regrab_cooldown: 1
