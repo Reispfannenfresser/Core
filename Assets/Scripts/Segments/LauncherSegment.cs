@@ -34,7 +34,7 @@ public class LauncherSegment : ConstructionSegment {
 	}
 
 	protected override void OnFixedUpdate() {
-		if (blocked) {
+		if (blocked || Enemy.total_enemies == 0) {
 			return;
 		}
 
