@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 1699638807362795376}
   - component: {fileID: 357949030467708561}
   - component: {fileID: 7776838058052114346}
+  - component: {fileID: -7129775286765027198}
   m_Layer: 12
   m_Name: Blobfather
   m_TagString: Untagged
@@ -240,7 +241,6 @@ MonoBehaviour:
   is_boss: 1
   is_harmful: 1
   speed: 3
-  regrab_cooldown: 0.5
   mouth: {fileID: 8823256043548390216}
   shot: {fileID: 1562789161147081517, guid: e54aa6710da9533f8b8ab69de422d275, type: 3}
   shot_amount: 3
@@ -353,6 +353,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-7129775286765027198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5900410693099785329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 305a4359bd2b49b0582275519f3100bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8592895831026175236
 GameObject:
   m_ObjectHideFlags: 0

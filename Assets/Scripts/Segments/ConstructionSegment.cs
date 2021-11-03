@@ -3,181 +3,181 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class ConstructionSegment : MonoBehaviour {
+public class ConstructionSegment : MonoBehaviour, IBlockable, IDamageable {
 	public static HashSet<ConstructionSegment> all_segments = new HashSet<ConstructionSegment>();
-
-	protected List<Joint2D> connectors = new List<Joint2D>();
 
 	[SerializeField]
 	protected SpriteRenderer[] sprite_renderers = new SpriteRenderer[0];
-	public Rigidbody2D rb2d = null;
+	[SerializeField]
+	protected Rigidbody2D rb2d = null;
 
-	public int max_hp = 100;
-	public int hp = 100;
-	public bool deletable = true;
-	public bool meltable = true;
-	public bool blockable = false;
-	public bool should_pause = false;
-	public int value = 10;
-	public float radius = 0.4f;
+	[SerializeField]
+	protected int max_hp = 100;
+	protected int hp = 0;
 
-	public static float max_distance = 0.4f;
-	public static float max_overlap = 0.1f;
+	[SerializeField]
+	protected bool deletable = true;
+	[SerializeField]
+	protected bool meltable = true;
 
-	protected int blocker_count = 0;
+	[SerializeField]
+	protected int cost = 10;
 
-	private bool initialized = false;
+	[SerializeField]
+	protected float radius = 0.5f;
 
-	bool allow_removals = true;
+	int blocker_count = 0;
+	protected bool blocked = false;
 
-	HashSet<ISegmentBlocker> blocked_by = new HashSet<ISegmentBlocker>();
+	public static float max_distance {get;} = 0.4f;
+	public static float max_overlap {get;} = 0.1f;
 
-	protected void Awake() {
-		all_segments.Add(this);
-		rb2d = GetComponent<Rigidbody2D>();
+	private AttachingObject attaching_object = null;
+
+	private bool started = false;
+
+	private void Awake() {
+		Initialize();
 	}
 
-	protected void Start() {
+	protected virtual void Initialize() {
+		rb2d = GetComponent<Rigidbody2D>();
+		attaching_object = GetComponent<AttachingObject>();
+
+		all_segments.Add(this);
+		hp = max_hp;
+	}
+
+	private void Start() {
+		Place();
+		started = true;
+	}
+
+	protected virtual void Place() {
 		Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius + max_distance, 1 << gameObject.layer);
 
 		foreach (Collider2D collider in colliders) {
 			ConstructionSegment segment = collider.gameObject.GetComponent<ConstructionSegment>();
-			if (segment == null || !segment.initialized || segment == this) {
+			if (segment == null || !segment.started || segment == this) {
 				continue;
 			}
 
-			Rigidbody2D segment_rb2d = segment.GetComponent<Rigidbody2D>();
-			HingeJoint2D joint = gameObject.AddComponent<HingeJoint2D>();
-			joint.connectedBody = segment_rb2d;
-			JointMotor2D motor = joint.motor;
-			motor.maxMotorTorque = 10;
-			motor.motorSpeed = 0;
-			joint.motor = motor;
-			joint.useMotor = true;
-			segment.AddConnector(joint);
+			attaching_object.AttachTo(segment.attaching_object);
 		}
-
-		initialized = true;
-
-		OnPlaced();
-	}
-
-	protected virtual void OnPlaced() {
 	}
 
 	private void FixedUpdate() {
-		if ((!blockable || blocker_count == 0) && (!should_pause || Enemy.all_enemies.Count > 0)) {
-			OnFixedUpdate();
-		}
+		OnFixedUpdate();
 	}
 
 	protected virtual void OnFixedUpdate() {
+
 	}
 
-	public void Damage(int amount) {
-		hp -= amount;
-		OnDamaged(amount);
-		UpdateColor();
-
-		if (hp < 0) {
-			Kill();
+	void IBlockable.OnBlocked(IObjectBlocker blocker) {
+		if (blocker_count++ == 0) {
+			Block();
 		}
 	}
 
-	protected virtual void OnDamaged(int amount) {
-	}
-
-	public void Kill() {
-		OnKilled();
-		Destroy(gameObject);
-	}
-
-	protected virtual void OnKilled() {
-	}
-
-	public void Heal(int amount) {
-		hp += amount;
-		if (hp > max_hp) {
-			hp = max_hp;
+	void IBlockable.OnFreed(IObjectBlocker blocker) {
+		if (--blocker_count == 0) {
+			Free();
 		}
-		OnHealed(amount);
+	}
+
+	protected virtual void Block() {
+		blocked = true;
 		UpdateColor();
 	}
 
-	protected virtual void OnHealed(int amount) {
-	}
-
-	public void AddBlocker(ISegmentBlocker blocker) {
-		blocker_count++;
-		if (blocker_count == 1) {
-			OnBlocked();
-			UpdateColor();
-		}
-
-		blocked_by.Add(blocker);
-	}
-
-	protected virtual void OnBlocked() {
-	}
-
-	public void RemoveBlocker(ISegmentBlocker blocker) {
-		if (!allow_removals) {
-			return;
-		}
-		blocker_count--;
-		if (blocker_count == 0) {
-			OnUnBlocked();
-			UpdateColor();
-		}
-
-		blocked_by.Remove(blocker);
-	}
-
-	protected virtual void OnUnBlocked() {
+	protected virtual void Free() {
+		blocked = false;
+		UpdateColor();
 	}
 
 	private void UpdateColor() {
 		foreach (SpriteRenderer renderer in sprite_renderers) {
-			float gb_values = (float) hp / max_hp;
-			float r_value = gb_values / 2 + 0.5f;
-			float a_value = renderer.color.a;
-			if (blockable && blocker_count > 0) {
-				r_value *= 0.25f;
-				gb_values *= 0.25f;
+			if (renderer != null) {
+				float gb_values = (float) hp / max_hp;
+				float r_value = gb_values / 2 + 0.5f;
+				float a_value = renderer.color.a;
+				if (blocked) {
+					r_value *= 0.25f;
+					gb_values *= 0.25f;
+				}
+				renderer.color = new Color(r_value, gb_values, gb_values, a_value);
 			}
-			renderer.color = new Color(r_value, gb_values, gb_values, a_value);
 		}
 	}
 
-	public void AddConnector(Joint2D joint) {
-		connectors.Add(joint);
+	public int GetHP() {
+		return hp;
 	}
 
-	public void Delete() {
-		OnDeleted();
-		GameController.instance.AddZollars(value * hp / max_hp);
+	public int GetMaxHP() {
+		return max_hp;
+	}
+
+	public int GetCost() {
+		return cost;
+	}
+
+	public float GetRadius() {
+		return radius;
+	}
+
+	public bool IsDeletable() {
+		return deletable;
+	}
+
+	public bool IsMeltable() {
+		return meltable;
+	}
+
+	void IDamageable.Damage(int amount) {
+		Damage(amount);
+	}
+
+	void IDamageable.Heal(int amount) {
+		Heal(amount);
+	}
+
+	void IDamageable.Kill() {
+		Kill();
+	}
+
+	protected virtual void Damage(int amount) {
+		hp -= amount;
+		if (hp <= 0) {
+			hp = 0;
+			Kill();
+		}
+		UpdateColor();
+	}
+
+	protected virtual void Heal(int amount) {
+		hp += amount;
+		if (hp >= max_hp) {
+			hp = max_hp;
+		}
+		UpdateColor();
+	}
+
+	public virtual void Kill() {
 		Destroy(gameObject);
 	}
 
-	protected virtual void OnDeleted() {
+	public virtual void Delete() {
+		GameController.instance.AddZollars((int) (cost * hp / (float) max_hp));
+		Destroy(gameObject);
 	}
 
 	protected void OnDestroy() {
 		OnDestroyed();
-
-		foreach(Joint2D connector in connectors) {
-			if (connector != null) {
-				Destroy(connector);
-			}
-		}
-		allow_removals = false;
-		foreach (ISegmentBlocker blocker in blocked_by) {
-			blocker.StopBlocking(this);
-		}
-
-		all_segments.Remove(this);
 	}
 
 	protected virtual void OnDestroyed() {
+		all_segments.Remove(this);
 	}
 }

@@ -12,13 +12,18 @@ public class GeneratorSegment : ConstructionSegment {
 
 	private Animator animator = null;
 
-	protected override void OnPlaced() {
-		current_money_cooldown = Random.value * money_cooldown;
+	protected override void Initialize() {
+		base.Initialize();
 		animator = GetComponent<Animator>();
 	}
 
+	protected override void Place() {
+		base.Place();
+		current_money_cooldown = Random.value * money_cooldown;
+	}
+
 	protected override void OnFixedUpdate() {
-		if (!GameController.instance.is_practice && Enemy.harmful_enemies <= 0) {
+		if (blocked || (!GameController.instance.is_practice && Enemy.harmful_enemies <= 0)) {
 			return;
 		}
 

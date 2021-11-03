@@ -22,13 +22,22 @@ public class LauncherSegment : ConstructionSegment {
 	Bomb loaded_bomb = null;
 	SpriteRenderer bomb_sr = null;
 
-	protected override void OnPlaced() {
+	protected override void Initialize() {
+		base.Initialize();
 		launch_audio = GetComponent<AudioSource>();
+	}
+
+	protected override void Place() {
+		base.Place();
 		Reload();
 		current_cooldown += Random.value * cooldown;
 	}
 
 	protected override void OnFixedUpdate() {
+		if (blocked) {
+			return;
+		}
+
 		if (loaded_bomb == null) {
 			current_reload_time -= Time.deltaTime;
 

@@ -312,19 +312,16 @@ MonoBehaviour:
   - {fileID: 1230251860}
   rb2d: {fileID: 0}
   max_hp: 100
-  hp: 100
   deletable: 1
   meltable: 1
-  blockable: 1
-  should_pause: 0
-  value: 10
+  cost: 10
   radius: 0.5
   gun: {fileID: 4021297175705850271}
   construction:
     serializedVersion: 2
     m_Bits: 5120
-  damage: 15
-  shot_cooldown: 3
+  damage: 12
+  shot_cooldown: 2
   search_cooldown: 1
 --- !u!1001 &5474652348573442014
 PrefabInstance:

@@ -153,6 +153,7 @@ GameObject:
   - component: {fileID: 2971265268459546405}
   - component: {fileID: 2971265268459546404}
   - component: {fileID: 2971265268459546406}
+  - component: {fileID: 1732244117304287091}
   m_Layer: 10
   m_Name: CoreSegment
   m_TagString: Untagged
@@ -304,13 +305,22 @@ MonoBehaviour:
   - {fileID: 2717239619462043577}
   rb2d: {fileID: 0}
   max_hp: 500
-  hp: 500
   deletable: 0
   meltable: 0
-  blockable: 0
-  should_pause: 1
-  value: 0
+  cost: 0
   radius: 1
+--- !u!114 &1732244117304287091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2971265268459546400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 305a4359bd2b49b0582275519f3100bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &804702221920045654
 PrefabInstance:
   m_ObjectHideFlags: 0

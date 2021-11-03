@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CoreSegment : ConstructionSegment {
 
-	protected override void OnKilled() {
+	public override void Kill() {
+		base.Kill();
 		GameController.instance.LoseGame();
 	}
 }

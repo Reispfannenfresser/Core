@@ -22,9 +22,9 @@ public class SegmentMelter : MonoBehaviour {
 
 	private void OnTriggerStay2D(Collider2D other) {
 		ConstructionSegment segment = other.gameObject.GetComponent<ConstructionSegment>();
-		if (segment == null || !segment.meltable) {
+		if (segment == null || !segment.IsMeltable()) {
 			return;
 		}
-		segment.Damage(damage);
+		((IDamageable) segment).Damage(damage);
 	}
 }

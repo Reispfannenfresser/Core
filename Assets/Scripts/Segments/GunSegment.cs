@@ -22,16 +22,25 @@ public class GunSegment : ConstructionSegment {
 	Enemy target = null;
 	AudioSource shot_audio = null;
 
-	protected override void OnPlaced() {
+	protected override void Initialize() {
+		base.Initialize();
 		fire = GetComponent<LineRenderer>();
 		animator = GetComponent<Animator>();
 		shot_audio = GetComponent<AudioSource>();
+	}
+
+	protected override void Place() {
+		base.Place();
 		shot_audio.pitch += Random.value * 0.125f - 0.0625f;
 		current_shot_cooldown += Random.value * shot_cooldown;
 		current_search_cooldown += Random.value * search_cooldown;
 	}
 
 	protected override void OnFixedUpdate() {
+		if (blocked) {
+			return;
+		}
+
 		current_search_cooldown -= Time.deltaTime;
 		current_shot_cooldown -= Time.deltaTime;
 
@@ -58,7 +67,7 @@ public class GunSegment : ConstructionSegment {
 		Vector3 direction = target.transform.position - transform.position;
 		float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 		gun.rotation = Quaternion.Euler(0, 0, angle);
-		target.Damage(damage);
+		((IDamageable) target).Damage(damage);
 
 		fire.SetPosition(0, transform.position + gun.right * 0.5f);
 		fire.SetPosition(1, target.transform.position);

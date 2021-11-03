@@ -47,9 +47,9 @@ public class SegmentPlacer : MonoBehaviour {
 			return;
 		}
 
-		cost = segment.value;
+		cost = segment.GetCost();
 		to_place = segment_object;
-		to_place_radius = segment.radius;
+		to_place_radius = segment.GetRadius();
 		sprite_renderer.sprite = segment_object.GetComponent<SpriteRenderer>().sprite;
 	}
 
@@ -65,7 +65,7 @@ public class SegmentPlacer : MonoBehaviour {
 			}
 
 			ConstructionSegment segment = collider.gameObject.GetComponent<ConstructionSegment>();
-			if (segment != null && segment.deletable) {
+			if (segment != null && segment.IsDeletable()) {
 				segment.Delete();
 			}
 		}

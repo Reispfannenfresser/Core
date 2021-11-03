@@ -28,21 +28,31 @@ public class Mothership : Enemy {
 
 	private float angle = 0f;
 	private float distance = 0f;
-	protected override void OnSpawned() {
+
+	protected override void Initialize() {
+		base.Initialize();
+
+		laser = GetComponent<LineRenderer>();
+		animator = GetComponent<Animator>();
+		laser_audio = GetComponent<AudioSource>();
+
 		angle = Random.value * 2 * Mathf.PI;
 		distance = 15 + (Random.value - 0.5f) * 10;
+
+		transform.position = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 40;
+	}
+
+	protected override void Spawn() {
+		base.Spawn();
 
 		current_move_cooldown = Random.value * move_cooldown;
 		current_spawn_cooldown = Random.value * spawn_cooldown;
 		current_laser_cooldown = Random.value * laser_cooldown;
-
-		transform.position = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 40;
-		laser = GetComponent<LineRenderer>();
-		animator = GetComponent<Animator>();
-		laser_audio = GetComponent<AudioSource>();
 	}
 
 	protected override void OnFixedUpdate() {
+		base.OnFixedUpdate();
+
 		if (current_move_cooldown <= 0) {
 			current_move_cooldown += move_cooldown;
 			angle += (Random.value - 0.5f) * Mathf.PI;
@@ -70,7 +80,7 @@ public class Mothership : Enemy {
 		}
 
 		if (target != null && is_attacking && total_damage < 150) {
-			target.Damage(50);
+			((IDamageable) target).Damage(50);
 			total_damage += 50;
 		}
 	}
@@ -99,7 +109,7 @@ public class Mothership : Enemy {
 		}
 	}
 
-	void DamageTarget() {
+	void StopAttack() {
 		is_attacking = false;
 	}
 }

@@ -89,7 +89,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5606407868855582056}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -312,17 +312,14 @@ MonoBehaviour:
   - {fileID: 1573075739}
   rb2d: {fileID: 0}
   max_hp: 100
-  hp: 100
   deletable: 1
   meltable: 1
-  blockable: 1
-  should_pause: 0
-  value: 20
+  cost: 20
   radius: 0.5
-  healing_radius: 2
-  cooldown: 2
-  amount: 20
-  cost: 5
+  mending_cost: 3
+  mending_radius: 2
+  mending_cooldown: 1.5
+  mending_amount: 30
   construction:
     serializedVersion: 2
     m_Bits: 1024

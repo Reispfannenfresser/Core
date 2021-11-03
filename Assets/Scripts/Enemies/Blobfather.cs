@@ -12,31 +12,29 @@ public class Blobfather : Blob {
 	protected GameObject shot = null;
 
 	[SerializeField]
-	protected int shot_amount = 3;
+	protected int shot_amount = 2;
 	[SerializeField]
 	protected float shot_spread = 5;
 
-	protected override void OnSpawned() {
-		base.OnSpawned();
+	protected override void Initialize() {
+		base.Initialize();
+
 		puke_audio = GetComponent<AudioSource>();
+
 		original_pitch = puke_audio.pitch;
 	}
 
-	protected override void OnConnected(ConstructionSegment segment) {
-
-	}
-
 	private void OnTriggerEnter2D(Collider2D other) {
-		ConstructionSegment segment = other.gameObject.GetComponent<ConstructionSegment>();
-		if (segment != null && !blocked_segments.Contains(segment)) {
-			(this as ISegmentBlocker).StartBlocking(segment);
+		IBlockable blockable = other.gameObject.GetComponent<IBlockable>();
+		if (blockable != null && !blocked_objects.Contains(blockable)) {
+			(this as IObjectBlocker).StartBlocking(blockable);
 		}
 	}
 
 	private void OnTriggerExit2D(Collider2D other) {
-		ConstructionSegment segment = other.gameObject.GetComponent<ConstructionSegment>();
-		if (segment != null && blocked_segments.Contains(segment)) {
-			(this as ISegmentBlocker).StopBlocking(segment);
+		IBlockable blockable = other.gameObject.GetComponent<IBlockable>();
+		if (blockable != null && blocked_objects.Contains(blockable)) {
+			(this as IObjectBlocker).StopBlocking(blockable);
 		}
 	}
 

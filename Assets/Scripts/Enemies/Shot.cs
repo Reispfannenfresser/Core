@@ -19,7 +19,7 @@ public class Shot : MonoBehaviour {
 			return;
 		}
 
-		segment.Damage(damage);
+		((IDamageable) segment).Damage(damage);
 		has_hit = true;
 		Destroy(gameObject);
 	}

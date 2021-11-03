@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Blob : Enemy, ISegmentBlocker {
+public class Blob : Enemy, IObjectBlocker {
 	protected bool collided = false;
 	protected Rigidbody2D rb2d = null;
 
@@ -10,77 +10,80 @@ public class Blob : Enemy, ISegmentBlocker {
 	[SerializeField]
 	protected float speed = 5;
 
-	[SerializeField]
-	protected float regrab_cooldown = 1;
-	protected float current_regrab_cooldown = 0;
+	private AttachingObject attaching_object = null;
 
-	protected HashSet<ConstructionSegment> blocked_segments = new HashSet<ConstructionSegment>();
+	protected HashSet<IBlockable> blocked_objects = new HashSet<IBlockable>();
 
-	protected override void OnSpawned() {
-		float distance = 30 + Random.value * 10;
+	protected override void Initialize() {
+		base.Initialize();
+
+		rb2d = gameObject.GetComponent<Rigidbody2D>();
+		attaching_object = GetComponent<AttachingObject>();
+
 		float angle = Random.value * Mathf.PI * 2 - Mathf.PI;
+		float distance = 30 + Random.value * 10;
 
 		transform.position = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * distance;
+	}
 
-		current_regrab_cooldown = regrab_cooldown;
+	protected override void Spawn() {
+		base.Spawn();
 
 		direction = -transform.position;
 		direction.Normalize();
-
-		rb2d = gameObject.GetComponent<Rigidbody2D>();
 	}
 
 	protected override void OnFixedUpdate() {
+		base.OnFixedUpdate();
+
 		if (!collided) {
 			rb2d.velocity = direction * speed;
-		} else if (current_regrab_cooldown > 0 && blocked_segments.Count == 0) {
-			current_regrab_cooldown -= Time.deltaTime;
-
-			if (current_regrab_cooldown <= 0) {
-				collided = false;
-				direction = -transform.position;
-				direction.Normalize();
-			}
+		} else if (blocked_objects.Count == 0) {
+			collided = false;
+			direction = -transform.position;
+			direction.Normalize();
 		}
 	}
 
 	private void OnCollisionEnter2D(Collision2D collision) {
-		ConstructionSegment segment = collision.gameObject.GetComponent<ConstructionSegment>();
-		if (segment == null) {
+		AttachingObject attach_to = collision.gameObject.GetComponent<AttachingObject>();
+		if (attach_to == null) {
 			return;
 		}
-
-		if (!collided) {
-			rb2d.velocity = Vector3.zero;
-			collided = true;
+		if (attaching_object.AttachTo(attach_to)) {
+			OnAttached(attach_to);
 		}
-		HingeJoint2D joint = gameObject.AddComponent<HingeJoint2D>();
-		joint.connectedBody = segment.rb2d;
-		joint.enableCollision = true;
-		segment.AddConnector(joint);
-		current_regrab_cooldown = regrab_cooldown;
-		OnConnected(segment);
 	}
 
-	protected virtual void OnConnected(ConstructionSegment segment) {
-		(this as ISegmentBlocker).StartBlocking(segment);
-	}
-
-	protected override void OnDestroyed() {
-		foreach (ConstructionSegment segment in blocked_segments) {
-			if (segment != null) {
-				segment.RemoveBlocker(this);
+	protected virtual void OnAttached(AttachingObject attach_to) {
+		collided = true;
+		IBlockable[] blockables = attach_to.gameObject.GetComponents<IBlockable>();
+		foreach (IBlockable blockable in blockables) {
+			if (blockable != null && !blocked_objects.Contains(blockable)) {
+				((IObjectBlocker) this).StartBlocking(blockable);
 			}
 		}
 	}
 
-	void ISegmentBlocker.StartBlocking(ConstructionSegment segment) {
-		segment.AddBlocker(this);
-		blocked_segments.Add(segment);
+	protected override void OnDestroyed() {
+		base.OnDestroyed();
+
+		attaching_object.DetachFromEverything();
+
+		foreach (IBlockable blockable in blocked_objects) {
+			if (blockable != null) {
+				blockable.OnFreed(this);
+			}
+		}
 	}
 
-	void ISegmentBlocker.StopBlocking(ConstructionSegment segment) {
-		segment.RemoveBlocker(this);
-		blocked_segments.Remove(segment);
+	void IObjectBlocker.StartBlocking(IBlockable blockable) {
+		blockable.OnBlocked(this);
+		blocked_objects.Add(blockable);
+	}
+
+	void IObjectBlocker.StopBlocking(IBlockable blockable) {
+		blockable.OnFreed(this);
+		blocked_objects.Remove(blockable);
 	}
 }

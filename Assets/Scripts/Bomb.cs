@@ -123,7 +123,7 @@ public class Bomb : MonoBehaviour {
 			Enemy enemy = collider.gameObject.GetComponent<Enemy>();
 			if (enemy != null) {
 				float multiplier = 1 - (enemy.transform.position - transform.position).magnitude / explosion_radius;
-				enemy.Damage(Mathf.Max(0, (int) (damage * multiplier)));
+				((IDamageable) enemy).Damage(Mathf.Max(0, (int) (damage * multiplier)));
 			}
 		}
 		animator.SetTrigger("Boom");

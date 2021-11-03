@@ -24,21 +24,33 @@ public class Ufo : Enemy {
 
 	AudioSource shot_audio = null;
 
-	protected override void OnSpawned() {
+	protected override void Initialize() {
+		base.Initialize();
+
+		shot_audio = GetComponent<AudioSource>();
+
 		angle = Random.value * 2 * Mathf.PI;
 		distance = 15 + (Random.value - 0.5f) * 10;
 		back = Random.value > 0.5f;
 		speed = 0.2f + (Random.value - 0.5f) * 0.2f;
-		flee_cooldown = 20 + (Random.value - 0.5f) * 10;
-		current_cooldown = Random.value * cooldown;
+
 		if (transform.position == Vector3.zero) {
 			transform.position = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 50;
 		}
-		shot_audio = GetComponent<AudioSource>();
+
 		shot_audio.pitch += Random.value * 0.125f - 0.0625f;
 	}
 
+	protected override void Spawn() {
+		base.Spawn();
+
+		flee_cooldown = 20 + (Random.value - 0.5f) * 10;
+		current_cooldown = Random.value * cooldown;
+	}
+
 	protected override void OnFixedUpdate() {
+		base.OnFixedUpdate();
+
 		if (Enemy.boss_enemies <= 0) {
 			flee_cooldown -= Time.deltaTime;
 		}
