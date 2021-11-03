@@ -272,10 +272,11 @@ public class GameController : MonoBehaviour {
 			zollar_change_text.text = "+" + zollar_change_text.text;
 		}
 
-		Graphic[] change_graphics = zollar_change_text.GetComponentsInChildren<Graphic>();
-		foreach (Graphic g in change_graphics) {
-			g.color = (zollar_change < 0) ? new Color(1, 0.5f, 0.5f) : new Color(0.5f, 1, 0.5f);
-		}
+		Color new_color = (zollar_change < 0) ? new Color(1, 0.5f, 0.5f) : new Color(0.5f, 1, 0.5f);
+
+		Image zollar_image = zollar_change_text.GetComponentInChildren<Image>();
+		zollar_image.color = new_color;
+		zollar_change_text.color = new_color;
 
 		zollars += change;
 		zollar_text.text = "" + zollars;
@@ -287,9 +288,11 @@ public class GameController : MonoBehaviour {
 			t.sizeDelta *= current_ui_scale;
 		}
 
+		new_color = (change < 0) ? new Color(1, 0.5f, 0.5f) : new Color(0.5f, 1, 0.5f);
+
 		Graphic[] graphics = new_balance_change.GetComponentsInChildren<Graphic>();
 		foreach (Graphic g in graphics) {
-			g.color = (change < 0) ? new Color(1, 0.5f, 0.5f) : new Color(0.5f, 1, 0.5f);
+			g.color = new_color;
 		}
 
 		Text text = new_balance_change.GetComponent<Text>();

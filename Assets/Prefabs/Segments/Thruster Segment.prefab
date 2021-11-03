@@ -147,11 +147,9 @@ MonoBehaviour:
   - {fileID: 8977875844628584446}
   rb2d: {fileID: 0}
   max_hp: 100
-  hp: 100
   deletable: 1
   meltable: 0
-  blockable: 0
-  value: 15
+  cost: 15
   radius: 0.5
   max_power: 3
   acceleration: 2

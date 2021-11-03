@@ -99,12 +99,9 @@ MonoBehaviour:
   - {fileID: 2037619039}
   rb2d: {fileID: 0}
   max_hp: 150
-  hp: 150
   deletable: 1
   meltable: 1
-  blockable: 0
-  should_pause: 0
-  value: 10
+  cost: 10
   radius: 0.75
 --- !u!1001 &1863582088012884001
 PrefabInstance:

@@ -215,12 +215,9 @@ MonoBehaviour:
   - {fileID: 309807990}
   rb2d: {fileID: 0}
   max_hp: 150
-  hp: 150
   deletable: 1
   meltable: 1
-  blockable: 1
-  should_pause: 0
-  value: 25
+  cost: 25
   radius: 0.75
   money_cooldown: 5
   money_amount: 7

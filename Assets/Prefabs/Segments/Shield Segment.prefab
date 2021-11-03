@@ -313,12 +313,9 @@ MonoBehaviour:
   - {fileID: 849301660}
   rb2d: {fileID: 0}
   max_hp: 150
-  hp: 150
   deletable: 1
   meltable: 1
-  blockable: 1
-  should_pause: 0
-  value: 30
+  cost: 25
   radius: 0.75
   shield_circle: {fileID: 1974081731}
 --- !u!1001 &6366946606772003139

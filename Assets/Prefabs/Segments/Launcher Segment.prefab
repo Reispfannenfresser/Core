@@ -196,12 +196,9 @@ MonoBehaviour:
   - {fileID: 1611380383225657234}
   rb2d: {fileID: 0}
   max_hp: 150
-  hp: 150
   deletable: 1
   meltable: 1
-  blockable: 1
-  should_pause: 1
-  value: 30
+  cost: 30
   radius: 0.75
   bomb: {fileID: 1509016389895916502, guid: adbc124ffaeedce0baf73724e8692ef5, type: 3}
   cooldown: 5
