@@ -26,15 +26,15 @@ public class Blobfather : Blob {
 
 	private void OnTriggerEnter2D(Collider2D other) {
 		IBlockable blockable = other.gameObject.GetComponent<IBlockable>();
-		if (blockable != null && !blocked_objects.Contains(blockable)) {
-			(this as IObjectBlocker).StartBlocking(blockable);
+		if (blockable != null) {
+			object_blocker.StartBlocking(blockable);
 		}
 	}
 
 	private void OnTriggerExit2D(Collider2D other) {
 		IBlockable blockable = other.gameObject.GetComponent<IBlockable>();
-		if (blockable != null && blocked_objects.Contains(blockable)) {
-			(this as IObjectBlocker).StopBlocking(blockable);
+		if (blockable != null) {
+			object_blocker.StopBlocking(blockable);
 		}
 	}
 

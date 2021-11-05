@@ -1,4 +1,4 @@
 public interface IBlockable {
-	void OnBlocked(IObjectBlocker segment);
-	void OnFreed(IObjectBlocker segment);
+	void OnBlocked(ObjectBlocker blocker);
+	void OnFreed(ObjectBlocker blocker);
 }

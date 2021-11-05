@@ -36,6 +36,8 @@ public class ConstructionSegment : MonoBehaviour, IBlockable, IDamageable {
 
 	private bool started = false;
 
+	protected HashSet<ObjectBlocker> blocked_by = new HashSet<ObjectBlocker>();
+
 	private void Awake() {
 		Initialize();
 	}
@@ -74,13 +76,15 @@ public class ConstructionSegment : MonoBehaviour, IBlockable, IDamageable {
 
 	}
 
-	void IBlockable.OnBlocked(IObjectBlocker blocker) {
+	void IBlockable.OnBlocked(ObjectBlocker blocker) {
+		blocked_by.Add(blocker);
 		if (blocker_count++ == 0) {
 			Block();
 		}
 	}
 
-	void IBlockable.OnFreed(IObjectBlocker blocker) {
+	void IBlockable.OnFreed(ObjectBlocker blocker) {
+		blocked_by.Remove(blocker);
 		if (--blocker_count == 0) {
 			Free();
 		}
@@ -179,5 +183,10 @@ public class ConstructionSegment : MonoBehaviour, IBlockable, IDamageable {
 
 	protected virtual void OnDestroyed() {
 		all_segments.Remove(this);
+
+		foreach (ObjectBlocker blocker in blocked_by) {
+			blocker.OnFreed(this);
+		}
+		blocked_by.Clear();
 	}
 }

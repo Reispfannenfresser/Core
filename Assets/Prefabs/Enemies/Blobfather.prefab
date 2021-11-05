@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 357949030467708561}
   - component: {fileID: 7776838058052114346}
   - component: {fileID: -7129775286765027198}
+  - component: {fileID: 9215524695454970820}
   m_Layer: 12
   m_Name: Blobfather
   m_TagString: Untagged
@@ -363,6 +364,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 305a4359bd2b49b0582275519f3100bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9215524695454970820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5900410693099785329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3cf03a6dc0b8d64291e4b20df99c448, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8592895831026175236

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Blob : Enemy, IObjectBlocker {
+public class Blob : Enemy {
 	protected bool collided = false;
 	protected Rigidbody2D rb2d = null;
 
@@ -10,15 +10,15 @@ public class Blob : Enemy, IObjectBlocker {
 	[SerializeField]
 	protected float speed = 5;
 
-	private AttachingObject attaching_object = null;
-
-	protected HashSet<IBlockable> blocked_objects = new HashSet<IBlockable>();
+	protected AttachingObject attaching_object = null;
+	protected ObjectBlocker object_blocker = null;
 
 	protected override void Initialize() {
 		base.Initialize();
 
 		rb2d = gameObject.GetComponent<Rigidbody2D>();
 		attaching_object = GetComponent<AttachingObject>();
+		object_blocker = GetComponent<ObjectBlocker>();
 
 		float angle = Random.value * Mathf.PI * 2 - Mathf.PI;
 		float distance = 30 + Random.value * 10;
@@ -38,7 +38,7 @@ public class Blob : Enemy, IObjectBlocker {
 
 		if (!collided) {
 			rb2d.velocity = direction * speed;
-		} else if (blocked_objects.Count == 0) {
+		} else if (object_blocker.block_count == 0) {
 			collided = false;
 			direction = -transform.position;
 			direction.Normalize();
@@ -59,8 +59,8 @@ public class Blob : Enemy, IObjectBlocker {
 		collided = true;
 		IBlockable[] blockables = attach_to.gameObject.GetComponents<IBlockable>();
 		foreach (IBlockable blockable in blockables) {
-			if (blockable != null && !blocked_objects.Contains(blockable)) {
-				((IObjectBlocker) this).StartBlocking(blockable);
+			if (blockable != null) {
+				object_blocker.StartBlocking(blockable);
 			}
 		}
 	}
@@ -69,21 +69,6 @@ public class Blob : Enemy, IObjectBlocker {
 		base.OnDestroyed();
 
 		attaching_object.DetachFromEverything();
-
-		foreach (IBlockable blockable in blocked_objects) {
-			if (blockable != null) {
-				blockable.OnFreed(this);
-			}
-		}
-	}
-
-	void IObjectBlocker.StartBlocking(IBlockable blockable) {
-		blockable.OnBlocked(this);
-		blocked_objects.Add(blockable);
-	}
-
-	void IObjectBlocker.StopBlocking(IBlockable blockable) {
-		blockable.OnFreed(this);
-		blocked_objects.Remove(blockable);
+		object_blocker.FreeEverything();
 	}
 }
