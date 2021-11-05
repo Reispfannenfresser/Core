@@ -12,9 +12,11 @@ public class Blobfather : Blob {
 	protected GameObject shot = null;
 
 	[SerializeField]
-	protected int shot_amount = 2;
-	[SerializeField]
 	protected float shot_spread = 5;
+	[SerializeField]
+	protected float shot_amount_increase_time = 5;
+	protected float current_shot_amount_increase_time = 0;
+	protected int shot_amount = 1;
 
 	protected override void Initialize() {
 		base.Initialize();
@@ -22,6 +24,20 @@ public class Blobfather : Blob {
 		puke_audio = GetComponent<AudioSource>();
 
 		original_pitch = puke_audio.pitch;
+	}
+
+	protected override void Spawn() {
+		base.Spawn();
+		current_shot_amount_increase_time = shot_amount_increase_time;
+	}
+
+	protected override void OnFixedUpdate() {
+		base.OnFixedUpdate();
+		current_shot_amount_increase_time -= Time.deltaTime;
+		if (current_shot_amount_increase_time < 0) {
+			current_shot_amount_increase_time += shot_amount_increase_time;
+			shot_amount++;
+		}
 	}
 
 	private void OnTriggerEnter2D(Collider2D other) {

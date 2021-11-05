@@ -244,8 +244,8 @@ MonoBehaviour:
   speed: 3
   mouth: {fileID: 8823256043548390216}
   shot: {fileID: 1562789161147081517, guid: e54aa6710da9533f8b8ab69de422d275, type: 3}
-  shot_amount: 3
   shot_spread: 5
+  shot_amount_increase_time: 10
 --- !u!114 &357949030467708561
 MonoBehaviour:
   m_ObjectHideFlags: 0
