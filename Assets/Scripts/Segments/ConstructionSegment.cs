@@ -27,7 +27,7 @@ public class ConstructionSegment : MonoBehaviour, IBlockable, IDamageable {
 	protected float radius = 0.5f;
 
 	int blocker_count = 0;
-	protected bool blocked = false;
+	public bool blocked {get; protected set;} = false;
 
 	public static float max_distance {get;} = 0.4f;
 	public static float max_overlap {get;} = 0.1f;
