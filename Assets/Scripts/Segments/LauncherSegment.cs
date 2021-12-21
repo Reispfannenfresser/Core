@@ -5,13 +5,10 @@ using UnityEngine;
 public class LauncherSegment : ConstructionSegment {
 	[SerializeField]
 	GameObject bomb = null;
-	[SerializeField]
-	float cooldown = 5;
-	float current_cooldown = 0;
 
 	[SerializeField]
-	float reload_time = 2;
-	float current_reload_time = 0;
+	float launch_cooldown = 5;
+	float current_launch_cooldown = 0;
 
 	AudioSource launch_audio = null;
 
@@ -22,39 +19,40 @@ public class LauncherSegment : ConstructionSegment {
 	Bomb loaded_bomb = null;
 	SpriteRenderer bomb_sr = null;
 
+	int state = 0;
+
 	protected override void Initialize() {
 		base.Initialize();
 		launch_audio = GetComponent<AudioSource>();
 	}
 
-	protected override void Place() {
-		base.Place();
-		Reload();
-		current_cooldown += Random.value * cooldown;
-	}
-
 	protected override void OnFixedUpdate() {
-		if (blocked || Enemy.total_enemies == 0) {
+		if (blocked) {
 			return;
 		}
 
-		if (loaded_bomb == null) {
-			current_reload_time -= Time.deltaTime;
-
-			if(current_reload_time <= 0) {
+		switch(state) {
+			case 0: // reload
 				Reload();
-			}
-		} else {
-			current_cooldown -= Time.deltaTime;
+				state++;
+				break;
+			case 1: // wait
+				current_launch_cooldown -= Time.deltaTime;
+				Color color = bomb_sr.color;
+				float progress = current_launch_cooldown / launch_cooldown;
+				color.a = 1 - (int)(progress * 3)/3f;
+				bomb_sr.color = color;
 
-			Color color = bomb_sr.color;
-			float progress = current_cooldown / cooldown;
-			color.a = 1 - (int)(progress * 3)/3f;
-			bomb_sr.color = color;
-
-			if (current_cooldown <= 0) {
+				if (current_launch_cooldown <= 0) {
+					state++;
+				}
+				break;
+			case 2: // fire
 				Fire();
-			}
+				state++;
+				break;
+			case 3: // wait
+				break;
 		}
 	}
 
@@ -63,16 +61,19 @@ public class LauncherSegment : ConstructionSegment {
 		loaded_bomb.Launch();
 		launch_audio.Play();
 
-		loaded_bomb = null;
-		bomb_sr = null;
+		loaded_bomb.detonate_event.AddAction("free_launcher", bomb => {
+			loaded_bomb = null;
+			bomb_sr = null;
+			state = 0;
+		});
 
 		fg.SetActive(false);
-
-		current_reload_time = reload_time + current_cooldown;
 	}
 
 	private void Reload() {
 		loaded_bomb = Instantiate(bomb, transform).GetComponent<Bomb>();
+
+		current_launch_cooldown = launch_cooldown;
 
 		bomb_sr = loaded_bomb.gameObject.GetComponent<SpriteRenderer>();
 		Color color = bomb_sr.color;
@@ -80,7 +81,14 @@ public class LauncherSegment : ConstructionSegment {
 		bomb_sr.color = color;
 
 		fg.SetActive(true);
+	}
 
-		current_cooldown = cooldown + current_reload_time;
+	protected override void OnDestroyed() {
+		base.OnDestroyed();
+
+		if (state == 3) {
+			loaded_bomb.detonate_event.RemoveAction("free_launcher");
+			loaded_bomb.Detonate();
+		}
 	}
 }

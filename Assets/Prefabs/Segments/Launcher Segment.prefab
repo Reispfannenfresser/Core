@@ -201,8 +201,7 @@ MonoBehaviour:
   cost: 30
   radius: 0.75
   bomb: {fileID: 1509016389895916502, guid: adbc124ffaeedce0baf73724e8692ef5, type: 3}
-  cooldown: 5
-  reload_time: 2
+  launch_cooldown: 7
   fg: {fileID: 1358478678444734319}
   loaded_bomb: {fileID: 0}
 --- !u!1 &8356168818419418723

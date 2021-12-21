@@ -17,6 +17,9 @@ public class Bomb : MonoBehaviour {
 	public float current_turn_speed = 0;
 	public float turn_acceleration = 90;
 
+	public Event<Bomb> detonate_event = new Event<Bomb>();
+	public Event<Bomb> launch_event = new Event<Bomb>();
+
 	[SerializeField]
 	float search_cooldown = 3;
 	float current_search_cooldown = 0;
@@ -50,6 +53,8 @@ public class Bomb : MonoBehaviour {
 		is_launched = true;
 		fire.SetActive(true);
 		sr.sortingOrder = 7;
+
+		launch_event.RunEvent(this);
 	}
 
 	private void FixedUpdate() {
@@ -115,19 +120,20 @@ public class Bomb : MonoBehaviour {
 		}
 	}
 
-	private void Detonate() {
+	public void Detonate() {
 		detonated = true;
 		fire.SetActive(false);
 		Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, explosion_radius, enemies);
 		foreach (Collider2D collider in colliders) {
 			Enemy enemy = collider.gameObject.GetComponent<Enemy>();
 			if (enemy != null) {
-				float multiplier = 1 - (enemy.transform.position - transform.position).magnitude / explosion_radius;
-				((IDamageable) enemy).Damage(Mathf.Max(0, (int) (damage * multiplier)));
+				((IDamageable) enemy).Damage(Mathf.Max(0, (int) (damage)));
 			}
 		}
 		animator.SetTrigger("Boom");
 		explosion_audio.Play();
+
+		detonate_event.RunEvent(this);
 	}
 
 	private void Remove() {

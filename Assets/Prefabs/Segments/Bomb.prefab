@@ -116,7 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22beb6399eb880d45ab1dac0eefb6f83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 200
+  damage: 50
   explosion_radius: 2
   enemies:
     serializedVersion: 2
