@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class CoreSegment : ConstructionSegment {
 
-	public override void Kill() {
-		base.Kill();
-		GameController.instance.LoseGame();
+	protected override void Place() {
+		base.Place();
+
+		damageable.on_killed_wrapper.AddAction("EndGame", e => {
+			GameController.instance.LoseGame();
+		});
 	}
 }

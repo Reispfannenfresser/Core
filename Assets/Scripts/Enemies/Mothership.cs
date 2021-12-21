@@ -80,7 +80,7 @@ public class Mothership : Enemy {
 		}
 
 		if (target != null && is_attacking && total_damage < 150) {
-			((IDamageable) target).Damage(50);
+			target.damageable.Damage(50);
 			total_damage += 50;
 		}
 	}

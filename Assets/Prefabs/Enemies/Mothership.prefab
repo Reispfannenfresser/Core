@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1172970377771495789}
   - component: {fileID: 5835388546237886605}
   - component: {fileID: 6615644915272254597}
+  - component: {fileID: 6617535756712988507}
   m_Layer: 12
   m_Name: Mothership
   m_TagString: Untagged
@@ -101,7 +102,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21fec3801c89a5f019124b7425f0b103, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max_hp: 250
   is_boss: 1
   is_harmful: 1
   ufo: {fileID: 1332924699840116546, guid: 371f9505993121ebcb5754b1f04e62b3, type: 3}
@@ -371,3 +371,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d1cc0999290ab07d9ad6946815cc282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6617535756712988507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6532792034792728501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df282224cf12df04790d0a9fee5bdaa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  max_hp: 250

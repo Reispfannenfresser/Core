@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class ConstructionSegment : MonoBehaviour, IBlockable, IDamageable {
+[RequireComponent(typeof(Damageable))]
+public class ConstructionSegment : MonoBehaviour, IBlockable {
 	public static HashSet<ConstructionSegment> all_segments = new HashSet<ConstructionSegment>();
 
 	[SerializeField]
 	protected SpriteRenderer[] sprite_renderers = new SpriteRenderer[0];
 	[SerializeField]
 	protected Rigidbody2D rb2d = null;
-
-	[SerializeField]
-	protected int max_hp = 100;
-	protected int hp = 0;
 
 	[SerializeField]
 	protected bool deletable = true;
@@ -32,6 +29,7 @@ public class ConstructionSegment : MonoBehaviour, IBlockable, IDamageable {
 	public static float max_distance {get;} = 0.4f;
 	public static float max_overlap {get;} = 0.1f;
 
+	public Damageable damageable {get; protected set;} = null;
 	private AttachingObject attaching_object = null;
 
 	private bool started = false;
@@ -45,13 +43,24 @@ public class ConstructionSegment : MonoBehaviour, IBlockable, IDamageable {
 	protected virtual void Initialize() {
 		rb2d = GetComponent<Rigidbody2D>();
 		attaching_object = GetComponent<AttachingObject>();
+		damageable = GetComponent<Damageable>();
 
 		all_segments.Add(this);
-		hp = max_hp;
 	}
 
 	private void Start() {
 		Place();
+
+		damageable.on_damaged_wrapper.AddAction("Segment_ChangeColor", e => {
+			UpdateColor();
+		});
+		damageable.on_healed_wrapper.AddAction("Segment_ChangeColor", e => {
+			UpdateColor();
+		});
+		damageable.on_killed_wrapper.AddAction("Destroy", e => {
+			Destroy(gameObject);
+		});
+
 		started = true;
 	}
 
@@ -103,7 +112,7 @@ public class ConstructionSegment : MonoBehaviour, IBlockable, IDamageable {
 	private void UpdateColor() {
 		foreach (SpriteRenderer renderer in sprite_renderers) {
 			if (renderer != null) {
-				float gb_values = (float) hp / max_hp;
+				float gb_values = (float) damageable.hp / damageable.max_hp;
 				float r_value = gb_values / 2 + 0.5f;
 				float a_value = renderer.color.a;
 				if (blocked) {
@@ -113,14 +122,6 @@ public class ConstructionSegment : MonoBehaviour, IBlockable, IDamageable {
 				renderer.color = new Color(r_value, gb_values, gb_values, a_value);
 			}
 		}
-	}
-
-	public int GetHP() {
-		return hp;
-	}
-
-	public int GetMaxHP() {
-		return max_hp;
 	}
 
 	public int GetCost() {
@@ -139,41 +140,8 @@ public class ConstructionSegment : MonoBehaviour, IBlockable, IDamageable {
 		return meltable;
 	}
 
-	void IDamageable.Damage(int amount) {
-		Damage(amount);
-	}
-
-	void IDamageable.Heal(int amount) {
-		Heal(amount);
-	}
-
-	void IDamageable.Kill() {
-		Kill();
-	}
-
-	protected virtual void Damage(int amount) {
-		hp -= amount;
-		if (hp <= 0) {
-			hp = 0;
-			Kill();
-		}
-		UpdateColor();
-	}
-
-	protected virtual void Heal(int amount) {
-		hp += amount;
-		if (hp >= max_hp) {
-			hp = max_hp;
-		}
-		UpdateColor();
-	}
-
-	public virtual void Kill() {
-		Destroy(gameObject);
-	}
-
 	public virtual void Delete() {
-		GameController.instance.AddZollars((int) (cost * hp / (float) max_hp));
+		GameController.instance.AddZollars((int) (cost * damageable.hp / (float) damageable.max_hp));
 		Destroy(gameObject);
 	}
 

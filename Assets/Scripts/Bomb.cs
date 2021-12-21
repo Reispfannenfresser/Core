@@ -136,7 +136,7 @@ public class Bomb : MonoBehaviour {
 		foreach (Collider2D collider in colliders) {
 			Enemy enemy = collider.gameObject.GetComponent<Enemy>();
 			if (enemy != null) {
-				((IDamageable) enemy).Damage(Mathf.Max(0, (int) (damage)));
+				enemy.damageable.Damage(damage);
 			}
 		}
 		animator.SetTrigger("Boom");

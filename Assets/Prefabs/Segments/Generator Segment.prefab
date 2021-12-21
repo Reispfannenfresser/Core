@@ -214,13 +214,25 @@ MonoBehaviour:
   - {fileID: 5733715664152819031}
   - {fileID: 309807990}
   rb2d: {fileID: 0}
-  max_hp: 150
   deletable: 1
   meltable: 1
   cost: 25
   radius: 0.75
   money_cooldown: 5
   money_amount: 7
+--- !u!114 &6691267730113659970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4746066364767044793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df282224cf12df04790d0a9fee5bdaa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  max_hp: 150
 --- !u!1 &8943688075265091676
 GameObject:
   m_ObjectHideFlags: 0

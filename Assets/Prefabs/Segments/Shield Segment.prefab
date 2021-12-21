@@ -312,12 +312,24 @@ MonoBehaviour:
   - {fileID: 2624660713159192321}
   - {fileID: 849301660}
   rb2d: {fileID: 0}
-  max_hp: 150
   deletable: 1
   meltable: 1
   cost: 25
   radius: 0.75
   shield_circle: {fileID: 1974081731}
+--- !u!114 &2878176731973821174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2624660713159192323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df282224cf12df04790d0a9fee5bdaa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  max_hp: 150
 --- !u!1001 &6366946606772003139
 PrefabInstance:
   m_ObjectHideFlags: 0

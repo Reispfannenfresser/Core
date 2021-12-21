@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IDamageable {
+[RequireComponent(typeof(Damageable))]
+public class Enemy : MonoBehaviour {
 	public static HashSet<Enemy> all_enemies = new HashSet<Enemy>();
 	public static int harmful_enemies = 0;
 	public static int boss_enemies = 0;
@@ -10,9 +11,8 @@ public class Enemy : MonoBehaviour, IDamageable {
 
 	protected SpriteRenderer sprite_renderer = null;
 
-	[SerializeField]
-	protected int max_hp = 100;
-	protected int hp;
+	public Damageable damageable {get; protected set;} = null;
+
 	[SerializeField]
 	public bool is_boss = false;
 
@@ -24,7 +24,9 @@ public class Enemy : MonoBehaviour, IDamageable {
 	}
 
 	protected virtual void Initialize() {
+		damageable = GetComponent<Damageable>();
 		sprite_renderer = GetComponent<SpriteRenderer>();
+
 		all_enemies.Add(this);
 		if (is_harmful) {
 			harmful_enemies++;
@@ -40,44 +42,19 @@ public class Enemy : MonoBehaviour, IDamageable {
 	}
 
 	protected virtual void Spawn() {
-		hp = max_hp;
-	}
-
-	void IDamageable.Damage(int amount) {
-		Damage(amount);
-	}
-
-	void IDamageable.Heal(int amount) {
-		Heal(amount);
-	}
-
-	void IDamageable.Kill() {
-		Kill();
-	}
-
-	protected virtual void Damage(int amount) {
-		hp -= amount;
-		if (hp <= 0) {
-			Kill();
-			hp = 0;
-		}
-		UpdateColor();
-	}
-
-	protected virtual void Heal(int amount) {
-		hp += amount;
-		if (hp >= max_hp) {
-			hp = max_hp;
-		}
-		UpdateColor();
-	}
-
-	public virtual void Kill() {
-		Destroy(gameObject);
+		damageable.on_damaged_wrapper.AddAction("Enemy_ChangeColor", e => {
+			UpdateColor();
+		});
+		damageable.on_healed_wrapper.AddAction("Enemy_ChangeColor", e => {
+			UpdateColor();
+		});
+		damageable.on_killed_wrapper.AddAction("Destroy", e => {
+			Destroy(gameObject);
+		});
 	}
 
 	private void UpdateColor() {
-		float gb_values = (float) hp / max_hp;
+		float gb_values = (float) damageable.hp / damageable.max_hp;
 		float r_value = gb_values / 2 + 0.5f;
 		sprite_renderer.color = new Color(r_value, gb_values, gb_values);
 	}

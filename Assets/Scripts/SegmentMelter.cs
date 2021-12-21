@@ -25,6 +25,6 @@ public class SegmentMelter : MonoBehaviour {
 		if (segment == null || !segment.IsMeltable()) {
 			return;
 		}
-		((IDamageable) segment).Damage(damage);
+		segment.damageable.Damage(damage);
 	}
 }

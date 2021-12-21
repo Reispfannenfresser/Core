@@ -311,7 +311,6 @@ MonoBehaviour:
   - {fileID: 4021297175705850268}
   - {fileID: 1230251860}
   rb2d: {fileID: 0}
-  max_hp: 100
   deletable: 1
   meltable: 1
   cost: 10
@@ -323,6 +322,19 @@ MonoBehaviour:
   damage: 12
   shot_cooldown: 2
   search_cooldown: 1
+--- !u!114 &4778586299422769411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4021297175705850270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df282224cf12df04790d0a9fee5bdaa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  max_hp: 100
 --- !u!1001 &5474652348573442014
 PrefabInstance:
   m_ObjectHideFlags: 0

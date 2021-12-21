@@ -54,11 +54,11 @@ public class MenderSegment : ConstructionSegment {
 		Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, mending_radius, construction);
 		foreach (Collider2D collider in colliders) {
 			ConstructionSegment segment = collider.gameObject.GetComponent<ConstructionSegment>();
-			if (segment != null && segment != this && segment.GetMaxHP() - segment.GetHP() >= mending_amount) {
+			if (segment != null && segment != this && segment.damageable.max_hp - segment.damageable.hp >= mending_amount) {
 				GameController.instance.RemoveZollars(mending_cost);
 				rays.SetPosition(0, transform.position);
 				rays.SetPosition(1, collider.transform.position);
-				((IDamageable) segment).Heal(mending_amount);
+				segment.damageable.Heal(mending_amount);
 				animator.SetTrigger("Heal");
 				mend_audio.Play();
 				return;

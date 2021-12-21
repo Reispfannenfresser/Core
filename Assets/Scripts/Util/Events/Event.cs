@@ -12,7 +12,9 @@ public class Event<T> {
 	private Dictionary<string, Action> actions = new Dictionary<string, Action>();
 
 	public void RunEvent() {
-		actions.AsParallel().ForAll(pair => pair.Value(this));
+		foreach(KeyValuePair<string, Action> kvp in actions) {
+			kvp.Value(this);
+		}
 	}
 
 	public void AddAction(string id, Action action) {

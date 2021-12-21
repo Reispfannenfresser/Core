@@ -67,7 +67,7 @@ public class GunSegment : ConstructionSegment {
 		Vector3 direction = target.transform.position - transform.position;
 		float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 		gun.rotation = Quaternion.Euler(0, 0, angle);
-		((IDamageable) target).Damage(damage);
+		target.damageable.Damage(damage);
 
 		fire.SetPosition(0, transform.position + gun.right * 0.5f);
 		fire.SetPosition(1, target.transform.position);
