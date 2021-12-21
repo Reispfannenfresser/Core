@@ -17,8 +17,8 @@ public class Bomb : MonoBehaviour {
 	public float current_turn_speed = 0;
 	public float turn_acceleration = 90;
 
-	public Event<Bomb> detonate_event = new Event<Bomb>();
-	public Event<Bomb> launch_event = new Event<Bomb>();
+	public Event<Bomb> detonate_event;
+	public Event<Bomb> launch_event;
 
 	[SerializeField]
 	float search_cooldown = 3;
@@ -40,6 +40,8 @@ public class Bomb : MonoBehaviour {
 	GameObject target = null;
 
 	public void Awake() {
+		detonate_event = new Event<Bomb>(this);
+		launch_event = new Event<Bomb>(this);
 		animator = GetComponent<Animator>();
 		sr = GetComponent<SpriteRenderer>();
 		explosion_audio = GetComponent<AudioSource>();
@@ -54,7 +56,7 @@ public class Bomb : MonoBehaviour {
 		fire.SetActive(true);
 		sr.sortingOrder = 7;
 
-		launch_event.RunEvent(this);
+		launch_event.RunEvent();
 	}
 
 	private void FixedUpdate() {
@@ -133,7 +135,7 @@ public class Bomb : MonoBehaviour {
 		animator.SetTrigger("Boom");
 		explosion_audio.Play();
 
-		detonate_event.RunEvent(this);
+		detonate_event.RunEvent();
 	}
 
 	private void Remove() {

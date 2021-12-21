@@ -61,7 +61,7 @@ public class LauncherSegment : ConstructionSegment {
 		loaded_bomb.Launch();
 		launch_audio.Play();
 
-		loaded_bomb.detonate_event.AddAction("free_launcher", bomb => {
+		loaded_bomb.detonate_event.AddAction("free_launcher", event => {
 			loaded_bomb = null;
 			bomb_sr = null;
 			state = 0;
