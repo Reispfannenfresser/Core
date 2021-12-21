@@ -61,7 +61,7 @@ public class LauncherSegment : ConstructionSegment {
 		loaded_bomb.Launch();
 		launch_audio.Play();
 
-		loaded_bomb.detonate_event.AddAction("free_launcher", e => {
+		loaded_bomb.detonate_event_wrapper.AddAction("free_launcher", e => {
 			loaded_bomb = null;
 			bomb_sr = null;
 			state = 0;
@@ -87,7 +87,7 @@ public class LauncherSegment : ConstructionSegment {
 		base.OnDestroyed();
 
 		if (state == 3) {
-			loaded_bomb.detonate_event.RemoveAction("free_launcher");
+			loaded_bomb.detonate_event_wrapper.RemoveAction("free_launcher");
 			loaded_bomb.Detonate();
 		}
 	}

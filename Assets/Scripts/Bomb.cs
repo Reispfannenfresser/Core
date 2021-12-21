@@ -17,8 +17,11 @@ public class Bomb : MonoBehaviour {
 	public float current_turn_speed = 0;
 	public float turn_acceleration = 90;
 
-	public Event<Bomb> detonate_event;
-	public Event<Bomb> launch_event;
+	protected Event<Bomb> detonate_event;
+	protected Event<Bomb> launch_event;
+
+	public EventWrapper<Bomb> detonate_event_wrapper;
+	public EventWrapper<Bomb> launch_event_wrapper;
 
 	[SerializeField]
 	float search_cooldown = 3;
@@ -42,6 +45,10 @@ public class Bomb : MonoBehaviour {
 	public void Awake() {
 		detonate_event = new Event<Bomb>(this);
 		launch_event = new Event<Bomb>(this);
+
+		detonate_event_wrapper = new EventWrapper<Bomb>(detonate_event);
+		launch_event_wrapper = new EventWrapper<Bomb>(launch_event);
+
 		animator = GetComponent<Animator>();
 		sr = GetComponent<SpriteRenderer>();
 		explosion_audio = GetComponent<AudioSource>();
