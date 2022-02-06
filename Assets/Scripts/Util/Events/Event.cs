@@ -8,12 +8,12 @@ public class Event<T> {
 		this.owner = owner;
 	}
 
-	public delegate void Action(Event<T> e);
+	public delegate void Action(T owner);
 	private Dictionary<string, Action> actions = new Dictionary<string, Action>();
 
 	public void RunEvent() {
-		foreach(KeyValuePair<string, Action> kvp in actions) {
-			kvp.Value(this);
+		foreach (KeyValuePair<string, Action> kvp in actions) {
+			kvp.Value(owner);
 		}
 	}
 

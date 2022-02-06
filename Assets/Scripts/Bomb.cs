@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Bomb : MonoBehaviour {
+	public static HashSet<Bomb> all_bombs = new HashSet<Bomb>();
+
 	[SerializeField]
 	private int damage = 100;
 	[SerializeField]
@@ -17,11 +19,13 @@ public class Bomb : MonoBehaviour {
 	public float current_turn_speed = 0;
 	public float turn_acceleration = 90;
 
-	protected Event<Bomb> detonate_event;
-	protected Event<Bomb> launch_event;
+	protected Event<Bomb> on_launched_event;
+	protected Event<Bomb> on_detonated_event;
+	protected Event<Bomb> on_destroyed_event;
 
-	public EventWrapper<Bomb> detonate_event_wrapper;
-	public EventWrapper<Bomb> launch_event_wrapper;
+	public EventWrapper<Bomb> on_launched_wrapper;
+	public EventWrapper<Bomb> on_detonated_wrapper;
+	public EventWrapper<Bomb> on_destroyed_wrapper;
 
 	[SerializeField]
 	float search_cooldown = 3;
@@ -38,24 +42,28 @@ public class Bomb : MonoBehaviour {
 	private SpriteRenderer sr = null;
 	private AudioSource explosion_audio = null;
 
-	private bool is_launched = false;
+	public bool is_launched {get; private set;} = false;
 
 	GameObject target = null;
 
+	public int unique_id {get; protected set;} = 0;
+
 	public void Awake() {
-		detonate_event = new Event<Bomb>(this);
-		launch_event = new Event<Bomb>(this);
-
-		detonate_event_wrapper = new EventWrapper<Bomb>(detonate_event);
-		launch_event_wrapper = new EventWrapper<Bomb>(launch_event);
-
 		animator = GetComponent<Animator>();
 		sr = GetComponent<SpriteRenderer>();
 		explosion_audio = GetComponent<AudioSource>();
-	}
 
-	public void Start() {
 		current_search_cooldown = search_cooldown * Random.value;
+
+		on_launched_event = new Event<Bomb>(this);
+		on_detonated_event = new Event<Bomb>(this);
+		on_destroyed_event = new Event<Bomb>(this);
+
+		on_launched_wrapper = new EventWrapper<Bomb>(on_launched_event);
+		on_detonated_wrapper = new EventWrapper<Bomb>(on_detonated_event);
+		on_destroyed_wrapper = new EventWrapper<Bomb>(on_destroyed_event);
+
+		unique_id = ObjectRegistry<Bomb>.Add(this);
 	}
 
 	public void Launch() {
@@ -63,7 +71,7 @@ public class Bomb : MonoBehaviour {
 		fire.SetActive(true);
 		sr.sortingOrder = 7;
 
-		launch_event.RunEvent();
+		on_launched_event.RunEvent();
 	}
 
 	private void FixedUpdate() {
@@ -90,7 +98,7 @@ public class Bomb : MonoBehaviour {
 		if (target != null) {
 			direction = transform.InverseTransformDirection(target.transform.position - transform.position);
 		}
-		direction.Normalize();
+		direction = direction.normalized;
 
 		float change_needed = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
 		while (change_needed < -180) {
@@ -113,7 +121,12 @@ public class Bomb : MonoBehaviour {
 	private void PickTarget() {
 		GameObject new_target = null;
 		float shortest_distance = Mathf.Infinity;
-		foreach (Enemy enemy in Enemy.all_enemies) {
+		foreach (KeyValuePair<int, Enemy> kvp in ObjectRegistry<Enemy>.objects) {
+			Enemy enemy = kvp.Value;
+			if (enemy.is_bomb_resistant) {
+				continue;
+			}
+
 			float distance_to = (enemy.transform.position - transform.position).magnitude;
 			if (distance_to < shortest_distance) {
 				new_target = enemy.gameObject;
@@ -124,28 +137,42 @@ public class Bomb : MonoBehaviour {
 	}
 
 	public void OnTriggerStay2D(Collider2D other) {
-		if (is_launched && !detonated) {
+		if (!is_launched || detonated) {
+			return;
+		}
+
+		Enemy enemy = other.GetComponent<Enemy>();
+		if (enemy != null && !enemy.is_bomb_resistant) {
 			Detonate();
 		}
 	}
 
 	public void Detonate() {
+		if (detonated) {
+			return;
+		}
+
 		detonated = true;
 		fire.SetActive(false);
 		Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, explosion_radius, enemies);
 		foreach (Collider2D collider in colliders) {
 			Enemy enemy = collider.gameObject.GetComponent<Enemy>();
-			if (enemy != null) {
+			if (enemy != null && !enemy.is_bomb_resistant) {
 				enemy.damageable.Damage(damage);
 			}
 		}
 		animator.SetTrigger("Boom");
 		explosion_audio.Play();
 
-		detonate_event.RunEvent();
+		on_detonated_event.RunEvent();
 	}
 
-	private void Remove() {
+	private void OnDestroy() {
+		ObjectRegistry<Bomb>.Remove(unique_id);
+		on_destroyed_event.RunEvent();
+	}
+
+	public void Kill() {
 		Destroy(gameObject);
 	}
 }

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 365940496253038473}
   - component: {fileID: 6732057244131122700}
   - component: {fileID: -4190940419865860670}
+  - component: {fileID: 992451001479695092}
   m_Layer: 10
   m_Name: Segment Template
   m_TagString: Untagged
@@ -162,3 +163,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 305a4359bd2b49b0582275519f3100bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &992451001479695092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8950723079009521216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4d146254f1c74c299383a0434477b54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprite_renderers:
+  - {fileID: 8950723079009521218}
+  max_hp: 75
+  <cost>k__BackingField: 10
+  <radius>k__BackingField: 0.5

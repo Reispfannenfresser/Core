@@ -2,76 +2,85 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Damageable))]
 public class Enemy : MonoBehaviour {
-	public static HashSet<Enemy> all_enemies = new HashSet<Enemy>();
+	[SerializeField]
+	private int max_hp = 0;
+
 	public static int harmful_enemies = 0;
 	public static int boss_enemies = 0;
 	public static int total_enemies = 0;
 
-	protected SpriteRenderer sprite_renderer = null;
+	protected SpriteRenderer[] sprite_renderers = null;
 
 	public Damageable damageable {get; protected set;} = null;
+	public int unique_id {get; private set;} = 0;
 
-	[SerializeField]
-	public bool is_boss = false;
+	[field: SerializeField]
+	public bool is_boss {get; protected set;} = false;
 
-	[SerializeField]
-	public bool is_harmful = true;
+	[field: SerializeField]
+	public bool is_harmful {get; protected set;} = true;
+
+	[field: SerializeField]
+	public bool is_bomb_resistant {get; protected set;} = false;
+
+	private Event<Enemy> on_spawned_event = null;
+	private Event<Enemy> fixed_update_event = null;
+	private Event<Enemy> on_destroyed_event = null;
+
+	public EventWrapper<Enemy> on_spawned_wrapper = null;
+	public EventWrapper<Enemy> fixed_update_wrapper = null;
+	public EventWrapper<Enemy> on_destroyed_wrapper = null;
 
 	protected void Awake() {
-		Initialize();
-	}
+		damageable = new Damageable(max_hp);
+		sprite_renderers = GetComponentsInChildren<SpriteRenderer>();
 
-	protected virtual void Initialize() {
-		damageable = GetComponent<Damageable>();
-		sprite_renderer = GetComponent<SpriteRenderer>();
-
-		all_enemies.Add(this);
+		total_enemies++;
 		if (is_harmful) {
 			harmful_enemies++;
 		}
 		if (is_boss) {
 			boss_enemies++;
 		}
-		total_enemies++;
+
+		unique_id = ObjectRegistry<Enemy>.Add(this);
+
+		on_spawned_event = new Event<Enemy>(this);
+		fixed_update_event = new Event<Enemy>(this);
+		on_destroyed_event = new Event<Enemy>(this);
+
+		on_spawned_wrapper = new EventWrapper<Enemy>(on_spawned_event);
+		fixed_update_wrapper = new EventWrapper<Enemy>(fixed_update_event);
+		on_destroyed_wrapper = new EventWrapper<Enemy>(on_destroyed_event);
+
+		damageable.on_hp_changed_wrapper.AddAction("Enemy_ChangeColor", damageable => {
+			UpdateColor();
+		});
+		damageable.on_killed_wrapper.AddAction("Enemy_Destroy", damageable => {
+			Destroy(gameObject);
+		});
 	}
 
 	protected void Start() {
-		Spawn();
-	}
-
-	protected virtual void Spawn() {
-		damageable.on_damaged_wrapper.AddAction("Enemy_ChangeColor", e => {
-			UpdateColor();
-		});
-		damageable.on_healed_wrapper.AddAction("Enemy_ChangeColor", e => {
-			UpdateColor();
-		});
-		damageable.on_killed_wrapper.AddAction("Destroy", e => {
-			Destroy(gameObject);
-		});
+		on_spawned_event.RunEvent();
 	}
 
 	private void UpdateColor() {
 		float gb_values = (float) damageable.hp / damageable.max_hp;
 		float r_value = gb_values / 2 + 0.5f;
-		sprite_renderer.color = new Color(r_value, gb_values, gb_values);
+
+		Color c = new Color(r_value, gb_values, gb_values);
+		foreach (SpriteRenderer r in sprite_renderers) {
+			r.color = c;
+		}
 	}
 
 	private void FixedUpdate() {
-		OnFixedUpdate();
-	}
-
-	protected virtual void OnFixedUpdate() {
-
+		fixed_update_event.RunEvent();
 	}
 
 	protected virtual void OnDestroy() {
-		OnDestroyed();
-	}
-
-	protected virtual void OnDestroyed() {
 		if (is_harmful) {
 			harmful_enemies--;
 		}
@@ -80,6 +89,8 @@ public class Enemy : MonoBehaviour {
 		}
 		total_enemies--;
 
-		all_enemies.Remove(this);
+		ObjectRegistry<Enemy>.Remove(unique_id);
+
+		on_destroyed_event.RunEvent();
 	}
 }

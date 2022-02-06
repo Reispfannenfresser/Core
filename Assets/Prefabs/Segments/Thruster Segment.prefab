@@ -141,31 +141,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36ca41ced4e7a2fe1b6f0c8913c78422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprite_renderers:
-  - {fileID: 4284714309636319753}
-  - {fileID: 1596849941}
-  - {fileID: 8977875844628584446}
-  rb2d: {fileID: 0}
-  deletable: 1
-  meltable: 0
-  cost: 15
-  radius: 0.5
   max_power: 3
   acceleration: 2
   fire: {fileID: 8977875844628584446}
---- !u!114 &8639584447981738186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4284714309636319755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df282224cf12df04790d0a9fee5bdaa2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  max_hp: 100
 --- !u!1001 &655004216824127499
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -244,6 +222,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 992451001479695092, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
+      propertyPath: <cost>k__BackingField
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 992451001479695092, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
+      propertyPath: <meltable>k__BackingField
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 992451001479695092, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
+      propertyPath: sprite_renderers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 992451001479695092, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
+      propertyPath: sprite_renderers.Array.data[1]
+      value: 
+      objectReference: {fileID: 1596849941}
     - target: {fileID: 8950723079009521216, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
       propertyPath: m_Name
       value: Thruster Segment
@@ -282,10 +276,5 @@ GameObject:
 --- !u!4 &4284714309636319754 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8950723079009521217, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
-  m_PrefabInstance: {fileID: 5134393576538973259}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &4284714309636319753 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 8950723079009521218, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
   m_PrefabInstance: {fileID: 5134393576538973259}
   m_PrefabAsset: {fileID: 0}

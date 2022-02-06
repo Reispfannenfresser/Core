@@ -2,41 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShieldSegment : ConstructionSegment, IBlockable {
-	Animator animator = null;
-	AudioSource block_audio = null;
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(ConstructionSegment))]
+public class ShieldSegment : MonoBehaviour {
 	[SerializeField]
 	GameObject shield_circle = null;
 
-	protected override void Initialize() {
-		base.Initialize();
+	Animator animator = null;
+	AudioSource block_audio = null;
+	ConstructionSegment segment = null;
+
+	private void Awake() {
 		animator = GetComponent<Animator>();
 		block_audio = GetComponent<AudioSource>();
-	}
+		segment = GetComponent<ConstructionSegment>();
 
-	protected override void Place() {
-		base.Place();
 		block_audio.pitch += Random.value * 0.125f - 0.0625f;
+	}
 
-		damageable.on_damaged_wrapper.AddAction("Shield_damage_reduction", e => {
-			if (!blocked && !damageable.dead) {
-				damageable.last_hp_change /= 2;
-				if (!block_audio.isPlaying) {
-					block_audio.Play();
-				}
+	private void Start() {
+		segment.damageable.on_damaged_wrapper.AddAction("Shield", OnDamaged);
+		segment.on_blocked_wrapper.AddAction("Shield", OnBlocked);
+		segment.on_freed_wrapper.AddAction("Shield", OnFreed);
+	}
+
+	private void OnDamaged(Damageable damageable) {
+		if (!segment.blocked && !damageable.dead) {
+			damageable.last_hp_change /= 2;
+			if (!block_audio.isPlaying) {
+				block_audio.Play();
 			}
-		});
-	}
-
-	protected override void Block() {
-		base.Block();
-		shield_circle.SetActive(false);
-	}
-
-	protected override void Free() {
-		base.Free();
-		if (shield_circle != null) {
-			shield_circle.SetActive(true);
 		}
+	}
+
+	private void OnBlocked(ConstructionSegment segment) {
+		shield_circle.SetActive(false);
+		segment.damageable.on_damaged_wrapper.RemoveAction("Shield");
+	}
+
+	private void OnFreed(ConstructionSegment segment) {
+		shield_circle.SetActive(true);
+		segment.damageable.on_damaged_wrapper.AddAction("Shield", OnDamaged);
 	}
 }

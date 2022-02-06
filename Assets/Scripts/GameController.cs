@@ -74,8 +74,6 @@ public class GameController : MonoBehaviour {
 	int spawn_amount = 0;
 	int boss_spawn_amount = 0;
 
-	public HashSet<GameObject> delete_on_start = new HashSet<GameObject>();
-
 	public static GameController instance = null;
 
 	void Awake() {
@@ -109,7 +107,9 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void StartGame() {
-		foreach(GameObject to_delete in delete_on_start) {
+		foreach(KeyValuePair<int, DeleteOnRestart> kvp in ObjectRegistry<DeleteOnRestart>.objects) {
+			GameObject to_delete = kvp.Value.gameObject;
+
 			if (to_delete != null) {
 				Destroy(to_delete);
 			}

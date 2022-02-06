@@ -14,7 +14,7 @@ public class ObjectBlocker : MonoBehaviour {
 		blocked_objects.Add(blockable);
 		block_count++;
 
-		blockable.OnBlocked(this);
+		blockable.Block(this);
 	}
 
 	public void StopBlocking(IBlockable blockable) {
@@ -22,7 +22,7 @@ public class ObjectBlocker : MonoBehaviour {
 			return;
 		}
 
-		blockable.OnFreed(this);
+		blockable.Free(this);
 
 		blocked_objects.Remove(blockable);
 		block_count--;
@@ -40,7 +40,7 @@ public class ObjectBlocker : MonoBehaviour {
 	public void FreeEverything() {
 		foreach (IBlockable blockable in blocked_objects) {
 			if (blockable != null) {
-				blockable.OnFreed(this);
+				blockable.Free(this);
 			}
 		}
 

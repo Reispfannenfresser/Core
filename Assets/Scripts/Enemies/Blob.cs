@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Blob : Enemy {
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(AttachingObject))]
+[RequireComponent(typeof(Enemy))]
+public class Blob : MonoBehaviour {
 	protected bool collided = false;
 	protected Rigidbody2D rb2d = null;
 
@@ -11,15 +14,15 @@ public class Blob : Enemy {
 
 	protected AttachingObject attaching_object = null;
 	protected ObjectBlocker object_blocker = null;
+	protected Enemy enemy = null;
 
 	protected float mass = 0;
 
-	protected override void Initialize() {
-		base.Initialize();
-
+	protected void Awake() {
 		rb2d = gameObject.GetComponent<Rigidbody2D>();
 		attaching_object = GetComponent<AttachingObject>();
 		object_blocker = GetComponent<ObjectBlocker>();
+		enemy = GetComponent<Enemy>();
 
 		mass = rb2d.mass;
 
@@ -29,23 +32,30 @@ public class Blob : Enemy {
 		transform.position = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * distance;
 	}
 
-	protected override void Spawn() {
-		base.Spawn();
+	protected void Start() {
+		enemy.on_spawned_wrapper.AddAction("Blob", OnSpawned);
+		enemy.fixed_update_wrapper.AddAction("Blob", OnFixedUpdate);
+		enemy.on_destroyed_wrapper.AddAction("Blob", OnDestroyed);
+	}
 
+	private void OnSpawned(Enemy e) {
 		rb2d.mass = 0.0001f;
 	}
 
-	protected override void OnFixedUpdate() {
-		base.OnFixedUpdate();
-
+	private void OnFixedUpdate(Enemy e) {
 		if (!collided) {
 			Vector3 direction = -transform.position;
-			direction.Normalize();
+			direction = direction.normalized;
 			rb2d.velocity = direction * speed;
 		} else if (object_blocker.block_count == 0) {
 			collided = false;
 			rb2d.mass = 0.0001f;
 		}
+	}
+
+	private void OnDestroyed(Enemy e) {
+		attaching_object.DetachFromEverything();
+		object_blocker.FreeEverything();
 	}
 
 	private void OnCollisionEnter2D(Collision2D collision) {
@@ -67,12 +77,5 @@ public class Blob : Enemy {
 				rb2d.mass = mass;
 			}
 		}
-	}
-
-	protected override void OnDestroyed() {
-		base.OnDestroyed();
-
-		attaching_object.DetachFromEverything();
-		object_blocker.FreeEverything();
 	}
 }

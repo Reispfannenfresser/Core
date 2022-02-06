@@ -1,9 +1,7 @@
 using UnityEngine;
 
-public class Damageable : MonoBehaviour {
-	[SerializeField]
-	public int max_hp = 0;
-
+public class Damageable {
+	public readonly int max_hp;
 	public int hp {get; protected set;} = 0;
 	public bool dead {get; protected set;} = false;
 	public int last_hp_change {get; set;} = 0;
@@ -11,30 +9,42 @@ public class Damageable : MonoBehaviour {
 	protected Event<Damageable> on_damaged_event;
 	protected Event<Damageable> on_healed_event;
 	protected Event<Damageable> on_killed_event;
+	protected Event<Damageable> on_hp_changed_event;
 
 	public EventWrapper<Damageable> on_damaged_wrapper;
 	public EventWrapper<Damageable> on_healed_wrapper;
 	public EventWrapper<Damageable> on_killed_wrapper;
+	public EventWrapper<Damageable> on_hp_changed_wrapper;
 
-	private void Awake() {
+	public Damageable(int max_hp) {
+		this.max_hp = max_hp;
 		hp = max_hp;
 
 		on_damaged_event = new Event<Damageable>(this);
 		on_healed_event = new Event<Damageable>(this);
 		on_killed_event = new Event<Damageable>(this);
+		on_hp_changed_event = new Event<Damageable>(this);
 
 		on_damaged_wrapper = new EventWrapper<Damageable>(on_damaged_event);
 		on_healed_wrapper = new EventWrapper<Damageable>(on_healed_event);
 		on_killed_wrapper = new EventWrapper<Damageable>(on_killed_event);
+		on_hp_changed_wrapper = new EventWrapper<Damageable>(on_hp_changed_event);
 	}
 
 	protected void ChangeHP() {
+		if (last_hp_change == 0) {
+			return;
+		}
+
 		hp += last_hp_change;
-		if (hp < 0) {
+		if (hp <= 0) {
 			hp = 0;
-			Kill();
 		} else if(hp > max_hp) {
 			hp = max_hp;
+		}
+		on_hp_changed_event.RunEvent();
+		if (hp == 0) {
+			Kill();
 		}
 	}
 
@@ -56,7 +66,8 @@ public class Damageable : MonoBehaviour {
 
 	public void Kill() {
 		if (!dead) {
-			hp = 0;
+			last_hp_change = -hp;
+			ChangeHP();
 			dead = true;
 			on_killed_event.RunEvent();
 		}

@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mothership : Enemy {
+[RequireComponent(typeof(Enemy))]
+public class Mothership : MonoBehaviour {
 	[SerializeField]
 	GameObject ufo = null;
 	[SerializeField]
@@ -20,6 +21,7 @@ public class Mothership : Enemy {
 	LineRenderer laser = null;
 	Animator animator = null;
 	AudioSource laser_audio = null;
+	protected Enemy enemy = null;
 
 	ConstructionSegment target = null;
 	private bool is_attacking = false;
@@ -29,12 +31,11 @@ public class Mothership : Enemy {
 	private float angle = 0f;
 	private float distance = 0f;
 
-	protected override void Initialize() {
-		base.Initialize();
-
+	protected void Awake() {
 		laser = GetComponent<LineRenderer>();
 		animator = GetComponent<Animator>();
 		laser_audio = GetComponent<AudioSource>();
+		enemy = GetComponent<Enemy>();
 
 		angle = Random.value * 2 * Mathf.PI;
 		distance = 15 + (Random.value - 0.5f) * 10;
@@ -42,17 +43,18 @@ public class Mothership : Enemy {
 		transform.position = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * 40;
 	}
 
-	protected override void Spawn() {
-		base.Spawn();
+	protected void Start() {
+		enemy.on_spawned_wrapper.AddAction("Mothership", OnSpawned);
+		enemy.fixed_update_wrapper.AddAction("Mothership", OnFixedUpdate);
+	}
 
+	private void OnSpawned(Enemy e) {
 		current_move_cooldown = Random.value * move_cooldown;
 		current_spawn_cooldown = Random.value * spawn_cooldown;
 		current_laser_cooldown = Random.value * laser_cooldown;
 	}
 
-	protected override void OnFixedUpdate() {
-		base.OnFixedUpdate();
-
+	private void OnFixedUpdate(Enemy e) {
 		if (current_move_cooldown <= 0) {
 			current_move_cooldown += move_cooldown;
 			angle += (Random.value - 0.5f) * Mathf.PI;
@@ -92,11 +94,13 @@ public class Mothership : Enemy {
 	}
 
 	void Laser() {
-		int segment_count = ConstructionSegment.all_segments.Count;
+		int segment_count = ObjectRegistry<ConstructionSegment>.object_count;
 		if (segment_count > 0) {
 			int index = Random.Range(0, segment_count);
-			foreach (ConstructionSegment segment in ConstructionSegment.all_segments) {
-				if (index <= 0 && segment != null) {
+			foreach (KeyValuePair<int, ConstructionSegment> kvp in ObjectRegistry<ConstructionSegment>.objects) {
+				ConstructionSegment segment = kvp.Value;
+
+				if (index <= 0) {
 					target = segment;
 					animator.SetTrigger("Fire");
 					laser_audio.Play();

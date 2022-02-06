@@ -51,7 +51,7 @@ public class CameraController : MonoBehaviour {
 		new_pos.z = 0;
 
 		if (new_pos.magnitude > max_shift_distance) {
-			new_pos.Normalize();
+			new_pos = new_pos.normalized;
 			new_pos *= max_shift_distance;
 		}
 

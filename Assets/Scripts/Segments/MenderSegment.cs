@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class MenderSegment : ConstructionSegment {
+[RequireComponent(typeof(LineRenderer))]
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(ConstructionSegment))]
+public class MenderSegment : MonoBehaviour {
 	[SerializeField]
 	int mending_cost = 1;
 	[SerializeField]
@@ -16,29 +20,27 @@ public class MenderSegment : ConstructionSegment {
 
 	[SerializeField]
 	LayerMask construction = 0;
+
 	LineRenderer rays = null;
 	Animator animator = null;
-
 	AudioSource mend_audio = null;
+	ConstructionSegment segment = null;
 
-	protected override void Initialize() {
-		base.Initialize();
+	private void Awake() {
 		rays = GetComponent<LineRenderer>();
 		animator = GetComponent<Animator>();
 		mend_audio = GetComponent<AudioSource>();
-	}
+		segment = GetComponent<ConstructionSegment>();
 
-	protected override void Place() {
-		base.Place();
 		mend_audio.pitch += UnityEngine.Random.value * 0.125f - 0.0625f;
 		current_mending_cooldown += UnityEngine.Random.value * mending_cooldown;
 	}
 
-	protected override void OnFixedUpdate() {
-		if (blocked) {
-			return;
-		}
+	private void Start() {
+		segment.fixed_update_wrapper.AddAction("Mender", OnFixedUpdate);
+	}
 
+	private void OnFixedUpdate(ConstructionSegment segment) {
 		current_mending_cooldown -= Time.deltaTime;
 		if (current_mending_cooldown < 0) {
 			current_mending_cooldown += mending_cooldown;

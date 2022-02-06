@@ -3,27 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-[RequireComponent(typeof(Damageable))]
 public class ConstructionSegment : MonoBehaviour, IBlockable {
-	public static HashSet<ConstructionSegment> all_segments = new HashSet<ConstructionSegment>();
+	[SerializeField]
+	private SpriteRenderer[] sprite_renderers = new SpriteRenderer[0];
+
+	public Rigidbody2D rb2d {get; private set;} = null;
 
 	[SerializeField]
-	protected SpriteRenderer[] sprite_renderers = new SpriteRenderer[0];
-	[SerializeField]
-	protected Rigidbody2D rb2d = null;
+	private int max_hp = 0;
 
-	[SerializeField]
-	protected bool deletable = true;
-	[SerializeField]
-	protected bool meltable = true;
+	public int unique_id {get; private set;} = 0;
 
-	[SerializeField]
-	protected int cost = 10;
+	[field: SerializeField]
+	public bool deletable {get; private set;} = true;
+	[field: SerializeField]
+	public bool meltable {get; private set;} = true;
 
-	[SerializeField]
-	protected float radius = 0.5f;
+	[field: SerializeField]
+	public int cost {get; protected set;} = 10;
 
-	int blocker_count = 0;
+	[field: SerializeField]
+	public float radius {get; protected set;} = 0.5f;
+
+	private int blocker_count = 0;
 	public bool blocked {get; protected set;} = false;
 
 	public static float max_distance {get;} = 0.4f;
@@ -32,39 +34,59 @@ public class ConstructionSegment : MonoBehaviour, IBlockable {
 	public Damageable damageable {get; protected set;} = null;
 	private AttachingObject attaching_object = null;
 
-	private bool started = false;
+	public bool started {get; protected set;} = false;
 
-	protected HashSet<ObjectBlocker> blocked_by = new HashSet<ObjectBlocker>();
+	private HashSet<ObjectBlocker> blocked_by = new HashSet<ObjectBlocker>();
+
+	private Event<ConstructionSegment> on_spawned_event = null;
+	private Event<ConstructionSegment> fixed_update_event = null;
+	private Event<ConstructionSegment> on_destroyed_event = null;
+	private Event<ConstructionSegment> on_blocked_event = null;
+	private Event<ConstructionSegment> on_freed_event = null;
+
+	public EventWrapper<ConstructionSegment> on_spawned_wrapper = null;
+	public EventWrapper<ConstructionSegment> fixed_update_wrapper = null;
+	public EventWrapper<ConstructionSegment> on_destroyed_wrapper = null;
+	public EventWrapper<ConstructionSegment> on_blocked_wrapper = null;
+	public EventWrapper<ConstructionSegment> on_freed_wrapper = null;
 
 	private void Awake() {
-		Initialize();
-	}
-
-	protected virtual void Initialize() {
 		rb2d = GetComponent<Rigidbody2D>();
 		attaching_object = GetComponent<AttachingObject>();
-		damageable = GetComponent<Damageable>();
 
-		all_segments.Add(this);
-	}
+		damageable = new Damageable(max_hp);
 
-	private void Start() {
-		Place();
+		on_spawned_event = new Event<ConstructionSegment>(this);
+		fixed_update_event = new Event<ConstructionSegment>(this);
+		on_destroyed_event = new Event<ConstructionSegment>(this);
+		on_blocked_event = new Event<ConstructionSegment>(this);
+		on_freed_event = new Event<ConstructionSegment>(this);
 
-		damageable.on_damaged_wrapper.AddAction("Segment_ChangeColor", e => {
+		on_spawned_wrapper = new EventWrapper<ConstructionSegment>(on_spawned_event);
+		fixed_update_wrapper = new EventWrapper<ConstructionSegment>(fixed_update_event);
+		on_destroyed_wrapper = new EventWrapper<ConstructionSegment>(on_destroyed_event);
+		on_blocked_wrapper = new EventWrapper<ConstructionSegment>(on_blocked_event);
+		on_freed_wrapper = new EventWrapper<ConstructionSegment>(on_freed_event);
+
+
+		on_blocked_wrapper.AddAction("Segment_ChangeColor", e => {
 			UpdateColor();
 		});
-		damageable.on_healed_wrapper.AddAction("Segment_ChangeColor", e => {
+		on_freed_wrapper.AddAction("Segment_ChangeColor", e => {
+			UpdateColor();
+		});
+
+		damageable.on_hp_changed_wrapper.AddAction("Segment_ChangeColor", e => {
 			UpdateColor();
 		});
 		damageable.on_killed_wrapper.AddAction("Destroy", e => {
 			Destroy(gameObject);
 		});
 
-		started = true;
+		unique_id = ObjectRegistry<ConstructionSegment>.Add(this);
 	}
 
-	protected virtual void Place() {
+	private void Start() {
 		Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius + max_distance, 1 << gameObject.layer);
 
 		foreach (Collider2D collider in colliders) {
@@ -75,38 +97,32 @@ public class ConstructionSegment : MonoBehaviour, IBlockable {
 
 			attaching_object.AttachTo(segment.attaching_object);
 		}
+
+		started = true;
+
+		on_spawned_event.RunEvent();
 	}
 
 	private void FixedUpdate() {
-		OnFixedUpdate();
+		if (!blocked) {
+			fixed_update_event.RunEvent();
+		}
 	}
 
-	protected virtual void OnFixedUpdate() {
-
-	}
-
-	void IBlockable.OnBlocked(ObjectBlocker blocker) {
+	void IBlockable.Block(ObjectBlocker blocker) {
 		blocked_by.Add(blocker);
 		if (blocker_count++ == 0) {
-			Block();
+			blocked = true;
+			on_blocked_event.RunEvent();
 		}
 	}
 
-	void IBlockable.OnFreed(ObjectBlocker blocker) {
+	void IBlockable.Free(ObjectBlocker blocker) {
 		blocked_by.Remove(blocker);
 		if (--blocker_count == 0) {
-			Free();
+			blocked = false;
+			on_freed_event.RunEvent();
 		}
-	}
-
-	protected virtual void Block() {
-		blocked = true;
-		UpdateColor();
-	}
-
-	protected virtual void Free() {
-		blocked = false;
-		UpdateColor();
 	}
 
 	private void UpdateColor() {
@@ -124,37 +140,19 @@ public class ConstructionSegment : MonoBehaviour, IBlockable {
 		}
 	}
 
-	public int GetCost() {
-		return cost;
-	}
-
-	public float GetRadius() {
-		return radius;
-	}
-
-	public bool IsDeletable() {
-		return deletable;
-	}
-
-	public bool IsMeltable() {
-		return meltable;
-	}
-
-	public virtual void Delete() {
+	public void Delete() {
 		GameController.instance.AddZollars((int) (cost * damageable.hp / (float) damageable.max_hp));
 		Destroy(gameObject);
 	}
 
-	protected void OnDestroy() {
-		OnDestroyed();
-	}
-
-	protected virtual void OnDestroyed() {
-		all_segments.Remove(this);
-
+	private void OnDestroy() {
 		foreach (ObjectBlocker blocker in blocked_by) {
 			blocker.OnFreed(this);
 		}
 		blocked_by.Clear();
+
+		ObjectRegistry<ConstructionSegment>.Remove(unique_id);
+
+		on_destroyed_event.RunEvent();
 	}
 }

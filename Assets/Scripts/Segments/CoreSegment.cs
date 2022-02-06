@@ -2,13 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CoreSegment : ConstructionSegment {
+[RequireComponent(typeof(ConstructionSegment))]
+public class CoreSegment : MonoBehaviour {
+	protected ConstructionSegment segment = null;
 
-	protected override void Place() {
-		base.Place();
+	private void Awake() {
+		segment = GetComponent<ConstructionSegment>();
+	}
 
-		damageable.on_killed_wrapper.AddAction("EndGame", e => {
-			GameController.instance.LoseGame();
-		});
+	private void Start() {
+		segment.damageable.on_killed_wrapper.AddAction("Core", OnKilled);
+	}
+
+	private void OnKilled(Damageable damageable) {
+		GameController.instance.LoseGame();
 	}
 }

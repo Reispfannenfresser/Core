@@ -95,5 +95,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c069b65908818647aa60a86cada91e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  tp_distance: 8
+  speed: 7
+  tp_distance: 16

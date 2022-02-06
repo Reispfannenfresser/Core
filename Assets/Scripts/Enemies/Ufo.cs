@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ufo : Enemy {
+[RequireComponent(typeof(Enemy))]
+public class Ufo : MonoBehaviour {
 	private bool back = false;
 	private Vector3 start_pos;
 	private float min_height;
@@ -23,11 +24,11 @@ public class Ufo : Enemy {
 	float flee_speed = 7;
 
 	AudioSource shot_audio = null;
+	protected Enemy enemy = null;
 
-	protected override void Initialize() {
-		base.Initialize();
-
+	protected void Awake() {
 		shot_audio = GetComponent<AudioSource>();
+		enemy = GetComponent<Enemy>();
 
 		angle = Random.value * 2 * Mathf.PI;
 		distance = 15 + (Random.value - 0.5f) * 10;
@@ -41,16 +42,17 @@ public class Ufo : Enemy {
 		shot_audio.pitch += Random.value * 0.125f - 0.0625f;
 	}
 
-	protected override void Spawn() {
-		base.Spawn();
+	protected void Start() {
+		enemy.on_spawned_wrapper.AddAction("Ufo", OnSpawned);
+		enemy.fixed_update_wrapper.AddAction("Ufo", OnFixedUpdate);
+	}
 
+	private void OnSpawned(Enemy e) {
 		flee_cooldown = 20 + (Random.value - 0.5f) * 10;
 		current_cooldown = Random.value * cooldown;
 	}
 
-	protected override void OnFixedUpdate() {
-		base.OnFixedUpdate();
-
+	private void OnFixedUpdate(Enemy e) {
 		if (Enemy.boss_enemies <= 0) {
 			flee_cooldown -= Time.deltaTime;
 		}
@@ -72,7 +74,7 @@ public class Ufo : Enemy {
 
 	private void Shoot() {
 		Vector3 direction = -transform.position;
-		direction.Normalize();
+		direction = direction.normalized;
 
 		Instantiate(shot, transform.position, Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg));
 		shot_audio.Play();

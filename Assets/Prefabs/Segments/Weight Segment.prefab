@@ -82,39 +82,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1840957612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7344136509832373857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4d146254f1c74c299383a0434477b54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sprite_renderers:
-  - {fileID: 7344136509832373859}
-  - {fileID: 2037619039}
-  rb2d: {fileID: 0}
-  deletable: 1
-  meltable: 1
-  cost: 10
-  radius: 0.75
---- !u!114 &563094063734957930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7344136509832373857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df282224cf12df04790d0a9fee5bdaa2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  max_hp: 150
 --- !u!1001 &1863582088012884001
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -126,6 +93,26 @@ PrefabInstance:
       propertyPath: m_Radius
       value: 0.65
       objectReference: {fileID: 0}
+    - target: {fileID: 992451001479695092, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
+      propertyPath: max_hp
+      value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 992451001479695092, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
+      propertyPath: <cost>k__BackingField
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 992451001479695092, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
+      propertyPath: <radius>k__BackingField
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 992451001479695092, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
+      propertyPath: sprite_renderers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 992451001479695092, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
+      propertyPath: sprite_renderers.Array.data[1]
+      value: 
+      objectReference: {fileID: 2037619039}
     - target: {fileID: 8950723079009521216, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
       propertyPath: m_Name
       value: Weight Segment
@@ -160,18 +147,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
---- !u!1 &7344136509832373857 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8950723079009521216, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
-  m_PrefabInstance: {fileID: 1863582088012884001}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7344136509832373856 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8950723079009521217, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
-  m_PrefabInstance: {fileID: 1863582088012884001}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &7344136509832373859 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 8950723079009521218, guid: f26b41b42b2385793a887f57d1ece507, type: 3}
   m_PrefabInstance: {fileID: 1863582088012884001}
   m_PrefabAsset: {fileID: 0}

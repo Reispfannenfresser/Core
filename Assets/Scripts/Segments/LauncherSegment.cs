@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LauncherSegment : ConstructionSegment {
+[RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(ConstructionSegment))]
+public class LauncherSegment : MonoBehaviour {
 	[SerializeField]
 	GameObject bomb = null;
 
@@ -21,16 +23,19 @@ public class LauncherSegment : ConstructionSegment {
 
 	int state = 0;
 
-	protected override void Initialize() {
-		base.Initialize();
+	protected ConstructionSegment segment = null;
+
+	private void Awake() {
 		launch_audio = GetComponent<AudioSource>();
+		segment = GetComponent<ConstructionSegment>();
 	}
 
-	protected override void OnFixedUpdate() {
-		if (blocked) {
-			return;
-		}
+	private void Start() {
+		segment.fixed_update_wrapper.AddAction("Launcher", OnFixedUpdate);
+		segment.on_destroyed_wrapper.AddAction("Launcher", OnDestroyed);
+	}
 
+	private void OnFixedUpdate(ConstructionSegment segment) {
 		switch(state) {
 			case 0: // reload
 				Reload();
@@ -61,7 +66,7 @@ public class LauncherSegment : ConstructionSegment {
 		loaded_bomb.Launch();
 		launch_audio.Play();
 
-		loaded_bomb.detonate_event_wrapper.AddAction("free_launcher", e => {
+		loaded_bomb.on_destroyed_wrapper.AddAction("free_launcher", e => {
 			loaded_bomb = null;
 			bomb_sr = null;
 			state = 0;
@@ -83,11 +88,9 @@ public class LauncherSegment : ConstructionSegment {
 		fg.SetActive(true);
 	}
 
-	protected override void OnDestroyed() {
-		base.OnDestroyed();
-
+	private void OnDestroyed(ConstructionSegment segment) {
 		if (state == 3) {
-			loaded_bomb.detonate_event_wrapper.RemoveAction("free_launcher");
+			loaded_bomb.on_destroyed_wrapper.RemoveAction("free_launcher");
 			loaded_bomb.Detonate();
 		}
 	}

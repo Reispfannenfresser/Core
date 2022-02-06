@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Enemy))]
 public class Blobfather : Blob {
 	protected AudioSource puke_audio = null;
 	protected float original_pitch = 0;
@@ -18,21 +19,25 @@ public class Blobfather : Blob {
 	protected float current_shot_amount_increase_time = 0;
 	protected int shot_amount = 1;
 
-	protected override void Initialize() {
-		base.Initialize();
+	protected new void Awake() {
+		base.Awake();
 
 		puke_audio = GetComponent<AudioSource>();
-
 		original_pitch = puke_audio.pitch;
 	}
 
-	protected override void Spawn() {
-		base.Spawn();
+	protected new void Start() {
+		base.Start();
+
+		enemy.on_spawned_wrapper.AddAction("BlobFather", OnSpawned);
+		enemy.fixed_update_wrapper.AddAction("BlobFather", OnFixedUpdate);
+	}
+
+	private void OnSpawned(Enemy e) {
 		current_shot_amount_increase_time = shot_amount_increase_time;
 	}
 
-	protected override void OnFixedUpdate() {
-		base.OnFixedUpdate();
+	private void OnFixedUpdate(Enemy e) {
 		current_shot_amount_increase_time -= Time.deltaTime;
 		if (current_shot_amount_increase_time < 0) {
 			current_shot_amount_increase_time += shot_amount_increase_time;
@@ -58,7 +63,7 @@ public class Blobfather : Blob {
 		puke_audio.pitch = original_pitch + Random.value * 0.25f - 0.125f;
 		puke_audio.Play();
 		Vector3 direction = -mouth.position;
-		direction.Normalize();
+		direction = direction.normalized;
 		mouth.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
 
 		for (int i = 0; i < shot_amount; i++) {
