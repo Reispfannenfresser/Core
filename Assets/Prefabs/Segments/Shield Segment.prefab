@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 1974081733}
   - component: {fileID: 7671558203342220533}
   m_Layer: 14
-  m_Name: ShieldCircle
+  m_Name: ForceField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -155,7 +155,7 @@ SpriteRenderer:
   m_SortingLayer: -2
   m_SortingOrder: 5
   m_Sprite: {fileID: 3820069817862179582, guid: 8654297edeb9a7392849c28e667553f2, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.101960786}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

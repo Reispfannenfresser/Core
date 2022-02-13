@@ -123,9 +123,6 @@ public class Bomb : MonoBehaviour {
 		float shortest_distance = Mathf.Infinity;
 		foreach (KeyValuePair<int, Enemy> kvp in ObjectRegistry<Enemy>.objects) {
 			Enemy enemy = kvp.Value;
-			if (enemy.is_bomb_resistant) {
-				continue;
-			}
 
 			float distance_to = (enemy.transform.position - transform.position).magnitude;
 			if (distance_to < shortest_distance) {
@@ -141,10 +138,7 @@ public class Bomb : MonoBehaviour {
 			return;
 		}
 
-		Enemy enemy = other.GetComponent<Enemy>();
-		if (enemy != null && !enemy.is_bomb_resistant) {
-			Detonate();
-		}
+		Detonate();
 	}
 
 	public void Detonate() {
