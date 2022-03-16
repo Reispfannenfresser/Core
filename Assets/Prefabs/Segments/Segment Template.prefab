@@ -56,7 +56,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9e997487ae189525f920f51d2712c5c1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -178,5 +178,7 @@ MonoBehaviour:
   sprite_renderers:
   - {fileID: 8950723079009521218}
   max_hp: 75
+  <deletable>k__BackingField: 1
+  <meltable>k__BackingField: 1
   <cost>k__BackingField: 10
   <radius>k__BackingField: 0.5
