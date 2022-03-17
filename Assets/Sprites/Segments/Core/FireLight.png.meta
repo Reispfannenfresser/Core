@@ -117,10 +117,10 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 42
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.609375}
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -136,12 +136,12 @@ TextureImporter:
       name: FireLight_1
       rect:
         serializedVersion: 2
-        x: 42
+        x: 96
         y: 0
-        width: 42
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.609375}
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -157,12 +157,12 @@ TextureImporter:
       name: FireLight_2
       rect:
         serializedVersion: 2
-        x: 84
+        x: 192
         y: 0
-        width: 42
-        height: 64
-      alignment: 9
-      pivot: {x: 0.5, y: 0.609375}
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
