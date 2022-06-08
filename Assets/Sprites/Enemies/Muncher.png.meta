@@ -42,6 +42,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -256,6 +257,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Lasership_2: 326156936382733320
+      Lasership_5: -6156306053184379045
+      Lasership_4: 3986135521307903138
+      Lasership_3: 3743428766637418047
+      Lasership_0: -4344541361139995215
+      Lasership_1: -718235939730527180
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
